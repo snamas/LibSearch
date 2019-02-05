@@ -18,6 +18,10 @@
 		D14F1A8722096D5200F3C2BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D14F1A8522096D5200F3C2BA /* LaunchScreen.storyboard */; };
 		D14F1A9222096D5200F3C2BA /* LibSearchSysTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1A9122096D5200F3C2BA /* LibSearchSysTests.swift */; };
 		D14F1A9D22096D5300F3C2BA /* LibSearchSysUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1A9C22096D5300F3C2BA /* LibSearchSysUITests.swift */; };
+		D14F1AAB2209701D00F3C2BA /* FetchfromURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AAA2209701D00F3C2BA /* FetchfromURL.swift */; };
+		D14F1AAF220984A900F3C2BA /* testhtm.html in Resources */ = {isa = PBXBuildFile; fileRef = D14F1AAE220984A900F3C2BA /* testhtm.html */; };
+		D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */; };
+		D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB22209958F00F3C2BA /* StringExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +65,10 @@
 		D14F1A9822096D5300F3C2BA /* LibSearchSysUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibSearchSysUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D14F1A9C22096D5300F3C2BA /* LibSearchSysUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibSearchSysUITests.swift; sourceTree = "<group>"; };
 		D14F1A9E22096D5300F3C2BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D14F1AAA2209701D00F3C2BA /* FetchfromURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchfromURL.swift; sourceTree = "<group>"; };
+		D14F1AAE220984A900F3C2BA /* testhtm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = testhtm.html; sourceTree = "<group>"; };
+		D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libdatafetch.swift; sourceTree = "<group>"; };
+		D14F1AB22209958F00F3C2BA /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +154,10 @@
 				D14F1A8522096D5200F3C2BA /* LaunchScreen.storyboard */,
 				D14F1A8822096D5200F3C2BA /* Info.plist */,
 				D14F1A8022096D5200F3C2BA /* LibSearchSys.xcdatamodeld */,
+				D14F1AAA2209701D00F3C2BA /* FetchfromURL.swift */,
+				D14F1AAE220984A900F3C2BA /* testhtm.html */,
+				D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */,
+				D14F1AB22209958F00F3C2BA /* StringExt.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -275,6 +287,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D14F1AAF220984A900F3C2BA /* testhtm.html in Resources */,
 				D14F1A8722096D5200F3C2BA /* LaunchScreen.storyboard in Resources */,
 				D14F1A8422096D5200F3C2BA /* Assets.xcassets in Resources */,
 				D14F1A7F22096D5200F3C2BA /* Main.storyboard in Resources */,
@@ -395,7 +408,10 @@
 			files = (
 				D14F1A7C22096D5200F3C2BA /* ViewController.swift in Sources */,
 				D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */,
+				D14F1AAB2209701D00F3C2BA /* FetchfromURL.swift in Sources */,
 				D14F1A8222096D5200F3C2BA /* LibSearchSys.xcdatamodeld in Sources */,
+				D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */,
+				D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
