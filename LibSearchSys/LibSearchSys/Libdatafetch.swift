@@ -178,13 +178,16 @@ class Libdatafetch{
     
     var loginDB = [
         "display": "catsrd",
+        "x": "44",
         "userid": "u8144838",
         "password": "kmnm_1984",
-        "x": "44",
         "y": "9"
     ]
+    var header = {
+        
+    }
     let urlSessionGetClient = URLSessionGetClient()
     func fetchong(){
-        urlSessionGetClient.post(url: libserchURL+"askidf.do",parameters: loginDB)
+        urlSessionGetClient.post(url: libserchURL+"askidf.do",parameters: loginDB,header: ["referer":"https://www.opac.lib.tmu.ac.jp/webopac/asklst.do"])
     }
 }
