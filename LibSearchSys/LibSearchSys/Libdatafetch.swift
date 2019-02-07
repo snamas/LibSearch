@@ -177,17 +177,31 @@ class Libdatafetch{
     */
     
     var loginDB = [
+        "userid": "u8144838",
         "display": "catsrd",
         "x": "44",
-        "userid": "u8144838",
         "password": "kmnm_1984",
         "y": "9"
     ]
     var header = {
         
     }
+    var lenlstid:String? = nil
     let urlSessionGetClient = URLSessionGetClient()
-    func fetchong(){
-        urlSessionGetClient.post(url: libserchURL+"askidf.do",parameters: loginDB,header: ["referer":"https://www.opac.lib.tmu.ac.jp/webopac/asklst.do"])
+    func fetch_askidf(){
+        urlSessionGetClient.post(url: libserchURL+"askidf.do",parameters: loginDB,header: ["referer":"https://www.opac.lib.tmu.ac.jp/webopac/asklst.do"],completion: {data in
+            var testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            //print(self.testfi!)
+            var pattern = "/webopac/lenlst.do\\?system=(\\d+)"
+            self.lenlstid = testfi.capture(pattern: pattern, group: 1)//ここ確率要素
+            print(self.lenlstid)
+        })
+    }
+    func fetch_lenlst(){
+        var parameters = [URLQueryItem(name:"system",value: self.lenlstid ?? "")]
+        urlSessionGetClient.get(url: self.libserchURL + "lenlst.do", queryItems: parameters, completion: {data in
+            
+        })
+        
     }
 }

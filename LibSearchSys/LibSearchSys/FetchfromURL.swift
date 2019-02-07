@@ -8,8 +8,7 @@
 import Foundation
 import Kanna
 class URLSessionGetClient {
-    var testfi:String? = nil
-    func get(url urlString: String, queryItems: [URLQueryItem]? = nil) {
+    func get(url urlString: String, queryItems: [URLQueryItem]? = nil,completion: @escaping (Data) -> Void) {
         var compnents = URLComponents(string: urlString)
         compnents?.queryItems = queryItems
         print(compnents!)
@@ -29,7 +28,7 @@ class URLSessionGetClient {
             if response.statusCode == 200 {
                 
                 //print(String(data: data, encoding: String.Encoding.utf8) ?? "")
-                self.lenlstparse(data: data)
+                completion(data)
                 if let cookies = HTTPCookieStorage.shared.cookies(for: url!) {
                     for cookie in cookies {
                         print(cookie)
@@ -43,11 +42,11 @@ class URLSessionGetClient {
         task.resume()
         
     }
-    func post(url urlString: String, parameters: [String: Any],header : Dictionary<String,String>? = nil) {
+    func post(url urlString: String, parameters: [String: Any],header : Dictionary<String,String>? = nil,completion: @escaping (Data) -> Void) {
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
-        let parametersString: String = parameters.enumerated().reduce("?") {
+        let parametersString: String = parameters.enumerated().reduce("") {
             (input, tuple) -> String in
             switch tuple.element.value {
             case let int as Int: return input + tuple.element.key + "=" + String(int) + (parameters.count - 1 > tuple.offset ? "&" : "")
@@ -55,6 +54,7 @@ class URLSessionGetClient {
             default: return input
             }
         }
+        print(parametersString)
         request.httpBody = parametersString.data(using: String.Encoding.utf8)
         if let headerdic = header{
             for dic in headerdic{
@@ -75,16 +75,8 @@ class URLSessionGetClient {
             
             if response.statusCode == 200 {
                 //print(String(data: data, encoding: String.Encoding.utf8) ?? "")
-                self.testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-                print(self.testfi!)
-                var pattern = "/webopac/lenlst.do\\?system=(\\d+)"
-                var id = self.testfi!.capture(pattern: pattern, group: 1)//ここ確率要素
-                print(id)
-                var parameters = [URLQueryItem(name:"system",value:"1")]
-                if let systemid = id{
-                    parameters = [URLQueryItem(name:"system",value: systemid)]
-                }
-                self.get(url: "https://www.opac.lib.tmu.ac.jp/webopac/lenlst.do",queryItems: parameters)
+                
+                completion(data)
                 /*
                 if let cookies = HTTPCookieStorage.shared.cookies(for: url!) {
                     for cookie in cookies {
