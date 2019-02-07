@@ -4,22 +4,57 @@
 //
 //  Created by yuto on 2019/02/07.
 //
-
+import Kanna
 import UIKit
 
 class LendTableViewController: UITableViewController {
     var data:(name:String,url:String)?
     
+    var lendlist:[(number:String,crick:String,MaterialID:String,brank:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Biblioinfo:String)] = []
     let weblist = [
-        (name:"rei",url : "func"),
-        (name:"rei2",url : "func2")
+        (name:"rei",value : "func"),
+        (name:"rei2",value : "func2")
     ]
-
+    
+    func fetch_lenlst(){
+        let fetchURL = URLSessionGetClient()
+        var parameters = [URLQueryItem(name:"system",value: Libdatafetch.lenlstid ?? "")]
+        fetchURL.get(url: "https://www.opac.lib.tmu.ac.jp/webopac/lenlst.do", queryItems: parameters, completion: {data in
+            self.lenlstparse(data: data)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            print(self.lendlist)
+        })
+        
+    }
+    func lenlstparse(data:Data) -> (){
+        let html = String(data: data, encoding: String.Encoding.utf8) ?? ""
+        let testscr = try? HTML(html: html, encoding: .utf8)
+        var templist:[String] = []
+        for link in testscr!.css("span.lst_value,[name='lenidlist']"){
+            /*span.lst_value
+             if let a = link["href"],link["href"]!.contains("lenDtl"){
+             print(link.text)
+             print(link["href"])
+             }
+             */
+            if let a = link["value"]{
+                templist += [a]
+            }
+            templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+        }
+        for i in stride(from:0,to:templist.count,by:9){
+            self.lendlist.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i],templist[6+i],templist[7+i],templist[8+i]))
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let webData = data else{
             return
         }
+        self.fetch_lenlst()
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -36,15 +71,18 @@ class LendTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return weblist.count
+        return lendlist.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "lendcell", for: indexPath)
-        let webdata = weblist[indexPath.row]
-        cell.textLabel?.text = webdata.name
-        cell.detailTextLabel?.text = webdata.url
+        
+        if !self.lendlist.isEmpty{
+            let webdata = self.lendlist[indexPath.row]
+            cell.textLabel?.text = webdata.Biblioinfo
+            cell.detailTextLabel?.text = "\(webdata.Lendingdate)->\(webdata.LendDD)"
+        }
 
         // Configure the cell...
 

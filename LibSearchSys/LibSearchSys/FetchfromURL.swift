@@ -91,26 +91,4 @@ class URLSessionGetClient {
         }
         task.resume()
     }
-    func lenlstparse(data:Data) -> [[String]]{
-        let html = String(data: data, encoding: String.Encoding.utf8) ?? ""
-        let testscr = try? HTML(html: html, encoding: .utf8)
-        var templist:[String] = []
-        var lenlist:[[String]] = []
-        for link in testscr!.css("span.lst_value,[name='lenidlist']"){
-            /*span.lst_value
-            if let a = link["href"],link["href"]!.contains("lenDtl"){
-                print(link.text)
-                print(link["href"])
-            }
-             */
-            if let a = link["value"]{
-                templist += [a]
-            }
-            templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-        }
-        for i in stride(from:0,to:templist.count,by:9){
-            lenlist += [[templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i],templist[6+i],templist[7+i],templist[8+i]]]
-        }
-        return lenlist
-    }
 }

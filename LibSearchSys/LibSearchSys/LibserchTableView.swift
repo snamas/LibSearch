@@ -23,6 +23,7 @@ class LibserchTableView: UITableViewController {
         
         var LibData = Libdatafetch()
         LibData.fetch_askidf()
+        LibData.fetch_ctlsrh()
     }
 
     // MARK: - Table view data source

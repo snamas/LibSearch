@@ -4,23 +4,23 @@
 //
 //  Created by yuto on 2019/02/05.
 //
-
+import Kanna
 import Foundation
 class Libdatafetch{
     var libserchURL = "https://www.opac.lib.tmu.ac.jp/webopac/"
-    var formdata = ["fromDsp": "catsrd",
+    var ctlsrhformDB = ["fromDsp": "catsrd",
     "searchDsp": "catsrd",
     "initFlg": "_RESULT_SET",
-    "gcattp_flag": "all",
-    "holar_flag": "all",
-    "words": "sake",
-    "title": "",
-    "auth": "",
-    "pub": "",
-    "year": "",
-    "year2": "",
+    "gcattp_flag": "all",//ｂｋ＝図書、ｓｒ＝雑誌、av＝視聴覚、eb＝電子ブック、ej＝電子ジャーナル
+    "holar_flag": "all",//１０＝本館、２０＝日野館、３０＝荒川館、１１＝人文社会、１２＝法学、１３＝経済経営、１４＝地理環境、１５＝数理科学、１６＝丸の内SC、１＝南大沢
+    "words": "sake",//検索ワード
+    "title": "",//タイトル
+    "auth": "",//著者名
+    "pub": "",//出版社
+    "year": "",//出版年月日この年から
+    "year2": "",//この年まで
     "sh": "",
-    "cls": "",
+    "cls": "",//分類
     "isbn_issn": "",
     "code_type": "",
     "code": "",
@@ -186,22 +186,29 @@ class Libdatafetch{
     var header = {
         
     }
-    var lenlstid:String? = nil
+    static var lenlstid:String? = nil
     let urlSessionGetClient = URLSessionGetClient()
     func fetch_askidf(){
         urlSessionGetClient.post(url: libserchURL+"askidf.do",parameters: loginDB,header: ["referer":"https://www.opac.lib.tmu.ac.jp/webopac/asklst.do"],completion: {data in
             var testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             //print(self.testfi!)
             var pattern = "/webopac/lenlst.do\\?system=(\\d+)"
-            self.lenlstid = testfi.capture(pattern: pattern, group: 1)//ここ確率要素
-            print(self.lenlstid)
+            Libdatafetch.lenlstid = testfi.capture(pattern: pattern, group: 1)//ここ確率要素
+            print(Libdatafetch.lenlstid)
         })
     }
-    func fetch_lenlst(){
-        var parameters = [URLQueryItem(name:"system",value: self.lenlstid ?? "")]
-        urlSessionGetClient.get(url: self.libserchURL + "lenlst.do", queryItems: parameters, completion: {data in
-            
+    func fetch_ctlsrh() -> () {
+        urlSessionGetClient.post(url: libserchURL+"ctlsrh.do", parameters: ctlsrhformDB, header: nil, completion: { Data in
+            var testfi = String(data: Data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            var templist:[String] = []
+            for link in testscr!.css(".lst_value,.hdl_sub_l,strong"){
+                if let a = link["value"]{
+                print(a)
+                }
+                print(link.text?.trimmingCharacters(in: .whitespacesAndNewlines))
+                //print(link.innerHTML)
+            }
         })
-        
     }
 }
