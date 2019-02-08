@@ -22,7 +22,7 @@ class LibserchTableView: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         var LibData = Libdatafetch()
-        LibData.fetch_askidf()
+        //LibData.fetch_askidf()
         LibData.fetch_ctlsrh()
     }
 

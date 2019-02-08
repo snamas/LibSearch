@@ -13,7 +13,7 @@ class Libdatafetch{
     "initFlg": "_RESULT_SET",
     "gcattp_flag": "all",//ｂｋ＝図書、ｓｒ＝雑誌、av＝視聴覚、eb＝電子ブック、ej＝電子ジャーナル
     "holar_flag": "all",//１０＝本館、２０＝日野館、３０＝荒川館、１１＝人文社会、１２＝法学、１３＝経済経営、１４＝地理環境、１５＝数理科学、１６＝丸の内SC、１＝南大沢
-    "words": "sake",//検索ワード
+    "words": "論文の",//検索ワード
     "title": "",//タイトル
     "auth": "",//著者名
     "pub": "",//出版社
@@ -200,14 +200,23 @@ class Libdatafetch{
     func fetch_ctlsrh() -> () {
         urlSessionGetClient.post(url: libserchURL+"ctlsrh.do", parameters: ctlsrhformDB, header: nil, completion: { Data in
             var testfi = String(data: Data, encoding: String.Encoding.utf8) ?? ""
-            let testscr = try? HTML(html: testfi, encoding: .utf8)
             var templist:[String] = []
-            for link in testscr!.css(".lst_value,.hdl_sub_l,strong"){
-                if let a = link["value"]{
-                print(a)
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            if testfi.contains("書誌詳細") || testfi.contains("Bibliography Details"){
+                for link in testscr!.css(".flst_frame .lst_value"){
+                    print(link.text)
                 }
-                print(link.text?.trimmingCharacters(in: .whitespacesAndNewlines))
-                //print(link.innerHTML)
+                print("true")
+            }
+            else{
+                for link in testscr!.css(".lst_value strong,[nowrap] .lst_value,.hdl_sub_l,[name='bookmark']"){
+                    if let a = link["value"]{
+                        templist += [a]
+                    }
+                    templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+                    //print(link.innerHTML)
+                }
+                print(templist)
             }
         })
     }
