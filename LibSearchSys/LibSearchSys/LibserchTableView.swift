@@ -7,11 +7,12 @@
 
 import UIKit
 
-class LibserchTableView: UITableViewController {
+class LibserchTableView: UITableViewController,UISearchBarDelegate {
     let weblist = [
         (name:"rei",url : "func"),
         (name:"rei2",url : "func2")
     ]
+    @IBOutlet weak var Libsearchbar: UISearchBar!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,6 +25,8 @@ class LibserchTableView: UITableViewController {
         var LibData = Libdatafetch()
         //LibData.fetch_askidf()
         LibData.fetch_ctlsrh()
+        Libsearchbar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
+        Libsearchbar.showsCancelButton = false
     }
 
     // MARK: - Table view data source
@@ -37,7 +40,6 @@ class LibserchTableView: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return weblist.count
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
@@ -98,6 +100,21 @@ class LibserchTableView: UITableViewController {
                 (segue.destination as! LendTableViewController).data = webData
             }
         }
+    }
+    //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print(searchBar.text)
+        Libsearchbar.endEditing(true)
+        Libsearchbar.showsCancelButton = false
+        performSegue(withIdentifier: "searchView", sender: self)
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        Libsearchbar.showsCancelButton = true
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        Libsearchbar.showsCancelButton = false
+        searchBar.text = ""
+        Libsearchbar.endEditing(true)
     }
 
 }
