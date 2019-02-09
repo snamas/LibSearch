@@ -24,7 +24,6 @@ class LibserchTableView: UITableViewController,UISearchBarDelegate {
         
         var LibData = Libdatafetch()
         //LibData.fetch_askidf()
-        LibData.fetch_ctlsrh()
         Libsearchbar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
         Libsearchbar.showsCancelButton = false
     }
@@ -103,7 +102,9 @@ class LibserchTableView: UITableViewController,UISearchBarDelegate {
     }
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print(searchBar.text)
+        if let a = searchBar.text{
+            Libdatafetch.ctlsrhformDB["words"] = a
+        }
         Libsearchbar.endEditing(true)
         Libsearchbar.showsCancelButton = false
         performSegue(withIdentifier: "searchView", sender: self)

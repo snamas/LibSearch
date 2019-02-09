@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Libserch Table View-->
+        <!--as-->
         <scene sceneID="YFY-kU-Pyi">
             <objects>
                 <tableViewController id="edc-gT-XW6" customClass="LibserchTableView" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
@@ -57,9 +57,7 @@
                             <outlet property="delegate" destination="edc-gT-XW6" id="pMa-PU-FZk"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="bc6-ig-MLw">
-                        <nil key="title"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="as" id="bc6-ig-MLw"/>
                     <connections>
                         <outlet property="Libsearchbar" destination="CDU-OR-d5W" id="NCL-7o-AKT"/>
                         <segue destination="gE8-ws-arH" kind="show" identifier="searchView" id="Ya6-Vl-dEt"/>
@@ -69,21 +67,42 @@
             </objects>
             <point key="canvasLocation" x="367.19999999999999" y="26.53673163418291"/>
         </scene>
-        <!--Table View Controller-->
+        <!--result-->
         <scene sceneID="vk8-4s-ace">
             <objects>
-                <tableViewController id="gE8-ws-arH" sceneMemberID="viewController">
+                <tableViewController id="gE8-ws-arH" customClass="ResultTableView" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="guB-90-nI3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="ebk-4z-fmH">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="tly-LP-6QJ">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="searchCell" textLabel="IaS-0n-f3O" detailTextLabel="QHw-Jq-KLt" style="IBUITableViewCellStyleSubtitle" id="tly-LP-6QJ">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tly-LP-6QJ" id="g5s-Kk-0p8">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IaS-0n-f3O">
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QHw-Jq-KLt">
+                                            <rect key="frame" x="16" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -92,6 +111,11 @@
                             <outlet property="delegate" destination="gE8-ws-arH" id="Pal-v7-Q2c"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="result" id="DjL-1t-5MD"/>
+                    <connections>
+                        <outlet property="resultserchbar" destination="ebk-4z-fmH" id="vXe-XQ-t9S"/>
+                        <outlet property="tableview" destination="guB-90-nI3" id="shc-VB-PWm"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODe-Uh-1lf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -138,7 +162,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="lendcell" textLabel="87o-Wa-nxw" detailTextLabel="BTl-Jc-6C8" style="IBUITableViewCellStyleSubtitle" id="r8j-EH-HHX">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="lendCell" textLabel="87o-Wa-nxw" detailTextLabel="BTl-Jc-6C8" style="IBUITableViewCellStyleSubtitle" id="r8j-EH-HHX">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="r8j-EH-HHX" id="tAd-Ls-6ic">

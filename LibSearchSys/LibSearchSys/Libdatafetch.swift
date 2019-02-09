@@ -8,12 +8,12 @@ import Kanna
 import Foundation
 class Libdatafetch{
     var libserchURL = "https://www.opac.lib.tmu.ac.jp/webopac/"
-    var ctlsrhformDB = ["fromDsp": "catsrd",
+    static var ctlsrhformDB = ["fromDsp": "catsrd",
     "searchDsp": "catsrd",
     "initFlg": "_RESULT_SET_NOTBIB",//_RESULT_SET_NOTBIB　に設定すると2項目目以降も取得できる。
     "gcattp_flag": "all",//ｂｋ＝図書、ｓｒ＝雑誌、av＝視聴覚、eb＝電子ブック、ej＝電子ジャーナル
     "holar_flag": "all",//１０＝本館、２０＝日野館、３０＝荒川館、１１＝人文社会、１２＝法学、１３＝経済経営、１４＝地理環境、１５＝数理科学、１６＝丸の内SC、１＝南大沢
-    "words": "9784478105344",//検索ワード,9784478105344
+    "words": "論文の",//検索ワード,9784478105344
     "title": "",//タイトル
     "auth": "",//著者名
     "pub": "",//出版社
@@ -197,47 +197,21 @@ class Libdatafetch{
             print(Libdatafetch.lenlstid)
         })
     }
-    func fetch_ctlsrh() -> () {
-        urlSessionGetClient.post(url: libserchURL+"ctlsrh.do", parameters: ctlsrhformDB, header: nil, completion: { Data in
-            var testfi = String(data: Data, encoding: String.Encoding.utf8) ?? ""
-            var templist:[String] = []
-            let testscr = try? HTML(html: testfi, encoding: .utf8)
-            var searchlist : [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
-            
-            if let link = testscr!.css(".comment").first{
-                print(link.text!.trimmingCharacters(in: .whitespacesAndNewlines))
-            }
-
-            if testfi.contains("書誌詳細") || testfi.contains("Bibliography Details"){
-                for link in testscr!.css(".nobr .info,.flst_frame .lst_value,.fdtl_hdl_frame .hdl_main,.fdtl_hdl_frame .hdl_sub"){
-                    var c = link.text!
-                    if let a = c.capture(pattern: "<(\\w+)>", group: 1){//ここ確率要素
-                        templist += [a.trimmingCharacters(in: .whitespacesAndNewlines)]
-                        if let b = c.range(of:"<\(a)>"){
-                            c.removeSubrange(b)
-                            templist += [c.trimmingCharacters(in: .whitespacesAndNewlines)]
-                        }
-                    }
-                    else{
-                        templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-                    }
+    static var lendtl_parse = {(testscr:HTMLDocument?) -> [String] in
+        var templist:[String] = []
+        for link in testscr!.css(".nobr .info,.flst_frame .lst_value,.fdtl_hdl_frame .hdl_main,.fdtl_hdl_frame .hdl_sub"){
+            var c = link.text!
+            if let a = c.capture(pattern: "<(\\w+)>", group: 1){//ここ確率要素
+                templist += [a.trimmingCharacters(in: .whitespacesAndNewlines)]
+                if let b = c.range(of:"<\(a)>"){
+                    c.removeSubrange(b)
+                    templist += [c.trimmingCharacters(in: .whitespacesAndNewlines)]
                 }
-                searchlist.append((templist[2],templist[3],templist[0],templist[1],templist[3],templist[3]))
-                print(searchlist)
             }
             else{
-                for link in testscr!.css(".lst_value strong,[nowrap] .lst_value,.hdl_sub_l,[name='bookmark']"){
-                    if let a = link["value"]{
-                        templist += [a]
-                    }
-                    templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-                    //print(link.innerHTML)
-                }
-                for i in stride(from:0,to:templist.count,by:6){
-                    searchlist.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i]))
-                }
-                print(searchlist)
+                templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
             }
-        })
+        }
+        return templist
     }
 }

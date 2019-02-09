@@ -10,6 +10,7 @@
 		7C10B8867A773ABED4EC4DE4 /* Pods_LibSearchSys.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA1EE266281C6B324E00BB5C /* Pods_LibSearchSys.framework */; };
 		909029738B04E89F41A4CEFE /* Pods_LibSearchSysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE5F6957C9A78799C2B59FBE /* Pods_LibSearchSysUITests.framework */; };
 		B83425C3340C8CCF954BAE6B /* Pods_LibSearchSysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB8EF64F9A25020AF0B3EE /* Pods_LibSearchSysTests.framework */; };
+		D13D7F53220E872C00E841F6 /* ResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13D7F52220E872C00E841F6 /* ResultTableView.swift */; };
 		D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1A7922096D5200F3C2BA /* AppDelegate.swift */; };
 		D14F1A7C22096D5200F3C2BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1A7B22096D5200F3C2BA /* ViewController.swift */; };
 		D14F1A7F22096D5200F3C2BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D14F1A7D22096D5200F3C2BA /* Main.storyboard */; };
@@ -53,6 +54,7 @@
 		B3E7F8CC812496E8F82C0CA8 /* Pods-LibSearchSys.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibSearchSys.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibSearchSys/Pods-LibSearchSys.release.xcconfig"; sourceTree = "<group>"; };
 		BE5F6957C9A78799C2B59FBE /* Pods_LibSearchSysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibSearchSysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1EE266281C6B324E00BB5C /* Pods_LibSearchSys.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibSearchSys.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D13D7F52220E872C00E841F6 /* ResultTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableView.swift; sourceTree = "<group>"; };
 		D14F1A7622096D5200F3C2BA /* LibSearchSys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibSearchSys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D14F1A7922096D5200F3C2BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D14F1A7B22096D5200F3C2BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				D14F1AB22209958F00F3C2BA /* StringExt.swift */,
 				D18355B6220BDBD300B52966 /* LendTableViewController.swift */,
 				D18355B8220BEE4400B52966 /* LibserchTableView.swift */,
+				D13D7F52220E872C00E841F6 /* ResultTableView.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D13D7F53220E872C00E841F6 /* ResultTableView.swift in Sources */,
 				D14F1A7C22096D5200F3C2BA /* ViewController.swift in Sources */,
 				D18355B9220BEE4400B52966 /* LibserchTableView.swift in Sources */,
 				D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */,

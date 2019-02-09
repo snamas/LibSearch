@@ -8,6 +8,7 @@ import Kanna
 import UIKit
 
 class LendTableViewController: UITableViewController {
+    
     var data:(name:String,url:String)?
     
     var lendlist:[(number:String,crick:String,MaterialID:String,brank:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Biblioinfo:String)] = []
@@ -26,7 +27,6 @@ class LendTableViewController: UITableViewController {
             }
             print(self.lendlist)
         })
-        
     }
     func lenlstparse(data:Data) -> (){
         let html = String(data: data, encoding: String.Encoding.utf8) ?? ""
@@ -76,7 +76,7 @@ class LendTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "lendcell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "lendCell", for: indexPath)
         
         if !self.lendlist.isEmpty{
             let webdata = self.lendlist[indexPath.row]
@@ -88,7 +88,8 @@ class LendTableViewController: UITableViewController {
 
         return cell
     }
- 
+
+    
 
     /*
     // Override to support conditional editing of the table view.
