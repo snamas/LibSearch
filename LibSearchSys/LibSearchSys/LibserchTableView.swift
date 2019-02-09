@@ -23,6 +23,7 @@ class LibserchTableView: UITableViewController,UISearchBarDelegate {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         var LibData = Libdatafetch()
+        LibData.fetch_catdbl()
         //LibData.fetch_askidf()
         Libsearchbar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
         Libsearchbar.showsCancelButton = false

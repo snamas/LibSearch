@@ -23,6 +23,7 @@
 		D14F1AAF220984A900F3C2BA /* testhtm.html in Resources */ = {isa = PBXBuildFile; fileRef = D14F1AAE220984A900F3C2BA /* testhtm.html */; };
 		D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */; };
 		D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB22209958F00F3C2BA /* StringExt.swift */; };
+		D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D173223E220F09F700C4ACE4 /* DetailResultView.swift */; };
 		D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B6220BDBD300B52966 /* LendTableViewController.swift */; };
 		D18355B9220BEE4400B52966 /* LibserchTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B8220BEE4400B52966 /* LibserchTableView.swift */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		D14F1AAE220984A900F3C2BA /* testhtm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = testhtm.html; sourceTree = "<group>"; };
 		D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libdatafetch.swift; sourceTree = "<group>"; };
 		D14F1AB22209958F00F3C2BA /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
+		D173223E220F09F700C4ACE4 /* DetailResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailResultView.swift; sourceTree = "<group>"; };
 		D18355B6220BDBD300B52966 /* LendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LendTableViewController.swift; sourceTree = "<group>"; };
 		D18355B8220BEE4400B52966 /* LibserchTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibserchTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -156,6 +158,7 @@
 				D14F1A7922096D5200F3C2BA /* AppDelegate.swift */,
 				D14F1A7B22096D5200F3C2BA /* ViewController.swift */,
 				D14F1A7D22096D5200F3C2BA /* Main.storyboard */,
+				D173223E220F09F700C4ACE4 /* DetailResultView.swift */,
 				D14F1A8322096D5200F3C2BA /* Assets.xcassets */,
 				D14F1A8522096D5200F3C2BA /* LaunchScreen.storyboard */,
 				D14F1A8822096D5200F3C2BA /* Info.plist */,
@@ -421,6 +424,7 @@
 				D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */,
 				D14F1AAB2209701D00F3C2BA /* FetchfromURL.swift in Sources */,
 				D14F1A8222096D5200F3C2BA /* LibSearchSys.xcdatamodeld in Sources */,
+				D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */,
 				D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */,
 				D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */,
 				D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */,

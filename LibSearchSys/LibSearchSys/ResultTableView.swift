@@ -33,8 +33,8 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
             }
             if testfi.contains("書誌詳細") || testfi.contains("Bibliography Details"){
                 self.loadstatus = "full"
-                templist = Libdatafetch.lendtl_parse(testscr)
-                SearchPartResult.append((templist[2],templist[3],templist[0],templist[1],templist[3],templist[3]))
+                SearchPartResult = Libdatafetch.lendtl_parse(testscr)
+                
                 self.SearchResultList += SearchPartResult
                 print(SearchPartResult)
             }
@@ -47,7 +47,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
                     //print(link.innerHTML)
                 }
                 for i in stride(from:0,to:templist.count,by:6){
-                    SearchPartResult.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i]))
+                SearchPartResult.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i]))
                 }
                 self.SearchResultList += SearchPartResult
                 if SearchPartResult.isEmpty{
@@ -148,15 +148,21 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "DetailBooksSegue"{
+            if let indexPath = self.tableView.indexPathForSelectedRow{
+                let webData = SearchResultList[indexPath.row]
+                (segue.destination as! DetailResultView).data = webData
+            }
+        }
     }
-    */
+ 
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         Libdatafetch.ctlsrhformDB["words"] = searchBar.text

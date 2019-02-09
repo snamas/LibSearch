@@ -12,10 +12,6 @@ class LendTableViewController: UITableViewController {
     var data:(name:String,url:String)?
     
     var lendlist:[(number:String,crick:String,MaterialID:String,brank:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Biblioinfo:String)] = []
-    let weblist = [
-        (name:"rei",value : "func"),
-        (name:"rei2",value : "func2")
-    ]
     
     func fetch_lenlst(){
         let fetchURL = URLSessionGetClient()

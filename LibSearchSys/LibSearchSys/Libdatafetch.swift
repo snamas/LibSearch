@@ -43,43 +43,6 @@ class Libdatafetch{
     "startpos": "1"//ここに先頭に来るNo.の値を入れる。二項目目なら５１、3項目目なら１０１など
     ]
     var formdataDB = [
-        "title": "sake",
-        "auth": "",
-        "pub": "",
-        "year": "",
-        "year2": "",
-        "gcattp": "",
-        "sh": "",
-        "cls": "",
-        "code_type": "",
-        "code": "",
-        "isbn_issn": "",
-        "cntry": "",
-        "lang": "",
-        "ncid": "",
-        "bibid": "",
-        "togid": "",
-        "rgtn": "",
-        "lenid": "",
-        "cln": "",
-        "holar": "",
-        "holsc": "",
-        "hollc": "",
-        "holph": "",
-        "words": "",
-        "fvol": "",
-        "fannul": "",
-        "akey": "",
-        "sdi": "",
-        "body": "",
-        "cont": "",
-        "niitype": "",
-        "restype": "",
-        "format": "",
-        "rights": "",
-        "source": "",
-        "cover": "",
-        "hasbody": "",
         "sortkey": "syear,sauth",
         "sorttype": "DESC",
         "sortkey2": "",
@@ -88,7 +51,7 @@ class Libdatafetch{
         "maxcnt": "5000",
         "startpos": "1",
         "hitcnt": "18",
-        "pkey": "BB02353011",
+        "pkey": "BB02152052",//ここにBibliographyIDを入れる
         "togflg": "",
         "stposHol": "1",
         "hitcntHol": "",
@@ -149,7 +112,7 @@ class Libdatafetch{
         "gcattp_flag_2work": "all",
         "gcattp_flag_work": "all",
         "holar_flag_work": "all",
-        "title_work": "sake",
+        "title_work": "",
         "auth_work": "",
         "words_work": "",
         "pub_work": "",
@@ -197,8 +160,9 @@ class Libdatafetch{
             print(Libdatafetch.lenlstid)
         })
     }
-    static var lendtl_parse = {(testscr:HTMLDocument?) -> [String] in
+    static var lendtl_parse = {(testscr:HTMLDocument?) -> [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] in
         var templist:[String] = []
+        var SearchPartResult : [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
         for link in testscr!.css(".nobr .info,.flst_frame .lst_value,.fdtl_hdl_frame .hdl_main,.fdtl_hdl_frame .hdl_sub"){
             var c = link.text!
             if let a = c.capture(pattern: "<(\\w+)>", group: 1){//ここ確率要素
@@ -212,6 +176,35 @@ class Libdatafetch{
                 templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
             }
         }
-        return templist
+        SearchPartResult.append((templist[2],templist[3],templist[0],templist[1],templist[3],templist[3]))
+
+        return SearchPartResult
+    }
+    func fetch_catdbl(){
+        var templist:[String] = []
+        var PlacePartResult : [(No:String, Volumes:String,HoldingLibrary:String,HoldingsLocation:String,MaterialID:String,CaallNo:String,Status:String,DueDate:String,RsVNNum:String)] = []
+        var svcrsvformList :[(No:String,systemvalue:String,orderRSV:String)] = []
+        urlSessionGetClient.post(url: libserchURL+"catdbl.do",parameters: formdataDB,header:nil,completion: {data in
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            var SearchPartResult = Libdatafetch.lendtl_parse(testscr)
+            var i:Int = 1
+            for link in testscr!.css(".flst_frame .lst_value,.flst_frame .btn"){
+                templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+                if let a:String = link["href"]?.capture(pattern: "system.value='(\\d+)'", group: 1){
+                    print(a)
+                }
+                print(link["href"])
+                if let a:String = link["href"]?.capture(pattern: "\\('(\\w+)'\\)", group: 1){
+                    print(a)
+                    print("throw")
+                }
+                if let i = Int(link.text!.trimmingCharacters(in: .whitespacesAndNewlines)){
+                    print(i)
+                }
+                print(link.text!.trimmingCharacters(in: .whitespacesAndNewlines))
+            }
+            print(templist)
+        })
     }
 }
