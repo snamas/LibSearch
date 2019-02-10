@@ -12,6 +12,7 @@ class LibserchTableView: UITableViewController,UISearchBarDelegate {
         (name:"rei",url : "func"),
         (name:"rei2",url : "func2")
     ]
+    var LibData = Libdatafetch()
     @IBOutlet weak var Libsearchbar: UISearchBar!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,9 +23,7 @@ class LibserchTableView: UITableViewController,UISearchBarDelegate {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        var LibData = Libdatafetch()
-        LibData.fetch_catdbl()
-        //LibData.fetch_askidf()
+        
         Libsearchbar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
         Libsearchbar.showsCancelButton = false
     }
@@ -100,6 +99,11 @@ class LibserchTableView: UITableViewController,UISearchBarDelegate {
                 (segue.destination as! LendTableViewController).data = webData
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        LibData.fetch_askidf()
     }
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

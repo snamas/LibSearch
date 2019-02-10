@@ -9,7 +9,6 @@ import UIKit
 
 class LendTableViewController: UITableViewController {
     
-    var data:(name:String,url:String)?
     
     var lendlist:[(number:String,crick:String,MaterialID:String,brank:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Biblioinfo:String)] = []
     
@@ -46,9 +45,6 @@ class LendTableViewController: UITableViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let webData = data else{
-            return
-        }
         self.fetch_lenlst()
 
         // Uncomment the following line to preserve selection between presentations
@@ -122,14 +118,21 @@ class LendTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "DetailBooksSegue"{
+            if let indexPath = self.tableView.indexPathForSelectedRow{
+                let webData = lendlist[indexPath.row]
+                let newlist = (BibliographyID:webData.brank,brank:webData.MaterialID,CatalogueType:webData.brank,Biblioinfo:webData.Biblioinfo,brank2:webData.brank,Author:webData.brank)
+                (segue.destination as! DetailResultView).data = newlist
+            }
+        }
     }
-    */
-
+ 
 }

@@ -42,7 +42,8 @@ class Libdatafetch{
     "maxcnt": "5000",
     "startpos": "1"//ここに先頭に来るNo.の値を入れる。二項目目なら５１、3項目目なら１０１など
     ]
-    var formdataDB = [
+    static var formdataDB = [
+        "rgtn": "",//資料ID
         "sortkey": "syear,sauth",
         "sorttype": "DESC",
         "sortkey2": "",
@@ -51,7 +52,7 @@ class Libdatafetch{
         "maxcnt": "5000",
         "startpos": "1",
         "hitcnt": "18",
-        "pkey": "BB02152052",//ここにBibliographyIDを入れる
+        "pkey": "BB02166022",//ここにBibliographyIDを入れる
         "togflg": "",
         "stposHol": "1",
         "hitcntHol": "",
@@ -136,6 +137,8 @@ class Libdatafetch{
     fbmref.do ━━━>ブックマーク一覧
     hislst.do ━━━> 貸し出し履歴一覧
     lendtl.do ━━━> 貸出詳細(post)
+    fbmexe.do ━━━> マイフォルダに登録（mode=regbibを指定）
+    fbmdel.do ━━━> マイフォルダから削除(POST)
     ━━━━━━━━━━━━━━━━━━━━━━━━…‥・
     */
     
@@ -150,17 +153,29 @@ class Libdatafetch{
         
     }
     static var lenlstid:String? = nil
+    static var myfolderid:String? = nil
+    
     let urlSessionGetClient = URLSessionGetClient()
     func fetch_askidf(){
         urlSessionGetClient.post(url: libserchURL+"askidf.do",parameters: loginDB,header: ["referer":"https://www.opac.lib.tmu.ac.jp/webopac/asklst.do"],completion: {data in
+            var useStateList:[String] = []
             var testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             //print(self.testfi!)
-            var pattern = "/webopac/lenlst.do\\?system=(\\d+)"
-            Libdatafetch.lenlstid = testfi.capture(pattern: pattern, group: 1)//ここ確率要素
+            Libdatafetch.lenlstid = testfi.capture(pattern: "/webopac/lenlst.do\\?system=(\\d+)", group: 1)//ここ確率要素
+            Libdatafetch.myfolderid = testfi.capture(pattern: "follstform.system.value='(\\d+)'", group: 1)
             print(Libdatafetch.lenlstid)
+            print(Libdatafetch.myfolderid)
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            for link in testscr!.css(".lnk_ask,.notlnk_ask"){
+                if let number = link.text?.capture(pattern: "(\\d+)", group: 1){
+                    useStateList += [number]
+                }
+            }
+            print(useStateList)
         })
+        
     }
-    static var lendtl_parse = {(testscr:HTMLDocument?) -> [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] in
+    static var lendtl_Oneviewparse = {(testscr:HTMLDocument?) -> [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] in
         var templist:[String] = []
         var SearchPartResult : [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
         for link in testscr!.css(".nobr .info,.flst_frame .lst_value,.fdtl_hdl_frame .hdl_main,.fdtl_hdl_frame .hdl_sub"){
@@ -179,32 +194,5 @@ class Libdatafetch{
         SearchPartResult.append((templist[2],templist[3],templist[0],templist[1],templist[3],templist[3]))
 
         return SearchPartResult
-    }
-    func fetch_catdbl(){
-        var templist:[String] = []
-        var PlacePartResult : [(No:String, Volumes:String,HoldingLibrary:String,HoldingsLocation:String,MaterialID:String,CaallNo:String,Status:String,DueDate:String,RsVNNum:String)] = []
-        var svcrsvformList :[(No:String,systemvalue:String,orderRSV:String)] = []
-        urlSessionGetClient.post(url: libserchURL+"catdbl.do",parameters: formdataDB,header:nil,completion: {data in
-            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-            let testscr = try? HTML(html: testfi, encoding: .utf8)
-            var SearchPartResult = Libdatafetch.lendtl_parse(testscr)
-            var i:Int = 1
-            for link in testscr!.css(".flst_frame .lst_value,.flst_frame .btn"){
-                templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-                if let a:String = link["href"]?.capture(pattern: "system.value='(\\d+)'", group: 1){
-                    print(a)
-                }
-                print(link["href"])
-                if let a:String = link["href"]?.capture(pattern: "\\('(\\w+)'\\)", group: 1){
-                    print(a)
-                    print("throw")
-                }
-                if let i = Int(link.text!.trimmingCharacters(in: .whitespacesAndNewlines)){
-                    print(i)
-                }
-                print(link.text!.trimmingCharacters(in: .whitespacesAndNewlines))
-            }
-            print(templist)
-        })
     }
 }

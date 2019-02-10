@@ -24,8 +24,8 @@
 		D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */; };
 		D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB22209958F00F3C2BA /* StringExt.swift */; };
 		D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D173223E220F09F700C4ACE4 /* DetailResultView.swift */; };
+		D1775258221030410005E4BF /* MainLibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1775257221030410005E4BF /* MainLibViewController.swift */; };
 		D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B6220BDBD300B52966 /* LendTableViewController.swift */; };
-		D18355B9220BEE4400B52966 /* LibserchTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B8220BEE4400B52966 /* LibserchTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,8 +75,8 @@
 		D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libdatafetch.swift; sourceTree = "<group>"; };
 		D14F1AB22209958F00F3C2BA /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		D173223E220F09F700C4ACE4 /* DetailResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailResultView.swift; sourceTree = "<group>"; };
+		D1775257221030410005E4BF /* MainLibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLibViewController.swift; sourceTree = "<group>"; };
 		D18355B6220BDBD300B52966 /* LendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LendTableViewController.swift; sourceTree = "<group>"; };
-		D18355B8220BEE4400B52966 /* LibserchTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibserchTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,8 +168,8 @@
 				D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */,
 				D14F1AB22209958F00F3C2BA /* StringExt.swift */,
 				D18355B6220BDBD300B52966 /* LendTableViewController.swift */,
-				D18355B8220BEE4400B52966 /* LibserchTableView.swift */,
 				D13D7F52220E872C00E841F6 /* ResultTableView.swift */,
+				D1775257221030410005E4BF /* MainLibViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -418,9 +418,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1775258221030410005E4BF /* MainLibViewController.swift in Sources */,
 				D13D7F53220E872C00E841F6 /* ResultTableView.swift in Sources */,
 				D14F1A7C22096D5200F3C2BA /* ViewController.swift in Sources */,
-				D18355B9220BEE4400B52966 /* LibserchTableView.swift in Sources */,
 				D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */,
 				D14F1AAB2209701D00F3C2BA /* FetchfromURL.swift in Sources */,
 				D14F1A8222096D5200F3C2BA /* LibSearchSys.xcdatamodeld in Sources */,

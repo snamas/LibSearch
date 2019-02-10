@@ -33,7 +33,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
             }
             if testfi.contains("書誌詳細") || testfi.contains("Bibliography Details"){
                 self.loadstatus = "full"
-                SearchPartResult = Libdatafetch.lendtl_parse(testscr)
+                SearchPartResult = Libdatafetch.lendtl_Oneviewparse(testscr)
                 
                 self.SearchResultList += SearchPartResult
                 print(SearchPartResult)
