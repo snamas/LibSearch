@@ -8,12 +8,14 @@
 import UIKit
 import Kanna
 class DetailResultView: UITableViewController {
-    private let mysection = ["","配架場所"]
+    private var mysection = ["","配架場所"]
     var data:(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)?
     private var SearchPartResult:[(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
     let urlSessionGetClient = URLSessionGetClient()
     var DetailResult : [(No:String, Volumes:String,HoldingLibrary:String,HoldingsLocation:String,MaterialID:String,CaallNo:String,InLibonly:String,Status:String,DueDate:String,RsVNNum:String)] = []
     var svcrsvformList :[(No:String,systemvalue:String,orderRSV:String?)] = []
+    var BookImage = UIImage(named: "book")
+    var ISBN = ""
     func fetch_catdbl(fetchurl:String = "https://www.opac.lib.tmu.ac.jp/webopac/catdbl.do"){
         var templist:[String] = []
         urlSessionGetClient.post(url: fetchurl,parameters: Libdatafetch.formdataDB,header:nil,completion: {data in
@@ -41,16 +43,42 @@ class DetailResultView: UITableViewController {
                 }
                 //print(link.text!.trimmingCharacters(in: .whitespacesAndNewlines))
             }
-            for i in stride(from:0,to:templist.count,by:10){
-                self.DetailResult.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i],templist[6+i],templist[7+i],templist[8+i],templist[9+i]))
+            if templist.count % 10 == 0{
+                for i in stride(from:0,to:templist.count,by:10){//SB00057540ここ例外
+                    self.DetailResult.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i],templist[6+i],templist[7+i],templist[8+i],templist[9+i]))
+                }
             }
+            else if templist.count % 8 == 0{//雑誌の時例外
+                for i in stride(from:0,to:templist.count,by:8){//SB00057540ここ例外
+                    self.DetailResult.append((templist[0+i],templist[4+i],templist[1+i],templist[2+i],"","",templist[6+i],templist[7+i],"","0件"))
+                }
+            }
+            for link in testscr!.css("[name='ajax_isbn']"){
+                self.ISBN = link["value"] ?? ""
+            }
+            print(templist)
             print(self.DetailResult)
             print(self.svcrsvformList)
+            self.mysection[0] = self.data?.CatalogueType ?? ""
+            if self.ISBN != ""{
+                self.fetch_image(fetchurl: "https://www.hanmoto.com/bd/img/\(self.ISBN).jpg")
+            }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         })
     }
+    
+    func fetch_image(fetchurl:String){
+        urlSessionGetClient.get(url: fetchurl, completion: { data in
+            self.BookImage = UIImage(data: data)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            })
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -112,19 +140,22 @@ class DetailResultView: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath)
         if indexPath.section == 0{
-            if !self.SearchPartResult.isEmpty{
-                let webdata = self.SearchPartResult[indexPath.row]
-                cell.textLabel?.text = webdata.Biblioinfo
-                cell.detailTextLabel?.text = webdata.Author
-            }
+            cell.textLabel?.text = data?.Biblioinfo
+            cell.detailTextLabel?.text = data?.Author
             cell.textLabel?.numberOfLines = 5
             cell.detailTextLabel?.numberOfLines = 2
+            cell.imageView?.image = self.BookImage
+            
         }
         if indexPath.section == 1{
             if !self.DetailResult.isEmpty{
                 let webdata = self.DetailResult[indexPath.row]
                 cell.textLabel?.text = webdata.HoldingLibrary
                 cell.detailTextLabel?.text = webdata.HoldingsLocation
+            }
+            else{
+                cell.textLabel?.text = "配架場所はありません"//下位図書が存在する可能性
+                cell.detailTextLabel?.text = ""
             }
         }
         // Configure the cell...

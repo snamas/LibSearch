@@ -15,6 +15,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     @IBOutlet var tableview: UITableView!
     private var loadstatus:String = "Ready"
     private var page : Int = 1
+    private var mysection = [""]
     let urlSessionGetClient = URLSessionGetClient()
     var SearchResultList : [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
     
@@ -29,7 +30,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
             let testscr = try? HTML(html: testfi, encoding: .utf8)
             
             if let link = testscr!.css(".comment").first{
-                print(link.text!.trimmingCharacters(in: .whitespacesAndNewlines))
+                self.mysection[0] = link.text!.trimmingCharacters(in: .whitespacesAndNewlines)
             }
             if testfi.contains("書誌詳細") || testfi.contains("Bibliography Details"){
                 self.loadstatus = "full"
@@ -97,6 +98,12 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
             let webdata = self.SearchResultList[indexPath.row]
             cell.textLabel?.text = webdata.Biblioinfo
             cell.detailTextLabel?.text = "\(webdata.Author)"
+            if webdata.CatalogueType == "図書"{
+                cell.imageView?.image = UIImage(named: "book")
+            }
+            else{
+                cell.imageView?.image = UIImage(named: "cd")
+            }
         }
         // Configure the cell...
 
@@ -112,6 +119,10 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         if (distanceToBottom < 500)&&(self.loadstatus == "Ready"){
             self.fetch_ctlsrh()
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return mysection[section]
     }
     /*
     // Override to support conditional editing of the table view.
