@@ -53,6 +53,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" id="ebk-4z-fmH">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -92,7 +93,13 @@
                             <outlet property="delegate" destination="gE8-ws-arH" id="Pal-v7-Q2c"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="result" id="DjL-1t-5MD"/>
+                    <navigationItem key="navigationItem" title="result" id="DjL-1t-5MD">
+                        <barButtonItem key="rightBarButtonItem" title="絞り込む" id="Xms-2G-RhQ">
+                            <connections>
+                                <segue destination="IT0-ia-rJA" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="XY7-p6-85A"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="resultserchbar" destination="ebk-4z-fmH" id="vXe-XQ-t9S"/>
                         <outlet property="tableview" destination="guB-90-nI3" id="shc-VB-PWm"/>
@@ -101,6 +108,31 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODe-Uh-1lf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2352.8000000000002" y="331.48425787106447"/>
+        </scene>
+        <!--Refine View Controller-->
+        <scene sceneID="C18-DB-1P5">
+            <objects>
+                <viewController modalPresentationStyle="overCurrentContext" id="IT0-ia-rJA" customClass="RefineViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" tag="1" contentMode="scaleToFill" id="0gR-PM-y9F">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TaI-Y7-OKb">
+                                <rect key="frame" x="135" y="0.0" width="240" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="pvi-3b-hsI"/>
+                    </view>
+                    <connections>
+                        <outlet property="Refinetags" destination="TaI-Y7-OKb" id="mFO-tp-BGu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3FQ-Y7-3ve" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3205.5999999999999" y="1050.224887556222"/>
         </scene>
         <!--Detail Result View-->
         <scene sceneID="tne-QT-ifu">
@@ -206,6 +238,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="FPU-Ff-Xvb"/>
+        <segue reference="dPq-Dy-qTg"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -23,6 +23,7 @@
 		D14F1AAF220984A900F3C2BA /* testhtm.html in Resources */ = {isa = PBXBuildFile; fileRef = D14F1AAE220984A900F3C2BA /* testhtm.html */; };
 		D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */; };
 		D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB22209958F00F3C2BA /* StringExt.swift */; };
+		D151C66822118CE500F4838B /* RefineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151C66722118CE500F4838B /* RefineViewController.swift */; };
 		D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D173223E220F09F700C4ACE4 /* DetailResultView.swift */; };
 		D1775258221030410005E4BF /* MainLibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1775257221030410005E4BF /* MainLibViewController.swift */; };
 		D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B6220BDBD300B52966 /* LendTableViewController.swift */; };
@@ -74,6 +75,7 @@
 		D14F1AAE220984A900F3C2BA /* testhtm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = testhtm.html; sourceTree = "<group>"; };
 		D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libdatafetch.swift; sourceTree = "<group>"; };
 		D14F1AB22209958F00F3C2BA /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
+		D151C66722118CE500F4838B /* RefineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefineViewController.swift; sourceTree = "<group>"; };
 		D173223E220F09F700C4ACE4 /* DetailResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailResultView.swift; sourceTree = "<group>"; };
 		D1775257221030410005E4BF /* MainLibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLibViewController.swift; sourceTree = "<group>"; };
 		D18355B6220BDBD300B52966 /* LendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LendTableViewController.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				D18355B6220BDBD300B52966 /* LendTableViewController.swift */,
 				D13D7F52220E872C00E841F6 /* ResultTableView.swift */,
 				D1775257221030410005E4BF /* MainLibViewController.swift */,
+				D151C66722118CE500F4838B /* RefineViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -426,6 +429,7 @@
 				D14F1A8222096D5200F3C2BA /* LibSearchSys.xcdatamodeld in Sources */,
 				D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */,
 				D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */,
+				D151C66822118CE500F4838B /* RefineViewController.swift in Sources */,
 				D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */,
 				D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */,
 			);
