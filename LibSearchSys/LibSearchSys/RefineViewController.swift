@@ -9,25 +9,27 @@ import UIKit
 
 class RefineViewController: UIViewController {
 
-    
+    var postDismissionAction: (() -> Void)?
     @IBOutlet weak var Refinetags: UIView!
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         // Do any additional setup after loading the view.
-        let menuPos = self.Refinetags.layer.position
+        
+        let menuPos = view.frame.size.width - self.Refinetags.layer.frame.size.width
         // 初期位置を画面の外側にするため、メニューの幅の分だけマイナスする
-        self.Refinetags.layer.position.x = self.view.frame.width+self.Refinetags.layer.position.x
+        self.Refinetags.frame.origin.x = view.frame.size.width
+        print(view.frame.size.width)
         // 表示時のアニメーションを作成する
         UIView.animate(
             withDuration: 0.2,
             delay: 0,
             options: .curveEaseOut,
             animations: {
-                self.Refinetags.layer.position.x = menuPos.x
+                self.Refinetags.frame.origin.x = menuPos
             },
             completion: { bool in
             })
+        print("sen")
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -35,14 +37,18 @@ class RefineViewController: UIViewController {
         for touch in touches {
             if touch.view?.tag == 1 {
                 UIView.animate(
+                    
                     withDuration: 0.2,
                     delay: 0,
                     options: .curveEaseIn,
                     animations: {
-                        self.Refinetags.layer.position.x = self.view.frame.width+self.Refinetags.layer.position.x
+                        self.Refinetags.frame.origin.x = UIScreen.main.bounds.size.width
                     },
                     completion: { bool in
-                    self.dismiss(animated: true, completion: nil)
+                        self.dismiss(animated: true, completion: {
+                            print(self.postDismissionAction)
+                            self.postDismissionAction?()
+                        })
                     }
                 )
             }

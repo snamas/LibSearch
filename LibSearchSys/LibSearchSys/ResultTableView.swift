@@ -13,6 +13,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     
     @IBOutlet weak var resultserchbar: UISearchBar!
     @IBOutlet var tableview: UITableView!
+    var refineView : RefineViewController? = nil
     private var loadstatus:String = "Ready"
     private var page : Int = 1
     private var mysection = [""]
@@ -77,6 +78,8 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         resultserchbar.delegate = self
         resultserchbar.showsCancelButton = false
         resultserchbar.text = Libdatafetch.ctlsrhformDB["words"]
+        refineView = storyboard?.instantiateViewController(withIdentifier: "RefineView") as! RefineViewController
+        self.refineView!.postDismissionAction = { self.updateTableView() }
     }
 
     // MARK: - Table view data source
@@ -123,6 +126,12 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return mysection[section]
+    }
+    @IBAction func refineAction(_ sender: Any) {
+        self.present(refineView!, animated: true, completion: nil)
+    }
+    func updateTableView() {
+        print("ter")
     }
     /*
     // Override to support conditional editing of the table view.
