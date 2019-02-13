@@ -10,15 +10,16 @@ import UIKit
 class RefineViewController: UIViewController {
 
     var postDismissionAction: (() -> Void)?
+    var getNavigationBar : (() -> CGFloat)?
     @IBOutlet weak var Refinetags: UIView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Do any additional setup after loading the view.
-        
         let menuPos = view.frame.size.width - self.Refinetags.layer.frame.size.width
         // 初期位置を画面の外側にするため、メニューの幅の分だけマイナスする
         self.Refinetags.frame.origin.x = view.frame.size.width
-        print(view.frame.size.width)
+        self.Refinetags.frame.origin.y =
+            self.getNavigationBar?() ?? 0
         // 表示時のアニメーションを作成する
         UIView.animate(
             withDuration: 0.2,
@@ -29,8 +30,8 @@ class RefineViewController: UIViewController {
             },
             completion: { bool in
             })
-        print("sen")
-
+        Refinetags.layer.borderColor = UIColor.gray.cgColor
+        Refinetags.layer.borderWidth = 1.0
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
@@ -46,7 +47,6 @@ class RefineViewController: UIViewController {
                     },
                     completion: { bool in
                         self.dismiss(animated: true, completion: {
-                            print(self.postDismissionAction)
                             self.postDismissionAction?()
                         })
                     }
@@ -63,5 +63,5 @@ class RefineViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
 }

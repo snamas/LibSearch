@@ -80,6 +80,13 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         resultserchbar.text = Libdatafetch.ctlsrhformDB["words"]
         refineView = storyboard?.instantiateViewController(withIdentifier: "RefineView") as! RefineViewController
         self.refineView!.postDismissionAction = { self.updateTableView() }
+        self.refineView!.getNavigationBar = {
+            let navigationBarHeight = self.navigationController?.navigationBar.frame.size.height ?? 0
+            let navigationBary = self.navigationController?.navigationBar.frame.origin.y ?? 0
+            let menuPosy = navigationBarHeight + navigationBary
+            print(menuPosy)
+            return menuPosy
+        }
     }
 
     // MARK: - Table view data source
@@ -128,7 +135,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         return mysection[section]
     }
     @IBAction func refineAction(_ sender: Any) {
-        self.present(refineView!, animated: true, completion: nil)
+        self.present(refineView!, animated: false, completion: nil)
     }
     func updateTableView() {
         print("ter")
