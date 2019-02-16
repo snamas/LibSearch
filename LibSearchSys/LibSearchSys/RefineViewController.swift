@@ -11,7 +11,67 @@ class RefineViewController: UIViewController {
 
     var postDismissionAction: (() -> Void)?
     var getNavigationBar : (() -> CGFloat)?
+    let offimage = UIImage(named: "offswitch")
+    let onimage = UIImage(named: "onswitch")
     @IBOutlet weak var Refinetags: UIView!
+    @IBOutlet weak var AllPlace: UIButton!
+    @IBOutlet weak var AllDocs: UIButton!
+    
+    @IBOutlet var EachDocs: [UIButton]!
+    @IBOutlet var EachPlace: [UIButton]!
+    @IBAction func AllPlaceAction(_ sender: Any) {
+        if let button = sender as? UIButton{
+            if button.tag == 0{
+                EachPlace.map({$0.isSelected = false})
+                AllPlace.isSelected = true
+            }
+            else{
+                for i in EachPlace{
+                    if button.tag == i.tag{
+                        i.isSelected = !i.isSelected
+                        print(i.tag)
+                    }
+                }
+                AllPlace.isSelected = false
+            }
+        }
+    }
+    @IBAction func AllDocsAction(_ sender: Any) {
+        if let button = sender as? UIButton{
+            if button.tag == 10{
+                EachDocs.map({$0.isSelected = false})
+                AllDocs.isSelected = true
+            }
+            else{
+                for i in EachDocs{
+                    if button.tag == i.tag{
+                        i.isSelected = !i.isSelected
+                        print(i.tag)
+                    }
+                }
+                AllDocs.isSelected = false
+            }
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        for i in EachPlace{
+            i.setImage(offimage, for: .normal)
+            i.setImage(onimage, for: .selected)
+        }
+        AllPlace.setImage(offimage, for: .normal)
+        AllPlace.setImage(onimage, for: .selected)
+        AllPlace.isSelected = true
+        for i in EachDocs{
+            i.setImage(offimage, for: .normal)
+            i.setImage(onimage, for: .selected)
+        }
+        AllDocs.setImage(offimage, for: .normal)
+        AllDocs.setImage(onimage, for: .selected)
+        AllDocs.isSelected = true
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Do any additional setup after loading the view.
