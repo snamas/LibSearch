@@ -140,14 +140,13 @@ class Libdatafetch{
     fbmexe.do ━━━> マイフォルダに登録（mode=regbibを指定）
     fbmdel.do ━━━> マイフォルダから削除(POST)
     ━━━━━━━━━━━━━━━━━━━━━━━━…‥・
+    comidf.do ━━━> ログイン認証
     */
     
     var loginDB = [
         "userid": "u8144838",
-        "display": "catsrd",
-        "x": "44",
+        "display": "topmnu",
         "password": "kmnm_1984",
-        "y": "9"
     ]
     var header = {
         
@@ -156,22 +155,41 @@ class Libdatafetch{
     static var myfolderid:String? = nil
     
     let urlSessionGetClient = URLSessionGetClient()
-    func fetch_askidf(){
-        urlSessionGetClient.post(url: libserchURL+"askidf.do",parameters: loginDB,header: ["referer":"https://www.opac.lib.tmu.ac.jp/webopac/asklst.do"],completion: {data in
+    func fetch_comidf(){
+        urlSessionGetClient.post(url: "https://tmuopac.lib.tmu.ac.jp/webopac/comidf.do",parameters: self.loginDB,completion: {data in
             var useStateList:[String] = []
-            var testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-            //print(self.testfi!)
-            Libdatafetch.lenlstid = testfi.capture(pattern: "/webopac/lenlst.do\\?system=(\\d+)", group: 1)//ここ確率要素
-            Libdatafetch.myfolderid = testfi.capture(pattern: "follstform.system.value='(\\d+)'", group: 1)
-            print(Libdatafetch.lenlstid)
-            print(Libdatafetch.myfolderid)
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            print(testfi)
+            //self.fetch_asklst()
+            
+        })
+        
+    }
+    func fetch_asklst(){
+        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/asklst.do",completion: {data in
+            var useStateList:[String] = []
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+             let testscr = try? HTML(html: testfi, encoding: .utf8)
+             for link in testscr!.css(".opac_description_area"){
+                useStateList += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+             }
+             print(useStateList)
+        })
+        
+    }
+    func fetch_lenlst(createList: @escaping ([String],[String]) -> Void){
+        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/lenlst.do",completion: {data in
+            var useStateList:[String] = []
+            var lenidlist:[String] = []
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
-            for link in testscr!.css(".lnk_ask,.notlnk_ask"){
-                if let number = link.text?.capture(pattern: "(\\d+)", group: 1){
-                    useStateList += [number]
-                }
+            for link in testscr!.css(".opac_data_list_ex td"){
+                useStateList += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
             }
-            print(useStateList)
+            for link in testscr!.css("[name='lenidlist']"){
+                lenidlist += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            }
+            createList(useStateList,lenidlist)
         })
         
     }

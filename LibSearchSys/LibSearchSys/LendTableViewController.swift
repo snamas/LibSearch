@@ -9,39 +9,20 @@ import UIKit
 
 class LendTableViewController: UITableViewController {
     
-    
-    var lendlist:[(number:String,crick:String,MaterialID:String,brank:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Biblioinfo:String)] = []
-    
+    var lendlist:[(number:String,crick:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Status:String,Biblioinfo:String,MaterialID:String)] = []
+    let LibData = Libdatafetch()
     func fetch_lenlst(){
-        let fetchURL = URLSessionGetClient()
-        var parameters = [URLQueryItem(name:"system",value: Libdatafetch.lenlstid ?? "")]
-        fetchURL.get(url: "https://www.opac.lib.tmu.ac.jp/webopac/lenlst.do", queryItems: parameters, completion: {data in
-            self.lenlstparse(data: data)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+    LibData.fetch_lenlst(createList:{useStateList,lenidlist in
+        if useStateList.count % 8 == 0 && useStateList.count % lenidlist.count == 0{
+            for i in stride(from:0,to:useStateList.count,by:8){
+            self.lendlist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],useStateList[5+i],useStateList[6+i],useStateList[7+i],lenidlist[i/8]))
             }
-            print(self.lendlist)
-        })
-    }
-    func lenlstparse(data:Data) -> (){
-        let html = String(data: data, encoding: String.Encoding.utf8) ?? ""
-        let testscr = try? HTML(html: html, encoding: .utf8)
-        var templist:[String] = []
-        for link in testscr!.css("span.lst_value,[name='lenidlist']"){
-            /*span.lst_value
-             if let a = link["href"],link["href"]!.contains("lenDtl"){
-             print(link.text)
-             print(link["href"])
-             }
-             */
-            if let a = link["value"]{
-                templist += [a]
-            }
-            templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
         }
-        for i in stride(from:0,to:templist.count,by:9){
-            self.lendlist.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i],templist[6+i],templist[7+i],templist[8+i]))
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
+        print(self.lendlist)
+    })
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,11 +108,13 @@ class LendTableViewController: UITableViewController {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "DetailBooksSegue"{
+            /*ここdetailが決まらないと遷移できない。
             if let indexPath = self.tableView.indexPathForSelectedRow{
                 let webData = lendlist[indexPath.row]
                 let newlist = (BibliographyID:webData.brank,brank:webData.MaterialID,CatalogueType:webData.brank,Biblioinfo:webData.Biblioinfo,brank2:webData.brank,Author:webData.brank)
                 (segue.destination as! DetailResultView).data = newlist
             }
+ */
         }
     }
  

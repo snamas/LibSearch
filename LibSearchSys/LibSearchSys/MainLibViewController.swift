@@ -32,7 +32,22 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
     */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        LibData.fetch_askidf()
+        LibData.fetch_comidf()
+        //ここresultTableViewに転用(https://qiita.com/takabosoft/items/50683d32e04f7d30a410)
+        var urlComponents = URLComponents(string: "http://hoge.jp/test_api")!
+        var urls = URLComponents(string: "")!
+        urls.queryItems = [
+            URLQueryItem(name: "en", value: "english"),
+            URLQueryItem(name: "jp", value: "日本語"),
+            URLQueryItem(name: "other", value: "&=+"),
+        ]
+        urlComponents.queryItems = [
+        URLQueryItem(name: "en", value: "english"),
+        URLQueryItem(name: "jp", value: "日本語"),
+        URLQueryItem(name: "other", value: String(urls.string!.dropFirst())),
+        ]
+        print(urlComponents.url ?? "")
+        
     }
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
