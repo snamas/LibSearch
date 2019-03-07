@@ -4,7 +4,6 @@
 //
 //  Created by yuto on 2019/02/07.
 //
-import Kanna
 import UIKit
 
 class LendTableViewController: UITableViewController {
@@ -12,16 +11,16 @@ class LendTableViewController: UITableViewController {
     var lendlist:[(number:String,crick:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Status:String,Biblioinfo:String,MaterialID:String)] = []
     let LibData = Libdatafetch()
     func fetch_lenlst(){
-    LibData.fetch_lenlst(createList:{useStateList,lenidlist in
-        if useStateList.count % 8 == 0 && useStateList.count % lenidlist.count == 0{
-            for i in stride(from:0,to:useStateList.count,by:8){
-            self.lendlist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],useStateList[5+i],useStateList[6+i],useStateList[7+i],lenidlist[i/8]))
+        LibData.fetch_lenlst(createList:{useStateList,lenidlist in
+            if useStateList.count % 8 == 0 && useStateList.count % lenidlist.count == 0{
+                for i in stride(from:0,to:useStateList.count,by:8){
+                self.lendlist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],useStateList[5+i],useStateList[6+i],useStateList[7+i],lenidlist[i/8]))
+                }
             }
-        }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-        print(self.lendlist)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            print(self.lendlist)
     })
     }
     override func viewDidLoad() {

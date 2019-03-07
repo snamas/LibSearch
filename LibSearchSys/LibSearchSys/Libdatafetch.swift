@@ -8,7 +8,9 @@ import Kanna
 import Foundation
 class Libdatafetch{
     var libserchURL = "https://www.opac.lib.tmu.ac.jp/webopac/"
-    static var ctlsrhformDB = ["fromDsp": "catsrd",
+    let urlSessionGetClient = URLSessionGetClient()
+    static var ctlsrhformDB = [
+    "fromDsp": "catsrd",
     "searchDsp": "catsrd",
     "initFlg": "_RESULT_SET_NOTBIB",//_RESULT_SET_NOTBIB　に設定すると2項目目以降も取得できる。
     "gcattp_flag": "all",//ｂｋ＝図書、ｓｒ＝雑誌、av＝視聴覚、eb＝電子ブック、ej＝電子ジャーナル
@@ -41,6 +43,18 @@ class Libdatafetch{
     "listcnt": "50",//ここに最大何件取得するか入れる
     "maxcnt": "5000",
     "startpos": "1"//ここに先頭に来るNo.の値を入れる。二項目目なら５１、3項目目なら１０１など
+    ]
+    static var op_param = {([String:String]) -> String in
+        let urlSessionGetClient = URLSessionGetClient()
+        return String(urlSessionGetClient.buildUrl(base: "", namedValues: Libdatafetch.ctlsrhformDB).dropFirst())
+    }
+    static var searchdataDB : [String:String] = [
+            "action":"pages_view_main",
+            "active_action":"v3search_view_main_init",
+            "op_param": Libdatafetch.op_param(Libdatafetch.ctlsrhformDB),
+            "block_id":"296",
+            "tab_num":"0",
+            "search_mode":"detail"
     ]
     static var formdataDB = [
         "rgtn": "",//資料ID
@@ -154,7 +168,6 @@ class Libdatafetch{
     static var lenlstid:String? = nil
     static var myfolderid:String? = nil
     
-    let urlSessionGetClient = URLSessionGetClient()
     func fetch_comidf(){
         urlSessionGetClient.post(url: "https://tmuopac.lib.tmu.ac.jp/webopac/comidf.do",parameters: self.loginDB,completion: {data in
             var useStateList:[String] = []
@@ -179,6 +192,21 @@ class Libdatafetch{
     }
     func fetch_lenlst(createList: @escaping ([String],[String]) -> Void){
         urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/lenlst.do",completion: {data in
+            var useStateList:[String] = []
+            var lenidlist:[String] = []
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            for link in testscr!.css(".opac_data_list_ex td"){
+                useStateList += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            }
+            for link in testscr!.css("[name='lenidlist']"){
+                lenidlist += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            }
+            createList(useStateList,lenidlist)
+        })
+    }
+    func fetch_indexofsearch(createList: @escaping ([String],[String]) -> Void){
+        urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.ctlsrhformDB,completion: {data in
             var useStateList:[String] = []
             var lenidlist:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""

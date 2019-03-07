@@ -8,6 +8,11 @@
 import Foundation
 import Kanna
 class URLSessionGetClient {
+    func buildUrl(base: String, namedValues: [String : String]) -> String {
+        guard var urlComponents = URLComponents(string: base) else { return "" }
+        urlComponents.queryItems = namedValues.map { URLQueryItem(name: $0.key, value: $0.value)}
+        return urlComponents.string ?? ""
+    }
     func get(url urlString: String, queryItems: [URLQueryItem]? = nil,completion: @escaping (Data) -> Void) {
         var compnents = URLComponents(string: urlString)
         compnents?.queryItems = queryItems
