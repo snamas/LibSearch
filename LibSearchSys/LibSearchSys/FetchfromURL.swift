@@ -13,11 +13,8 @@ class URLSessionGetClient {
         urlComponents.queryItems = namedValues.map { URLQueryItem(name: $0.key, value: $0.value)}
         return urlComponents.string ?? ""
     }
-    func get(url urlString: String, queryItems: [URLQueryItem]? = nil,completion: @escaping (Data) -> Void) {
-        var compnents = URLComponents(string: urlString)
-        compnents?.queryItems = queryItems
-        print(compnents!)
-        let url = URL(string: compnents!.string ?? "")
+    func get(url urlString: String, queryItems: [String : String]? = nil,completion: @escaping (Data) -> Void) {
+        let url = URL(string: self.buildUrl(base: urlString, namedValues: queryItems ?? [:]))
         let request = URLRequest(url: url!)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -34,11 +31,6 @@ class URLSessionGetClient {
                 
                 //print(String(data: data, encoding: String.Encoding.utf8) ?? "")
                 completion(data)
-                if let cookies = HTTPCookieStorage.shared.cookies(for: url!) {
-                    for cookie in cookies {
-                        print(cookie)
-                    }
-                }
             } else {
                 // レスポンスのステータスコードが200でない場合などはサーバサイドエラー
                 print("サーバエラー ステータスコード: \(response.statusCode)\n")
@@ -47,23 +39,15 @@ class URLSessionGetClient {
         task.resume()
         
     }
-    func post(url urlString: String, parameters: [String: Any],header : Dictionary<String,String>? = nil,completion: @escaping (Data) -> Void) {
+    func post(url urlString: String, parameters: [String: String],header : Dictionary<String,String>? = nil,completion: @escaping (Data) -> Void) {
         let url = URL(string: urlString)
         var request = URLRequest(url: url!)
         request.httpMethod = "POST"
-        let parametersString: String = parameters.enumerated().reduce("") {
-            (input, tuple) -> String in
-            switch tuple.element.value {
-            case let int as Int: return input + tuple.element.key + "=" + String(int) + (parameters.count - 1 > tuple.offset ? "&" : "")
-            case let string as String: return input + tuple.element.key + "=" + string + (parameters.count - 1 > tuple.offset ? "&" : "")
-            default: return input
-            }
-        }
-        print(parametersString)
-        request.httpBody = parametersString.data(using: String.Encoding.utf8)
+        request.httpBody = String(self.buildUrl(base: "", namedValues: parameters).dropFirst()).data(using: String.Encoding.utf8)
+        print(String(self.buildUrl(base: "", namedValues: parameters).dropFirst()))
         if let headerdic = header{
             for dic in headerdic{
-                request.setValue(dic.key, forHTTPHeaderField: dic.value)
+                request.addValue(dic.value, forHTTPHeaderField: dic.key)
             }
         }
         
@@ -88,7 +72,12 @@ class URLSessionGetClient {
                         print(cookie)
                     }
                 }
-                */
+                 */
+                if let cookies = HTTPCookieStorage.shared.cookies(for: url!) {
+                    for cookie in cookies {
+                        print(cookie)
+                    }
+                }
             } else {
                 // レスポンスのステータスコードが200でない場合などはサーバサイドエラー
                 print("サーバエラー ステータスコード: \(response.statusCode)\n")

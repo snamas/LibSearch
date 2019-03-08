@@ -32,8 +32,7 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
     */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        LibData.fetch_comidf()
-        let urlSessionGetClient = URLSessionGetClient()
+        //LibData.fetch_comidf()
         //ここresultTableViewに転用(https://qiita.com/takabosoft/items/50683d32e04f7d30a410)
         var urlComponents = URLComponents(string: "http://hoge.jp/test_api")!
         var urls = URLComponents(string: "")!
@@ -47,11 +46,6 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         URLQueryItem(name: "jp", value: "日本語"),
         URLQueryItem(name: "other", value: String(urls.string!.dropFirst())),
         ]
-        print(Libdatafetch.searchdataDB)
-        Libdatafetch.ctlsrhformDB.updateValue("sakuzyo", forKey: "words")
-        print(Libdatafetch.ctlsrhformDB["words"])
-        Libdatafetch.searchdataDB["op_param"] = Libdatafetch.op_param(Libdatafetch.ctlsrhformDB)
-        print(Libdatafetch.searchdataDB)
 
     }
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・

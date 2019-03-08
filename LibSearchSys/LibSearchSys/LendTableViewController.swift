@@ -12,7 +12,7 @@ class LendTableViewController: UITableViewController {
     let LibData = Libdatafetch()
     func fetch_lenlst(){
         LibData.fetch_lenlst(createList:{useStateList,lenidlist in
-            if useStateList.count % 8 == 0 && useStateList.count % lenidlist.count == 0{
+            if useStateList.count != 0 && lenidlist.count != 0 && useStateList.count % 8 == 0 && useStateList.count % lenidlist.count == 0{
                 for i in stride(from:0,to:useStateList.count,by:8){
                 self.lendlist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],useStateList[5+i],useStateList[6+i],useStateList[7+i],lenidlist[i/8]))
                 }

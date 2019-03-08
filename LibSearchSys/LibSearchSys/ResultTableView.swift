@@ -15,52 +15,41 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     @IBOutlet var tableview: UITableView!
     var refineView : RefineViewController? = nil
     private var loadstatus:String = "Ready"
+    private var imagestatus : Bool = false//self.image_list[indexPath.row]でのindexoutofrangeのため画像を全部取得してからリロードさせる。
     private var page : Int = 1
     private var mysection = [""]
     let urlSessionGetClient = URLSessionGetClient()
-    var SearchResultList : [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
-    
+    var LibData = Libdatafetch()
+    var SearchResultList : [(BibliographyID:String,CatalogueType:String,Biblioinfo:String,Author:String)] = []
+    var image_list : [(UIImage)] = []
     func fetch_ctlsrh() -> () {
         Libdatafetch.ctlsrhformDB["startpos"] = "\(page)"
         print(Libdatafetch.ctlsrhformDB["words"])
+        imagestatus = false
         loadstatus = "Loading"
-        urlSessionGetClient.post(url: "https://www.opac.lib.tmu.ac.jp/webopac/ctlsrh.do", parameters: Libdatafetch.ctlsrhformDB, header: nil, completion: { Data in
-            let testfi = String(data: Data, encoding: String.Encoding.utf8) ?? ""
-            var templist:[String] = []
-            var SearchPartResult : [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
-            let testscr = try? HTML(html: testfi, encoding: .utf8)
-            
-            if let link = testscr!.css(".comment").first{
-                self.mysection[0] = link.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        LibData.fetch_indexofsearch(createList: {book_title_List,book_Auther_List,Biblio_Id_List,Biblio_image_List in
+            for i in 0..<book_title_List.count {
+                self.SearchResultList.append((Biblio_Id_List[i],Biblio_image_List[i],book_title_List[i],book_Auther_List[i]))
             }
-            if testfi.contains("書誌詳細") || testfi.contains("Bibliography Details"){
+            self.page += 50
+            if book_title_List.isEmpty{
                 self.loadstatus = "full"
-                SearchPartResult = Libdatafetch.lendtl_Oneviewparse(testscr)
-                
-                self.SearchResultList += SearchPartResult
-                print(SearchPartResult)
             }
             else{
-                for link in testscr!.css(".lst_value strong,[nowrap] .lst_value,.hdl_sub_l,[name='bookmark']"){
-                    if let a = link["value"]{
-                        templist += [a]
-                    }
-                    templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-                    //print(link.innerHTML)
-                }
-                for i in stride(from:0,to:templist.count,by:6){
-                SearchPartResult.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i]))
-                }
-                self.SearchResultList += SearchPartResult
-                if SearchPartResult.isEmpty{
-                    self.loadstatus = "full"
-                }
-                else{
-                    self.loadstatus = "Ready"
-                }
-                self.page += 50
-                print(SearchPartResult)
+                self.loadstatus = "Ready"
             }
+            for imagepart in Biblio_image_List {
+                self.urlSessionGetClient.get(url: imagepart, completion: { data in
+                    self.image_list.append(UIImage(data: data) ?? UIImage(named: "book")!)
+                    if self.image_list.count == self.SearchResultList.count{
+                        self.imagestatus = true
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
+                    }
+                })
+            }
+            
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -108,11 +97,9 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
             let webdata = self.SearchResultList[indexPath.row]
             cell.textLabel?.text = webdata.Biblioinfo
             cell.detailTextLabel?.text = "\(webdata.Author)"
-            if webdata.CatalogueType == "図書"{
-                cell.imageView?.image = UIImage(named: "book")
-            }
-            else{
-                cell.imageView?.image = UIImage(named: "cd")
+            if !self.image_list.isEmpty && imagestatus{
+                let imagedata = self.image_list[indexPath.row]
+                cell.imageView?.image = imagedata
             }
         }
         // Configure the cell...
@@ -199,6 +186,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         SearchResultList = []
         self.tableView.reloadData()
         self.fetch_ctlsrh()
+        self.image_list = []
         
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

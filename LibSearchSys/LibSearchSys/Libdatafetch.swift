@@ -49,12 +49,13 @@ class Libdatafetch{
         return String(urlSessionGetClient.buildUrl(base: "", namedValues: Libdatafetch.ctlsrhformDB).dropFirst())
     }
     static var searchdataDB : [String:String] = [
-            "action":"pages_view_main",
-            "active_action":"v3search_view_main_init",
-            "op_param": Libdatafetch.op_param(Libdatafetch.ctlsrhformDB),
-            "block_id":"296",
-            "tab_num":"0",
-            "search_mode":"detail"
+        "tab_num":"0",
+        "action":"v3search_action_main_opac",
+        "search_mode":"null",
+        "op_param":op_param(Libdatafetch.ctlsrhformDB),
+        "block_id":"296",
+        "page_id": "15",
+        "module_id": "61"
     ]
     static var formdataDB = [
         "rgtn": "",//資料ID
@@ -202,24 +203,33 @@ class Libdatafetch{
             for link in testscr!.css("[name='lenidlist']"){
                 lenidlist += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
             }
+            print(useStateList)
             createList(useStateList,lenidlist)
         })
     }
-    func fetch_indexofsearch(createList: @escaping ([String],[String]) -> Void){
-        urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.ctlsrhformDB,completion: {data in
-            var useStateList:[String] = []
-            var lenidlist:[String] = []
+    func fetch_indexofsearch(createList: @escaping ([String],[String],[String],[String]) -> Void){
+        Libdatafetch.searchdataDB["op_param"] = Libdatafetch.op_param(Libdatafetch.ctlsrhformDB)
+        urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.searchdataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
+            var book_title_List:[String] = []
+            var book_Auther_List:[String] = []
+            var Biblio_Id_List:[String] = []
+            var Biblio_image_List:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
-            for link in testscr!.css(".opac_data_list_ex td"){
-                useStateList += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            for link in testscr!.css(".opac_book_title"){
+                book_title_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
             }
-            for link in testscr!.css("[name='lenidlist']"){
-                lenidlist += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            for link in testscr!.css(".opac_book_bibliograph"){
+                book_Auther_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
             }
-            createList(useStateList,lenidlist)
+            for link in testscr!.css(".opac_list [name='bibid']"){
+                Biblio_Id_List += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            }
+            for link in testscr!.css(".opac_icon_bookind"){
+                Biblio_image_List += [link["src"]?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+            }
+            createList(book_title_List,book_Auther_List,Biblio_Id_List,Biblio_image_List)
         })
-        
     }
     static var lendtl_Oneviewparse = {(testscr:HTMLDocument?) -> [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] in
         var templist:[String] = []

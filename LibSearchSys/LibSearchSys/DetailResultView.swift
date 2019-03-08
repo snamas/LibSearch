@@ -9,7 +9,7 @@ import UIKit
 import Kanna
 class DetailResultView: UITableViewController {
     private var mysection = ["","配架場所"]
-    var data:(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)?
+    var data:(BibliographyID:String,CatalogueType:String,Biblioinfo:String,Author:String)?
     private var SearchPartResult:[(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
     let urlSessionGetClient = URLSessionGetClient()
     var DetailResult : [(No:String, Volumes:String,HoldingLibrary:String,HoldingsLocation:String,MaterialID:String,CaallNo:String,InLibonly:String,Status:String,DueDate:String,RsVNNum:String)] = []
@@ -18,7 +18,7 @@ class DetailResultView: UITableViewController {
     var ISBN = ""
     func fetch_catdbl(fetchurl:String = "https://www.opac.lib.tmu.ac.jp/webopac/catdbl.do"){
         var templist:[String] = []
-        urlSessionGetClient.post(url: fetchurl,parameters: Libdatafetch.formdataDB,header:nil,completion: {data in
+        urlSessionGetClient.post(url: fetchurl,parameters: Libdatafetch.searchdataDB,header:nil,completion: {data in
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
             self.SearchPartResult = Libdatafetch.lendtl_Oneviewparse(testscr)
@@ -84,7 +84,7 @@ class DetailResultView: UITableViewController {
         // Do any additional setup after loading the view.
         if let bibbrank = data?.BibliographyID,bibbrank.isEmpty{
             print("throw")
-            Libdatafetch.formdataDB["rgtn"] = data?.brank
+            Libdatafetch.formdataDB["rgtn"] = ""
             Libdatafetch.formdataDB["pkey"] = ""
             fetch_catdbl(fetchurl: "https://www.opac.lib.tmu.ac.jp/webopac/ctlsrh.do")
         }
