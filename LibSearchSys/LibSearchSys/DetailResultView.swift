@@ -162,3 +162,34 @@ class DetailResultView: UITableViewController {
         return cell
     }
 }
+/*
+ bibbr: ハウスクロフト無機化学 / Catherine E. Housecroft, Alan G. Sharpe著 ; 上, 下. -- 東京化学同人, 2012.
+ bibid: BB02152052
+ cattp: BB
+ holid: HL03351626
+ vol1:
+ vol2:
+ holar:
+ fvol:
+ annul:
+ reqType: _NEW
+ loginType: once
+ system:
+ locale: ja
+ ufisso_param: 64d4fdde232a8a077d7ae812c1cb5ff3|17e90616e6298235aa7ed83715af8586|nc2op
+ bibbr: ハウスクロフト無機化学 / Catherine E. Housecroft, Alan G. Sharpe著 ; 上, 下. -- 東京化学同人, 2012.
+ bibid: BB02152052
+ cattp: BB
+ holid: HL03351624
+ vol1:
+ vol2:
+ holar:
+ fvol:
+ annul:
+ reqType: _NEW
+ loginType: once
+ system:
+ locale: ja
+ ufisso_param: 64d4fdde232a8a077d7ae812c1cb5ff3|17e90616e62982358e3ad4e56444ca6a|nc2op
+
+ */

@@ -57,6 +57,14 @@ class Libdatafetch{
         "page_id": "15",
         "module_id": "61"
     ]
+    static var detaildataDB : [String:String] = [
+        "tab_num":"0",
+        "action":"v3search_view_main_catdbl",
+        "bibid": "BB02152052",
+        "block_id":"296",
+        "page_id": "15",
+        "module_id": "61"
+    ]
     static var formdataDB = [
         "rgtn": "",//資料ID
         "sortkey": "syear,sauth",
@@ -229,6 +237,97 @@ class Libdatafetch{
                 Biblio_image_List += [link["src"]?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
             }
             createList(book_title_List,book_Auther_List,Biblio_Id_List,Biblio_image_List)
+        })
+    }
+    func fetch_main_catdbl(){
+        urlSessionGetClient.get(url: "https://libportal.lib.tmu.ac.jp/index.php", queryItems: Libdatafetch.detaildataDB,completion: {data in
+            var no_List:[String] = []
+            var kango_List:[String] = []
+            var haichiba_List:[String] = []
+            var siryoid_List:[String] = []
+            var seikyu_list:[String] = []
+            var jyoutai_list:[String] = []
+            var fulldate_list:[String] = []
+            var kensu_list:[String] = []
+            var opacCatdhl_list:[String] = []
+            var opac_reserv_list:[(startindex:Int,rangeindex:String)] = []
+            var no_num :Int = 0
+            var yoyaku_list:[(startindex:String,rangeindex:String,idindex:String)] = []
+            let haichiba_JS = "\n<!--\n.haichiba{\nwidth:200px !important;\n}\n-->"
+            let kango_JS = "<!--\n.haichiba{\nwidth:50px !important;\n}\n-->"
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            for link in testscr!.css(".no"){
+                if !(link.toXML?.contains("/th") ?? false){
+                    no_List += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                    opacCatdhl_list += [link.css("a").first?["onclick"]?.capture(pattern: "(HL\\d{8,})", group: 1) ?? ""]
+                }
+            }
+            for link in testscr!.css(".kango"){
+                if var kangoStr = link.text?.trimmingCharacters(in: .whitespacesAndNewlines){
+                    if let range = kangoStr.range(of: kango_JS) {
+                        kangoStr.removeSubrange(range)
+                        print(kangoStr)     // 青い花
+                        kango_List += [kangoStr.trimmingCharacters(in: .whitespacesAndNewlines)]
+                    }
+                }
+            }
+            for link in testscr!.css("[style='text-align: left !important;']"){
+                if var haichibaStr = link.text?.trimmingCharacters(in: .whitespacesAndNewlines){
+                    if let range = haichibaStr.range(of: haichiba_JS) {
+                        haichibaStr.removeSubrange(range)
+                        print(haichibaStr)
+                        haichiba_List += [haichibaStr.trimmingCharacters(in: .whitespacesAndNewlines)]
+                    }
+                }
+            }
+            for link in testscr!.css(".siryoid"){
+                if !(link.toXML?.contains("/th") ?? false){
+                    siryoid_List += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                }
+            }
+            for link in testscr!.css(".seikyu"){
+                if !(link.toXML?.contains("/th") ?? false){
+                    seikyu_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                }
+            }
+            for link in testscr!.css(".jyoutai"){
+                if !(link.toXML?.contains("/th") ?? false){
+                    jyoutai_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                }
+            }
+            for link in testscr!.css(".fulldate"){
+                if !(link.toXML?.contains("/th") ?? false){
+                    fulldate_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                }
+            }
+            for link in testscr!.css(".kensu"){
+                if let opac_reserv_range = link["rowspan"]?.first{
+                    opac_reserv_list.append((no_num,String(opac_reserv_range)))
+                }
+                else if !(link.toXML?.contains("/th") ?? false){
+                    kensu_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                    no_num += 1
+                }
+            }
+            print(no_List)
+            print(kango_List)
+            print(haichiba_List)
+            print(siryoid_List)
+            print(seikyu_list)
+            print(jyoutai_list)
+            print(fulldate_list)
+            print(kensu_list)
+            print(opacCatdhl_list)
+            print(opac_reserv_list)
+            print(no_List.count)
+            print(kango_List.count)
+            print(haichiba_List.count)
+            print(siryoid_List.count)
+            print(seikyu_list.count)
+            print(jyoutai_list.count)
+            print(fulldate_list.count)
+            print(kensu_list.count)
         })
     }
     static var lendtl_Oneviewparse = {(testscr:HTMLDocument?) -> [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] in
