@@ -28,8 +28,10 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         imagestatus = false
         loadstatus = "Loading"
         LibData.fetch_indexofsearch(createList: {book_title_List,book_Auther_List,Biblio_Id_List,Biblio_image_List in
-            for i in 0..<book_title_List.count {
-                self.SearchResultList.append((Biblio_Id_List[i],Biblio_image_List[i],book_title_List[i],book_Auther_List[i]))
+            if book_title_List.count != 0 && book_Auther_List.count != 0 && Biblio_Id_List.count != 0 && Biblio_image_List.count != 0{
+                for i in 0..<book_title_List.count {
+                    self.SearchResultList.append((Biblio_Id_List[i],Biblio_image_List[i],book_title_List[i],book_Auther_List[i]))
+                }
             }
             self.page += 50
             if book_title_List.isEmpty{
