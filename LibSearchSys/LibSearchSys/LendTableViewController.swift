@@ -21,7 +21,7 @@ class LendTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
             print(self.lendlist)
-    })
+        })
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,13 +107,11 @@ class LendTableViewController: UITableViewController {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == "DetailBooksSegue"{
-            /*ここdetailが決まらないと遷移できない。
             if let indexPath = self.tableView.indexPathForSelectedRow{
                 let webData = lendlist[indexPath.row]
-                let newlist = (BibliographyID:webData.brank,brank:webData.MaterialID,CatalogueType:webData.brank,Biblioinfo:webData.Biblioinfo,brank2:webData.brank,Author:webData.brank)
-                (segue.destination as! DetailResultView).data = newlist
+                let newlist = (MaterialID:webData.MaterialID,Biblioinfo:webData.Biblioinfo)
+                (segue.destination as! DetailResultView).data_from_asklst = newlist
             }
- */
         }
     }
  

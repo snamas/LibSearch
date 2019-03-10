@@ -32,7 +32,7 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
     */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        LibData.fetch_main_catdbl()
+        LibData.fetch_comidf()
         //ここresultTableViewに転用(https://qiita.com/takabosoft/items/50683d32e04f7d30a410)
         var urlComponents = URLComponents(string: "http://hoge.jp/test_api")!
         var urls = URLComponents(string: "")!

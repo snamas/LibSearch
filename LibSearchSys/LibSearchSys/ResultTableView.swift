@@ -20,17 +20,17 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     private var mysection = [""]
     let urlSessionGetClient = URLSessionGetClient()
     var LibData = Libdatafetch()
-    var SearchResultList : [(BibliographyID:String,CatalogueType:String,Biblioinfo:String,Author:String)] = []
+    var SearchResultList : [(BibliographyID:String,opacIcon:String,book_title:String,Author:String)] = []
     var image_list : [(UIImage)] = []
     func fetch_ctlsrh() -> () {
         Libdatafetch.ctlsrhformDB["startpos"] = "\(page)"
         print(Libdatafetch.ctlsrhformDB["words"])
         imagestatus = false
         loadstatus = "Loading"
-        LibData.fetch_indexofsearch(createList: {book_title_List,book_Auther_List,Biblio_Id_List,Biblio_image_List in
-            if book_title_List.count != 0 && book_Auther_List.count != 0 && Biblio_Id_List.count != 0 && Biblio_image_List.count != 0{
+        LibData.fetch_indexofsearch(createList: {book_title_List,book_Auther_List,BibliographyID_List,opacIcon_List in
+            if book_title_List.count != 0 && book_Auther_List.count != 0 && BibliographyID_List.count != 0 && opacIcon_List.count != 0{
                 for i in 0..<book_title_List.count {
-                    self.SearchResultList.append((Biblio_Id_List[i],Biblio_image_List[i],book_title_List[i],book_Auther_List[i]))
+                    self.SearchResultList.append((BibliographyID_List[i],opacIcon_List[i],book_title_List[i],book_Auther_List[i]))
                 }
             }
             self.page += 50
@@ -38,9 +38,9 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
                 self.loadstatus = "full"
             }
             else{
-                self.loadstatus = "Ready"
+                self.loadstatus = "Ready"//クライアントエラーが発生した場合、二度とその先が読み込めなくなる。
             }
-            for imagepart in Biblio_image_List {
+            for imagepart in opacIcon_List {
                 self.urlSessionGetClient.get(url: imagepart, completion: { data in
                     self.image_list.append(UIImage(data: data) ?? UIImage(named: "book")!)
                     if self.image_list.count == self.SearchResultList.count{
@@ -97,7 +97,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath)
         if !self.SearchResultList.isEmpty{
             let webdata = self.SearchResultList[indexPath.row]
-            cell.textLabel?.text = webdata.Biblioinfo
+            cell.textLabel?.text = webdata.book_title
             cell.detailTextLabel?.text = "\(webdata.Author)"
             if !self.image_list.isEmpty && imagestatus{
                 let imagedata = self.image_list[indexPath.row]
@@ -174,7 +174,9 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         if segue.identifier == "DetailBooksSegue"{
             if let indexPath = self.tableView.indexPathForSelectedRow{
                 let webData = SearchResultList[indexPath.row]
+                let imagedata = image_list[indexPath.row]
                 (segue.destination as! DetailResultView).data = webData
+                (segue.destination as! DetailResultView).BookImage = imagedata
             }
         }
     }

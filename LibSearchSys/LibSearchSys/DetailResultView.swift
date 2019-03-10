@@ -8,66 +8,40 @@
 import UIKit
 import Kanna
 class DetailResultView: UITableViewController {
+    var LibData = Libdatafetch()
     private var mysection = ["","配架場所"]
-    var data:(BibliographyID:String,CatalogueType:String,Biblioinfo:String,Author:String)?
-    private var SearchPartResult:[(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
+    var data:(BibliographyID:String,opacIcon:String,book_title:String,Author:String)?
+    var data_from_asklst:(MaterialID:String,Biblioinfo:String)?
+    var BookImage:UIImage?
     let urlSessionGetClient = URLSessionGetClient()
-    var DetailResult : [(No:String, Volumes:String,HoldingLibrary:String,HoldingsLocation:String,MaterialID:String,CaallNo:String,InLibonly:String,Status:String,DueDate:String,RsVNNum:String)] = []
-    var svcrsvformList :[(No:String,systemvalue:String,orderRSV:String?)] = []
-    var BookImage = UIImage(named: "book")
-    var ISBN = ""
-    func fetch_catdbl(fetchurl:String = "https://www.opac.lib.tmu.ac.jp/webopac/catdbl.do"){
-        var templist:[String] = []
-        urlSessionGetClient.post(url: fetchurl,parameters: Libdatafetch.searchdataDB,header:nil,completion: {data in
-            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-            let testscr = try? HTML(html: testfi, encoding: .utf8)
-            self.SearchPartResult = Libdatafetch.lendtl_Oneviewparse(testscr)
-            var num:Int = 1
-            for link in testscr!.css(".flst_frame .lst_value,.flst_frame .btn"){
-                if let a:String = link["href"]?.capture(pattern: "system.value='(\\d+)'", group: 1){
-                    print(a)
-                    if let b:String = link["href"]?.capture(pattern: "\\('(\\w+)'\\)", group: 1){
-                        self.svcrsvformList.append((No: String(num), systemvalue: a, orderRSV: b))
-                    }
-                    else{
-                        self.svcrsvformList.append((No: String(num), systemvalue: a, orderRSV: nil))
-                    }
-                    templist.removeLast()
-                }
-                else if let i = Int(link.text!.trimmingCharacters(in: .whitespacesAndNewlines)),i<10000{
-                    num = i
-                    templist += [String(i)]
-                }
-                else{
-                    templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-                }
-                //print(link.text!.trimmingCharacters(in: .whitespacesAndNewlines))
-            }
-            if templist.count % 10 == 0{
-                for i in stride(from:0,to:templist.count,by:10){//SB00057540ここ例外
-                    self.DetailResult.append((templist[0+i],templist[1+i],templist[2+i],templist[3+i],templist[4+i],templist[5+i],templist[6+i],templist[7+i],templist[8+i],templist[9+i]))
+    var DetailResult : [(No:String, kango:String,haichiba:String,seikyu:String,MaterialID:String,Status:String,DueDate:String,yoyakukensu:String)] = []
+    var yoyaku_list :[(startindex:Int,rangeindex:Int,orderRSV:String)]?
+    func fetch_catdbl(materialID:String? = nil){
+        if let safe_bibid = data?.BibliographyID{
+            Libdatafetch.detaildataDB["bibid"] = safe_bibid
+        }
+        LibData.fetch_main_catdbl(createList:{detailnum in
+            if detailnum.fulldate_list.count != 0{
+                for i in 0..<detailnum.fulldate_list.count{
+                self.DetailResult.append((detailnum.no_List[i],detailnum.kango_List[i],detailnum.haichiba_List[i],detailnum.seikyu_list[i],detailnum.MaterialID_List[i],detailnum.jyoutai_list[i],detailnum.fulldate_list[i],detailnum.kango_List[i]))
                 }
             }
-            else if templist.count % 8 == 0{//雑誌の時例外
-                for i in stride(from:0,to:templist.count,by:8){//SB00057540ここ例外
-                    self.DetailResult.append((templist[0+i],templist[4+i],templist[1+i],templist[2+i],"","",templist[6+i],templist[7+i],"","0件"))
-                }
+            self.yoyaku_list = detailnum.yoyaku_list
+            if let isbn = detailnum.isbn{
+                self.fetch_image(fetchurl: "https://www.hanmoto.com/bd/img/\(isbn).jpg")
             }
-            for link in testscr!.css("[name='ajax_isbn']"){
-                self.ISBN = link["value"] ?? ""
-            }
-            print(templist)
-            print(self.DetailResult)
-            print(self.svcrsvformList)
-            self.mysection[0] = self.data?.CatalogueType ?? ""
-            if self.ISBN != ""{
-                self.fetch_image(fetchurl: "https://www.hanmoto.com/bd/img/\(self.ISBN).jpg")
+            if let safe_bibid = detailnum.BibliographyID,let safe_icon = detailnum.opacIcon,let safe_title = detailnum.book_title,let safe_auther = detailnum.Auther{
+                self.data = (safe_bibid,safe_icon,safe_title,safe_auther)
             }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        })
-    }
+            if let _ = materialID {
+                self.DetailResult = []
+                self.fetch_catdbl()
+            }
+        },MaterialID: materialID)
+    }//SB00057540ここ例外
     
     func fetch_image(fetchurl:String){
         urlSessionGetClient.get(url: fetchurl, completion: { data in
@@ -76,22 +50,17 @@ class DetailResultView: UITableViewController {
                 self.tableView.reloadData()
             }
             })
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if let bibbrank = data?.BibliographyID,bibbrank.isEmpty{
-            print("throw")
-            Libdatafetch.formdataDB["rgtn"] = ""
-            Libdatafetch.formdataDB["pkey"] = ""
-            fetch_catdbl(fetchurl: "https://www.opac.lib.tmu.ac.jp/webopac/ctlsrh.do")
-        }
-        else{
-            Libdatafetch.formdataDB["pkey"] = data?.BibliographyID
-            Libdatafetch.formdataDB["rgtn"] = ""
+        if let safe_bibid = data?.BibliographyID{
+            Libdatafetch.detaildataDB["bibid"] = safe_bibid
             fetch_catdbl()
+        }
+        else if let safe_materialID = data_from_asklst?.MaterialID{
+            fetch_catdbl(materialID: safe_materialID)
         }
     }
     
@@ -140,18 +109,27 @@ class DetailResultView: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath)
         if indexPath.section == 0{
-            cell.textLabel?.text = data?.Biblioinfo
+            cell.textLabel?.text = data?.book_title
             cell.detailTextLabel?.text = data?.Author
             cell.textLabel?.numberOfLines = 5
             cell.detailTextLabel?.numberOfLines = 2
             cell.imageView?.image = self.BookImage
-            
         }
         if indexPath.section == 1{
             if !self.DetailResult.isEmpty{
                 let webdata = self.DetailResult[indexPath.row]
-                cell.textLabel?.text = webdata.HoldingLibrary
-                cell.detailTextLabel?.text = webdata.HoldingsLocation
+                if (webdata.kango.isEmpty){
+                    cell.textLabel?.text = webdata.haichiba
+                }
+                else{
+                    cell.textLabel?.text = "巻号:" + webdata.kango + "　|　" + webdata.haichiba
+                }
+                if (webdata.Status.isEmpty){
+                    cell.detailTextLabel?.text = webdata.seikyu
+                }
+                else{
+                    cell.detailTextLabel?.text = "\(webdata.Status)(\(webdata.seikyu))"
+                }
             }
             else{
                 cell.textLabel?.text = "配架場所はありません"//下位図書が存在する可能性

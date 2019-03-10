@@ -30,7 +30,7 @@ class Libdatafetch{
     "lang": "",
     "bibid": "",
     "rgtn": "",
-    "lenid": "",
+    "lenid": "",//MaterialID
     "cln": "",
     "holph": "",
     "hollc": "",
@@ -65,90 +65,25 @@ class Libdatafetch{
         "page_id": "15",
         "module_id": "61"
     ]
-    static var formdataDB = [
-        "rgtn": "",//資料ID
-        "sortkey": "syear,sauth",
-        "sorttype": "DESC",
-        "sortkey2": "",
-        "sorttype2": "",
-        "listcnt": "20",
-        "maxcnt": "5000",
-        "startpos": "1",
-        "hitcnt": "18",
-        "pkey": "BB02166022",//ここにBibliographyIDを入れる
-        "togflg": "",
-        "stposHol": "1",
-        "hitcntHol": "",
-        "pkeyHol": "",
-        "dsptypeHol": "",
-        "stposTog": "1",
-        "hitcntTog": "",
-        "pkeyTog": "",
-        "stposCld": "1",
-        "hitcntCld": "",
-        "pkeyCld": "",
-        "stposAty": "1",
-        "hitcntAty": "",
-        "pkeyAty": "",
-        "stposBescls":"1",
-        "hitcntBescls": "",
-        "fromDsp": "catlsl",
-        "searchDsp": "catsrd",
-        "other":"",
-        "initFlg": "_RESULT_SET_NOTBIB",
-        "arg1": "",
-        "arg2": "",
-        "arg3": "",
-        "arg4": "",
-        "arg5": "",
-        "loginType": "",
-        "ajaxFlg": "",
-        "facetFlg": "",
-        "mailcharset": "",
-        "detailFlg": "",
-        "searchsql": "",
-        "searchhis": "",
-        "srhkeyOrder": "",
-        "srhLogFlg": "false",
-        "stposRev": "",
-        "pkeyRev": "",
-        "pkeyVol": "",
-        "pkeyIsbn": "",
-        "pkeyRevid": "",
-        "sortkeyRev": "",
-        "sorttypeRev": "",
-        "stposRevlsa": "",
-        "sortkeyRevlsa": "",
-        "sorttypeRevlsa": "",
-        "stposCmt": "",
-        "stposCtx": "",
-        "sltfunc_work": "defaultSelect",
-        "funcflg_work": ["defaultSelect",
-                         "addBookmark",
-                         "searchnii",
-                         "caswinfocus",
-                         "searchporta",
-                         "addHistory",
-                         "addMyfolderbkm",
-                         "addMyfolderhst",
-                         "download",
-                         "sendmail"],
-        "gcattp_flag_2work": "all",
-        "gcattp_flag_work": "all",
-        "holar_flag_work": "all",
-        "title_work": "",
-        "auth_work": "",
-        "words_work": "",
-        "pub_work": "",
-        "year_work": "",
-        "year2_work": "",
-        "hollc_work": "",
-        "sortkey_work": "syear,sauth",
-        "sorttype_work": "DESC",
-        "listcnt_work": "20",
-        "dlcharset": "UTF-8",
-        "mailcharset_work": "UTF-8"
-        ] as [String : Any]
+    static var bookmarkDB : [String:String] = [
+        "target": "opac",
+        "action":"v3search_view_main_popup",
+        "url": "https://tmuopac.lib.tmu.ac.jp/webopac/fbmexe.do?mode=reg&loginType=&locale=ja&bookmark=BB02152052",
+        "block_id":"296",
+        "prefix_id_name": "usepopup",
+        "page_id": "15",
+        "module_id": "61"
+    ]
+    static var yoyakuDB : [String:String] = [
+        "bibid": "",
+        "cattp": "BB",
+        "holid": "HL03351626",
+        "block_id":"296",
+        "prefix_id_name": "usepopup",
+        "page_id": "15",
+        "module_id": "61"
+        //不完全
+    ]
     /*
     ━━━━━━━━━━━━━━━━━━━━━━━━…‥・
     catsrd.do ━━━> 検索入力画面
@@ -164,6 +99,9 @@ class Libdatafetch{
     fbmdel.do ━━━> マイフォルダから削除(POST)
     ━━━━━━━━━━━━━━━━━━━━━━━━…‥・
     comidf.do ━━━> ログイン認証
+    BibliographyID <- BB02166022とか
+    MaterialID <- 10003899330とか
+    orderRSV <- HL03351626とか
     */
     
     var loginDB = [
@@ -220,134 +158,163 @@ class Libdatafetch{
         urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.searchdataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
             var book_title_List:[String] = []
             var book_Auther_List:[String] = []
-            var Biblio_Id_List:[String] = []
+            var BibliographyID_List:[String] = []
             var Biblio_image_List:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
-            for link in testscr!.css(".opac_book_title"){
-                book_title_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-            }
-            for link in testscr!.css(".opac_book_bibliograph"){
-                book_Auther_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
-            }
-            for link in testscr!.css(".opac_list [name='bibid']"){
-                Biblio_Id_List += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
-            }
-            for link in testscr!.css(".opac_icon_bookind"){
-                Biblio_image_List += [link["src"]?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
-            }
-            createList(book_title_List,book_Auther_List,Biblio_Id_List,Biblio_image_List)
-        })
-    }
-    func fetch_main_catdbl(){
-        urlSessionGetClient.get(url: "https://libportal.lib.tmu.ac.jp/index.php", queryItems: Libdatafetch.detaildataDB,completion: {data in
-            var no_List:[String] = []
-            var kango_List:[String] = []
-            var haichiba_List:[String] = []
-            var siryoid_List:[String] = []
-            var seikyu_list:[String] = []
-            var jyoutai_list:[String] = []
-            var fulldate_list:[String] = []
-            var kensu_list:[String] = []
-            var opacCatdhl_list:[String] = []
-            var opac_reserv_list:[(startindex:Int,rangeindex:String)] = []
-            var no_num :Int = 0
-            var yoyaku_list:[(startindex:String,rangeindex:String,idindex:String)] = []
-            let haichiba_JS = "\n<!--\n.haichiba{\nwidth:200px !important;\n}\n-->"
-            let kango_JS = "<!--\n.haichiba{\nwidth:50px !important;\n}\n-->"
-            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-            let testscr = try? HTML(html: testfi, encoding: .utf8)
-            for link in testscr!.css(".no"){
-                if !(link.toXML?.contains("/th") ?? false){
-                    no_List += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
-                    opacCatdhl_list += [link.css("a").first?["onclick"]?.capture(pattern: "(HL\\d{8,})", group: 1) ?? ""]
-                }
-            }
-            for link in testscr!.css(".kango"){
-                if var kangoStr = link.text?.trimmingCharacters(in: .whitespacesAndNewlines){
-                    if let range = kangoStr.range(of: kango_JS) {
-                        kangoStr.removeSubrange(range)
-                        print(kangoStr)     // 青い花
-                        kango_List += [kangoStr.trimmingCharacters(in: .whitespacesAndNewlines)]
-                    }
-                }
-            }
-            for link in testscr!.css("[style='text-align: left !important;']"){
-                if var haichibaStr = link.text?.trimmingCharacters(in: .whitespacesAndNewlines){
-                    if let range = haichibaStr.range(of: haichiba_JS) {
-                        haichibaStr.removeSubrange(range)
-                        print(haichibaStr)
-                        haichiba_List += [haichibaStr.trimmingCharacters(in: .whitespacesAndNewlines)]
-                    }
-                }
-            }
-            for link in testscr!.css(".siryoid"){
-                if !(link.toXML?.contains("/th") ?? false){
-                    siryoid_List += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
-                }
-            }
-            for link in testscr!.css(".seikyu"){
-                if !(link.toXML?.contains("/th") ?? false){
-                    seikyu_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
-                }
-            }
-            for link in testscr!.css(".jyoutai"){
-                if !(link.toXML?.contains("/th") ?? false){
-                    jyoutai_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
-                }
-            }
-            for link in testscr!.css(".fulldate"){
-                if !(link.toXML?.contains("/th") ?? false){
-                    fulldate_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
-                }
-            }
-            for link in testscr!.css(".kensu"){
-                if let opac_reserv_range = link["rowspan"]?.first{
-                    opac_reserv_list.append((no_num,String(opac_reserv_range)))
-                }
-                else if !(link.toXML?.contains("/th") ?? false){
-                    kensu_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
-                    no_num += 1
-                }
-            }
-            print(no_List)
-            print(kango_List)
-            print(haichiba_List)
-            print(siryoid_List)
-            print(seikyu_list)
-            print(jyoutai_list)
-            print(fulldate_list)
-            print(kensu_list)
-            print(opacCatdhl_list)
-            print(opac_reserv_list)
-            print(no_List.count)
-            print(kango_List.count)
-            print(haichiba_List.count)
-            print(siryoid_List.count)
-            print(seikyu_list.count)
-            print(jyoutai_list.count)
-            print(fulldate_list.count)
-            print(kensu_list.count)
-        })
-    }
-    static var lendtl_Oneviewparse = {(testscr:HTMLDocument?) -> [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] in
-        var templist:[String] = []
-        var SearchPartResult : [(BibliographyID:String,brank:String,CatalogueType:String,Biblioinfo:String,brank2:String,Author:String)] = []
-        for link in testscr!.css(".nobr .info,.flst_frame .lst_value,.fdtl_hdl_frame .hdl_main,.fdtl_hdl_frame .hdl_sub"){
-            var c = link.text!
-            if let a = c.capture(pattern: "<(\\w+)>", group: 1){//ここ確率要素
-                templist += [a.trimmingCharacters(in: .whitespacesAndNewlines)]
-                if let b = c.range(of:"<\(a)>"){
-                    c.removeSubrange(b)
-                    templist += [c.trimmingCharacters(in: .whitespacesAndNewlines)]
-                }
+            if testfi.contains("書誌詳細") || testfi.contains("Bibliography Details"){
+                let detailstruct = self.Detailparser(testscr)
+                createList([detailstruct.book_title ?? ""],[detailstruct.Auther ?? ""],[detailstruct.BibliographyID ?? ""],[detailstruct.opacIcon ?? ""])
             }
             else{
-                templist += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+                for link in testscr!.css(".opac_book_title"){
+                    book_title_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+                }
+                for link in testscr!.css(".opac_book_bibliograph"){
+                    book_Auther_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+                }
+                for link in testscr!.css(".opac_list [name='bibid']"){
+                    BibliographyID_List += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
+                }
+                for link in testscr!.css(".opac_icon_bookind"){
+                    Biblio_image_List += [link["src"]?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                }
+            }
+            createList(book_title_List,book_Auther_List,BibliographyID_List,Biblio_image_List)
+        })
+    }
+    
+    struct Detailstruct {
+        var no_List:[String] = []
+        var kango_List:[String] = []
+        var haichiba_List:[String] = []
+        var MaterialID_List:[String] = []
+        var seikyu_list:[String] = []
+        var jyoutai_list:[String] = []
+        var fulldate_list:[String] = []
+        var kensu_list:[String] = []
+        var orderRSV:[String] = []
+        var yoyaku_list:[(startindex:Int,rangeindex:Int,orderRSV:String)] = []
+        var isbn:Int?
+        var BibliographyID:String?
+        var book_title:String?
+        var Auther:String?
+        var opacIcon:String?
+    }
+    func fetch_main_catdbl(createList: @escaping (Detailstruct) -> Void,MaterialID:String? = nil){
+        if let safe_materialID = MaterialID{
+            Libdatafetch.searchdataDB["op_param"] = "lenid=\(safe_materialID)"
+            urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.searchdataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
+                let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+                let testscr = try? HTML(html: testfi, encoding: .utf8)
+                createList(self.Detailparser(testscr))
+            })
+        }
+        else{
+            urlSessionGetClient.get(url: "https://libportal.lib.tmu.ac.jp/index.php", queryItems: Libdatafetch.detaildataDB,completion: {data in
+                let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+                let testscr = try? HTML(html: testfi, encoding: .utf8)
+                createList(self.Detailparser(testscr))
+            })
+        }
+    }
+    var Detailparser = {(testscr:HTMLDocument?) -> Detailstruct in
+        var detailnum =  Detailstruct()
+        var opac_reserv_list:[Int:Int] = [:]
+        var no_num :Int = 0
+        let haichiba_JS = "\n<!--\n.haichiba{\nwidth:200px !important;\n}\n-->"
+        let kango_JS = "<!--\n.haichiba{\nwidth:50px !important;\n}\n-->"
+        for link in testscr!.css(".no"){
+            if !(link.toXML?.contains("/th") ?? false){
+                detailnum.no_List += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                detailnum.orderRSV += [link.css("a").first?["onclick"]?.capture(pattern: "(HL\\d{8,})", group: 1) ?? ""]
             }
         }
-        SearchPartResult.append((templist[2],templist[3],templist[0],templist[1],templist[3],templist[3]))
-
-        return SearchPartResult
+        for link in testscr!.css(".kango"){
+            if var kangoStr = link.text?.trimmingCharacters(in: .whitespacesAndNewlines){
+                if let range = kangoStr.range(of: kango_JS) {
+                    kangoStr.removeSubrange(range)
+                    detailnum.kango_List += [kangoStr.trimmingCharacters(in: .whitespacesAndNewlines)]
+                }
+                else if kangoStr.contains("haichiba"){
+                    detailnum.kango_List += [""]
+                }
+            }
+        }
+        for link in testscr!.css("[style='text-align: left !important;']"){
+            if var haichibaStr = link.text?.trimmingCharacters(in: .whitespacesAndNewlines){
+                if let range = haichibaStr.range(of: haichiba_JS) {
+                    haichibaStr.removeSubrange(range)//ここ正規表現したい
+                    detailnum.haichiba_List += [haichibaStr.trimmingCharacters(in: .whitespacesAndNewlines)]
+                }
+                else if haichibaStr.contains("haichiba"){
+                    detailnum.haichiba_List += [""]
+                }
+            }
+        }
+        for link in testscr!.css(".siryoid"){
+            if !(link.toXML?.contains("/th") ?? false){
+                detailnum.MaterialID_List += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+            }
+        }
+        for link in testscr!.css(".seikyu"){
+            if !(link.toXML?.contains("/th") ?? false){
+                detailnum.seikyu_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+            }
+        }
+        for link in testscr!.css(".jyoutai"){
+            if !(link.toXML?.contains("/th") ?? false){
+                detailnum.jyoutai_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+            }
+        }
+        for link in testscr!.css(".fulldate"){
+            if !(link.toXML?.contains("/th") ?? false){
+                detailnum.fulldate_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+            }
+        }
+        for link in testscr!.css(".kensu"){
+            if let opac_reserv_range = link["rowspan"]?.first, let int_range = Int(String(opac_reserv_range)){
+                opac_reserv_list.updateValue(int_range, forKey: no_num)
+                print(opac_reserv_list)
+            }
+            else if !(link.toXML?.contains("/th") ?? false){
+                detailnum.kensu_list += [link.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+                no_num += 1
+            }
+        }
+        if !(opac_reserv_list.isEmpty){
+            for list in opac_reserv_list{
+                detailnum.yoyaku_list += [(startindex:list.key,rangeindex:list.value,orderRSV:detailnum.orderRSV[list.key - 1])]
+            }
+        }
+        if let isbnstr = testscr!.css("[name=isbn_issn]").first?["value"]?.trimmingCharacters(in: .whitespacesAndNewlines){
+            detailnum.isbn = Int(isbnstr)
+        }
+        detailnum.book_title = testscr!.css(".opac_book_title").first?.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        detailnum.Auther = testscr!.css(".opac_book_bibliograph").first?.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        detailnum.BibliographyID = testscr!.css("#orderRSV_Form_296catdbl [name=bibid]").first?["value"]
+        detailnum.opacIcon = testscr!.css(".opac_icon_bookind").first?["src"]
+        print("no_List:\(detailnum.no_List)")
+        print("kango_List:\(detailnum.kango_List)")
+        print("haichiba_List:\(detailnum.haichiba_List)")
+        print("MaterialID_List:\(detailnum.MaterialID_List)")
+        print("seikyu_list:\(detailnum.seikyu_list)")
+        print("jyoutai_list:\(detailnum.jyoutai_list)")
+        print("fulldate_list:\(detailnum.fulldate_list)")
+        print("kensu_list:\(detailnum.kensu_list)")
+        print("orderRSV:\(detailnum.orderRSV)")
+        print("opac_reserv_list:\(opac_reserv_list)")
+        print("yoyaku_list:\(detailnum.yoyaku_list)")
+        print("isbn:\(detailnum.isbn)")
+        print("BibliographyID:\(detailnum.BibliographyID)")
+        print(detailnum.no_List.count)
+        print(detailnum.kango_List.count)
+        print(detailnum.haichiba_List.count)
+        print(detailnum.MaterialID_List.count)
+        print(detailnum.seikyu_list.count)
+        print(detailnum.jyoutai_list.count)
+        print(detailnum.fulldate_list.count)
+        print(detailnum.kensu_list.count)
+        return detailnum
     }
 }
