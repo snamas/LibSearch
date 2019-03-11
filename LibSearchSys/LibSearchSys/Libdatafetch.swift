@@ -74,6 +74,7 @@ class Libdatafetch{
         "page_id": "15",
         "module_id": "61"
     ]
+    static var asklstDB : [String:String] = ["listpos": "2","sortkey": "lmtdt/ASC"]
     static var yoyakuDB : [String:String] = [
         "bibid": "",
         "cattp": "BB",
@@ -102,6 +103,7 @@ class Libdatafetch{
     BibliographyID <- BB02166022とか
     MaterialID <- 10003899330とか
     orderRSV <- HL03351626とか
+    Biblioinfo <- 本のタイトルと著者名が合わさったやつ
     */
     
     var loginDB = [
@@ -201,20 +203,33 @@ class Libdatafetch{
         var Auther:String?
         var opacIcon:String?
     }
-    func fetch_main_catdbl(createList: @escaping (Detailstruct) -> Void,MaterialID:String? = nil){
-        if let safe_materialID = MaterialID{
-            Libdatafetch.searchdataDB["op_param"] = "lenid=\(safe_materialID)"
-            urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.searchdataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
-                let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-                let testscr = try? HTML(html: testfi, encoding: .utf8)
-                createList(self.Detailparser(testscr))
-            })
-        }
-        else{
-            urlSessionGetClient.get(url: "https://libportal.lib.tmu.ac.jp/index.php", queryItems: Libdatafetch.detaildataDB,completion: {data in
-                let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-                let testscr = try? HTML(html: testfi, encoding: .utf8)
-                createList(self.Detailparser(testscr))
+    func fetch_main_catdbl(createList: @escaping (Detailstruct) -> Void){
+        urlSessionGetClient.get(url: "https://libportal.lib.tmu.ac.jp/index.php", queryItems: Libdatafetch.detaildataDB,completion: {data in
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            createList(self.Detailparser(testscr))
+        })
+    }
+    func fetch_usestate_detail(listpos:String? = nil,sortkey:String? = nil,useURL:String? = nil,createList: @escaping (String?,String?) -> Void){
+        if let safe_listpos = listpos,let safe_sortkey = sortkey,let safe_URL = useURL{
+            urlSessionGetClient.post(url: safe_URL, parameters:[
+                "listpos": safe_listpos,
+                "sortkey": safe_sortkey,
+                "startpos": "0",//そのページが何件目からか入るか
+                "hitcnt": "0",//ここに件数が入る。ex)借りたものが9冊あったら９になる
+                "listcnt": "0"//読み込み最大件数
+                ],completion: {data in
+                    var BibliographyID:String? = nil
+                    var Biblioinfo:String? = nil
+                    let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+                    let testscr = try? HTML(html: testfi, encoding: .utf8)
+                    if let bibDtl = testscr!.css("[href^='JavaScript:bibDtl']").first{
+                        Biblioinfo = bibDtl.text
+                        BibliographyID = bibDtl["href"]?.capture(pattern: "(BB\\d+)", group: 1)
+                    }
+                    print(Biblioinfo)
+                    print(BibliographyID)
+                    createList(BibliographyID,Biblioinfo)
             })
         }
     }

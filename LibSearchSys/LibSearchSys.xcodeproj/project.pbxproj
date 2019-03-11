@@ -27,6 +27,7 @@
 		D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D173223E220F09F700C4ACE4 /* DetailResultView.swift */; };
 		D1775258221030410005E4BF /* MainLibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1775257221030410005E4BF /* MainLibViewController.swift */; };
 		D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B6220BDBD300B52966 /* LendTableViewController.swift */; };
+		D1ED57012236232400FBBA3C /* PurchaseRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		D173223E220F09F700C4ACE4 /* DetailResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailResultView.swift; sourceTree = "<group>"; };
 		D1775257221030410005E4BF /* MainLibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLibViewController.swift; sourceTree = "<group>"; };
 		D18355B6220BDBD300B52966 /* LendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LendTableViewController.swift; sourceTree = "<group>"; };
+		D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRequestTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +175,7 @@
 				D13D7F52220E872C00E841F6 /* ResultTableView.swift */,
 				D1775257221030410005E4BF /* MainLibViewController.swift */,
 				D151C66722118CE500F4838B /* RefineViewController.swift */,
+				D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */,
 				D14F1AAB2209701D00F3C2BA /* FetchfromURL.swift in Sources */,
 				D14F1A8222096D5200F3C2BA /* LibSearchSys.xcdatamodeld in Sources */,
+				D1ED57012236232400FBBA3C /* PurchaseRequestTableViewController.swift in Sources */,
 				D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */,
 				D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */,
 				D151C66822118CE500F4838B /* RefineViewController.swift in Sources */,

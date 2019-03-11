@@ -11,12 +11,12 @@ class DetailResultView: UITableViewController {
     var LibData = Libdatafetch()
     private var mysection = ["","配架場所"]
     var data:(BibliographyID:String,opacIcon:String,book_title:String,Author:String)?
-    var data_from_asklst:(MaterialID:String,Biblioinfo:String)?
+    var data_from_asklst:(useID:String,Biblioinfo:String,sortkey:String,listpos:String,useURL:String)?
     var BookImage:UIImage?
     let urlSessionGetClient = URLSessionGetClient()
     var DetailResult : [(No:String, kango:String,haichiba:String,seikyu:String,MaterialID:String,Status:String,DueDate:String,yoyakukensu:String)] = []
     var yoyaku_list :[(startindex:Int,rangeindex:Int,orderRSV:String)]?
-    func fetch_catdbl(materialID:String? = nil){
+    func fetch_catdbl(){
         if let safe_bibid = data?.BibliographyID{
             Libdatafetch.detaildataDB["bibid"] = safe_bibid
         }
@@ -36,11 +36,7 @@ class DetailResultView: UITableViewController {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-            if let _ = materialID {
-                self.DetailResult = []
-                self.fetch_catdbl()
-            }
-        },MaterialID: materialID)
+        })
     }//SB00057540ここ例外
     
     func fetch_image(fetchurl:String){
@@ -59,8 +55,16 @@ class DetailResultView: UITableViewController {
             Libdatafetch.detaildataDB["bibid"] = safe_bibid
             fetch_catdbl()
         }
-        else if let safe_materialID = data_from_asklst?.MaterialID{
-            fetch_catdbl(materialID: safe_materialID)
+        else if let safe_asklst = data_from_asklst{
+            //ここに利用状況一覧から入る特殊検索を実行する。
+            LibData.fetch_usestate_detail(listpos: data_from_asklst?.listpos,sortkey: data_from_asklst?.sortkey,useURL: data_from_asklst?.useURL,createList: {
+                BibliographyID,Biblioinfo in
+                if let safe_bibid = BibliographyID{
+                    Libdatafetch.detaildataDB["bibid"] = safe_bibid
+                    self.fetch_catdbl()
+                }
+                
+            })
         }
     }
     
@@ -170,4 +174,11 @@ class DetailResultView: UITableViewController {
  locale: ja
  ufisso_param: 64d4fdde232a8a077d7ae812c1cb5ff3|17e90616e62982358e3ad4e56444ca6a|nc2op
 
+ lenupd.do post
+ startpos: 1
+ listpos: 1
+ sortkey: lmtdt/ASC
+ hitcnt: 9
+ listcnt: 10
+ lenidlist:
  */
