@@ -1,30 +1,40 @@
 //
-//  LendTableViewController.swift
+//  ReservationTableViewController.swift
 //  LibSearchSys
 //
-//  Created by yuto on 2019/02/07.
+//  Created by yuto on 2019/03/12.
 //
+
 import UIKit
 
-class LendTableViewController: UITableViewController {
-    var lendlist:[(number:String,crick:String,Status:String,LendLib:String,LendDD:String,Lendingdate:String,Status:String,Biblioinfo:String,MaterialID:String)] = []
+class ReservationTableViewController: UITableViewController {
+    var svclist:[(number:String,crick:String,Status:String,AppliedLib:String,OrderGroupNo:String,ReservationseqNo:String,RecvDate_Due:String,Biblioinfo:String)] = []
+    var SurviceIDList : [Int:String] = [:]
+    var partIDList: [String] = []
     let LibData = Libdatafetch()
-    func fetch_lenlst(){
-        LibData.fetch_anylist(useURL_do:"lenlst.do",useCSS: "lenidlist",createList:{useStateList,lenidlist in
-            if useStateList.count != 0 && lenidlist.count != 0 && useStateList.count % 8 == 0 && useStateList.count/8 == lenidlist.count{
+    func fetch_svclst(){
+        LibData.fetch_anylist(useURL_do:"rsvlst.do",useCSS: "svcidlist",createList:{useStateList,svcidlist in
+            if useStateList.count != 0 && useStateList.count % 8 == 0{
                 for i in stride(from:0,to:useStateList.count,by:8){
-                    self.lendlist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],useStateList[5+i],useStateList[6+i],useStateList[7+i],lenidlist[i/8]))
+                    self.svclist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],useStateList[5+i],useStateList[6+i],useStateList[7+i]))
                 }
             }
+            self.partIDList = svcidlist
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-            print(self.lendlist)
+            print(useStateList,svcidlist)
+        },exDelegate:{checkbox_list in
+            if !(self.partIDList.isEmpty || checkbox_list.isEmpty) && self.partIDList.count == checkbox_list.count{
+                for i in 0..<checkbox_list.count{
+                    self.SurviceIDList.updateValue(self.partIDList[i], forKey: checkbox_list[i])
+                }
+            }
         })
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.fetch_lenlst()
+        fetch_svclst()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -42,25 +52,35 @@ class LendTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return lendlist.count
+        return svclist.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "lendCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "rvcCell", for: indexPath)
         
-        if !self.lendlist.isEmpty{
-            let webdata = self.lendlist[indexPath.row]
+        if !self.svclist.isEmpty{
+            let webdata = self.svclist[indexPath.row]
             cell.textLabel?.text = webdata.Biblioinfo
-            cell.detailTextLabel?.text = "\(webdata.Lendingdate)->\(webdata.LendDD)"
+            cell.detailTextLabel?.text = "\(webdata.Status)->\(webdata.AppliedLib)"
         }
-        // Configure the cell...
-
+        
+        // Configure the cell...rvcCell
         return cell
     }
-
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "DetailBooksSegue"{
+            if let indexPath = self.tableView.indexPathForSelectedRow{
+                let webData = svclist[indexPath.row]
+                let newlist = (useID:LibData.use_ID_when_checkbox_isdisappear(SurviceIDList,indexPath.row),Biblioinfo:webData.Biblioinfo,sortkey:"grpnm/DESC",listpos:webData.number,useURL:"https://tmuopac.lib.tmu.ac.jp/webopac/rsvdtl.do")
+                (segue.destination as! DetailResultView).data_from_asklst = newlist
+            }
+        }
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -96,21 +116,14 @@ class LendTableViewController: UITableViewController {
     }
     */
 
-    
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "DetailBooksSegue"{
-            if let indexPath = self.tableView.indexPathForSelectedRow{
-                let webData = lendlist[indexPath.row]
-                let newlist = (useID:webData.MaterialID,Biblioinfo:webData.Biblioinfo,sortkey:"lmtdt/ASC",listpos:webData.number,useURL:"https://tmuopac.lib.tmu.ac.jp/webopac/lendtl.do")
-                (segue.destination as! DetailResultView).data_from_asklst = newlist
-            }
-        }
     }
- 
+    */
+
 }

@@ -139,22 +139,38 @@ class Libdatafetch{
         })
         
     }
-    func fetch_lenlst(createList: @escaping ([String],[String]) -> Void){
-        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/lenlst.do",completion: {data in
+    //ここ利用状況一覧の各項目に適用
+    func fetch_anylist(useURL_do:String,useCSS:String,createList: @escaping ([String],[String]) -> Void,exDelegate: @escaping ([Int]) -> Void = {checkbox_list in print(checkbox_list)}){
+        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/\(useURL_do)",completion: {data in
             var useStateList:[String] = []
-            var lenidlist:[String] = []
+            var anyidlist:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
+            var no = 0
+            var checkbox_list:[Int] = []
             for link in testscr!.css(".opac_data_list_ex td"){
                 useStateList += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+                if link.toHTML?.contains("mark") ?? false{
+                    if link.toHTML?.contains("checkbox") ?? false{
+                        checkbox_list += [no]
+                    }
+                    no += 1
+                }
             }
-            for link in testscr!.css("[name='lenidlist']"){
-                lenidlist += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            for link in testscr!.css("[name='\(useCSS)']"){
+                anyidlist += [link["value"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
             }
-            print(useStateList)
-            createList(useStateList,lenidlist)
+            createList(useStateList,anyidlist)
+            exDelegate(checkbox_list)
         })
     }
+    var use_ID_when_checkbox_isdisappear:([Int:String],Int) -> String = {
+        SurviceIDList,selectnum in
+        if SurviceIDList.isEmpty {return ""}
+        let filterd = SurviceIDList.filter {$0.key >= selectnum}
+        return filterd.first?.value ?? ""
+    }
+    //通常検索
     func fetch_indexofsearch(createList: @escaping ([String],[String],[String],[String]) -> Void){
         Libdatafetch.searchdataDB["op_param"] = Libdatafetch.op_param(Libdatafetch.ctlsrhformDB)
         urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.searchdataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
@@ -210,6 +226,7 @@ class Libdatafetch{
             createList(self.Detailparser(testscr))
         })
     }
+    //利用状況から入った場合の詳細画面
     func fetch_usestate_detail(listpos:String? = nil,sortkey:String? = nil,useURL:String? = nil,createList: @escaping (String?,String?) -> Void){
         if let safe_listpos = listpos,let safe_sortkey = sortkey,let safe_URL = useURL{
             urlSessionGetClient.post(url: safe_URL, parameters:[

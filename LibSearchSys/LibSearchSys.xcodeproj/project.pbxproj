@@ -27,6 +27,7 @@
 		D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D173223E220F09F700C4ACE4 /* DetailResultView.swift */; };
 		D1775258221030410005E4BF /* MainLibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1775257221030410005E4BF /* MainLibViewController.swift */; };
 		D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B6220BDBD300B52966 /* LendTableViewController.swift */; };
+		D1B84FD02237E74A0059E8F7 /* ReservationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */; };
 		D1ED57012236232400FBBA3C /* PurchaseRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		D173223E220F09F700C4ACE4 /* DetailResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailResultView.swift; sourceTree = "<group>"; };
 		D1775257221030410005E4BF /* MainLibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLibViewController.swift; sourceTree = "<group>"; };
 		D18355B6220BDBD300B52966 /* LendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LendTableViewController.swift; sourceTree = "<group>"; };
+		D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationTableViewController.swift; sourceTree = "<group>"; };
 		D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRequestTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,6 +178,7 @@
 				D1775257221030410005E4BF /* MainLibViewController.swift */,
 				D151C66722118CE500F4838B /* RefineViewController.swift */,
 				D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */,
+				D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				D1ED57012236232400FBBA3C /* PurchaseRequestTableViewController.swift in Sources */,
 				D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */,
 				D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */,
+				D1B84FD02237E74A0059E8F7 /* ReservationTableViewController.swift in Sources */,
 				D151C66822118CE500F4838B /* RefineViewController.swift in Sources */,
 				D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */,
 				D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */,

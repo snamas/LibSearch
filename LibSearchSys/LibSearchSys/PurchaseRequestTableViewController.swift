@@ -8,10 +8,26 @@
 import UIKit
 
 class PurchaseRequestTableViewController: UITableViewController {
-
+    var odrlist:[(number:String,crick:String,Status:String,RequestLib:String,Requestdate:String,Biblioinfo:String,OrderID:String)] = []
+    let LibData = Libdatafetch()
+    func fetch_ordlst(){
+        LibData.fetch_anylist(useURL_do:"odrlst.do",useCSS: "odridlist", createList:{useStateList,odridlist in
+            if useStateList.count != 0 && odridlist.count != 0 && useStateList.count % 6 == 0 && useStateList.count/6 == odridlist.count{
+                for i in stride(from:0,to:useStateList.count,by:8){
+                    self.odrlist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],useStateList[5+i],odridlist[i/8]))
+                }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            print(self.odrlist)
+        })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.fetch_ordlst()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -23,23 +39,29 @@ class PurchaseRequestTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return odrlist.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
         // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ordCell", for: indexPath)
+        
+        if !self.odrlist.isEmpty{
+            let webdata = self.odrlist[indexPath.row]
+            cell.textLabel?.text = webdata.Biblioinfo
+            cell.detailTextLabel?.text = "\(webdata.Status)->\(webdata.Requestdate)"
+        }
+        
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -85,5 +107,15 @@ class PurchaseRequestTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+        if segue.identifier == "DetailBooksSegue"{
+            if let indexPath = self.tableView.indexPathForSelectedRow{
+                let webData = odrlist[indexPath.row]
+                let newlist = (useID:webData.OrderID,Biblioinfo:webData.Biblioinfo,sortkey:"odrst/DESC",listpos:webData.number,useURL:"https://tmuopac.lib.tmu.ac.jp/webopac/odrdtl.do")
+                (segue.destination as! DetailResultView).data_from_asklst = newlist
+            }
+        }
+    }
 }
