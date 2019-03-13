@@ -11,6 +11,7 @@
 		909029738B04E89F41A4CEFE /* Pods_LibSearchSysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE5F6957C9A78799C2B59FBE /* Pods_LibSearchSysUITests.framework */; };
 		B83425C3340C8CCF954BAE6B /* Pods_LibSearchSysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB8EF64F9A25020AF0B3EE /* Pods_LibSearchSysTests.framework */; };
 		D13D7F53220E872C00E841F6 /* ResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13D7F52220E872C00E841F6 /* ResultTableView.swift */; };
+		D14238672238BD5C0023180F /* BorrowinghistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */; };
 		D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1A7922096D5200F3C2BA /* AppDelegate.swift */; };
 		D14F1A7C22096D5200F3C2BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1A7B22096D5200F3C2BA /* ViewController.swift */; };
 		D14F1A7F22096D5200F3C2BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D14F1A7D22096D5200F3C2BA /* Main.storyboard */; };
@@ -59,6 +60,7 @@
 		BE5F6957C9A78799C2B59FBE /* Pods_LibSearchSysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibSearchSysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1EE266281C6B324E00BB5C /* Pods_LibSearchSys.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibSearchSys.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D13D7F52220E872C00E841F6 /* ResultTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableView.swift; sourceTree = "<group>"; };
+		D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowinghistoryTableViewController.swift; sourceTree = "<group>"; };
 		D14F1A7622096D5200F3C2BA /* LibSearchSys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibSearchSys.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D14F1A7922096D5200F3C2BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D14F1A7B22096D5200F3C2BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				D151C66722118CE500F4838B /* RefineViewController.swift */,
 				D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */,
 				D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */,
+				D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D14238672238BD5C0023180F /* BorrowinghistoryTableViewController.swift in Sources */,
 				D1775258221030410005E4BF /* MainLibViewController.swift in Sources */,
 				D13D7F53220E872C00E841F6 /* ResultTableView.swift in Sources */,
 				D14F1A7C22096D5200F3C2BA /* ViewController.swift in Sources */,

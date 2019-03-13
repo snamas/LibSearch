@@ -34,12 +34,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
                 }
             }
             self.page += 50
-            if book_title_List.isEmpty{
-                self.loadstatus = "full"
-            }
-            else{
-                self.loadstatus = "Ready"//クライアントエラーが発生した場合、二度とその先が読み込めなくなる。
-            }
+            self.loadstatus = book_title_List.isEmpty ? "full":"Ready"//クライアントエラーが発生した場合、二度とその先が読み込めなくなる。
             for imagepart in opacIcon_List {
                 self.urlSessionGetClient.get(url: imagepart, completion: { data in
                     self.image_list.append(UIImage(data: data) ?? UIImage(named: "book")!)
@@ -95,6 +90,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath)
+        //ここいる？
         if !self.SearchResultList.isEmpty{
             let webdata = self.SearchResultList[indexPath.row]
             cell.textLabel?.text = webdata.book_title

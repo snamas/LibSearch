@@ -16,7 +16,9 @@ class DetailResultView: UITableViewController {
     let urlSessionGetClient = URLSessionGetClient()
     var DetailResult : [(No:String, kango:String,haichiba:String,seikyu:String,MaterialID:String,Status:String,DueDate:String,yoyakukensu:String)] = []
     var yoyaku_list :[(startindex:Int,rangeindex:Int,orderRSV:String)]?
+    var page:Int = 1//BB00283652で10以上の所蔵館かがあるとその先が表示されない。
     func fetch_catdbl(){
+        Libdatafetch.detailurl["stposHol"] = String(self.page)
         if let safe_bibid = data?.BibliographyID{
             Libdatafetch.detaildataDB["bibid"] = safe_bibid
         }
@@ -26,19 +28,22 @@ class DetailResultView: UITableViewController {
                 self.DetailResult.append((detailnum.no_List[i],detailnum.kango_List[i],detailnum.haichiba_List[i],detailnum.seikyu_list[i],detailnum.MaterialID_List[i],detailnum.jyoutai_list[i],detailnum.fulldate_list[i],detailnum.kango_List[i]))
                 }
             }
-            self.yoyaku_list = detailnum.yoyaku_list
-            if let isbn = detailnum.isbn{
+            self.yoyaku_list = detailnum.yoyaku_list//ここBB00283652で改良が必要
+            if let isbn = detailnum.isbn,self.page == 1{
                 self.fetch_image(fetchurl: "https://www.hanmoto.com/bd/img/\(isbn).jpg")
             }
-            if let safe_bibid = detailnum.BibliographyID,let safe_icon = detailnum.opacIcon,let safe_title = detailnum.book_title,let safe_auther = detailnum.Auther{
+            if let safe_bibid = detailnum.BibliographyID,let safe_icon = detailnum.opacIcon,let safe_title = detailnum.book_title,let safe_auther = detailnum.Auther,self.page == 1{
                 self.data = (safe_bibid,safe_icon,safe_title,safe_auther)
+            }
+            self.page += 10
+            if !detailnum.fulldate_list.isEmpty{
+                self.fetch_catdbl()
             }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         })
     }//SB00057540ここ例外
-    
     func fetch_image(fetchurl:String){
         urlSessionGetClient.get(url: fetchurl, completion: { data in
             self.BookImage = UIImage(data: data)
@@ -139,6 +144,7 @@ class DetailResultView: UITableViewController {
                 cell.textLabel?.text = "配架場所はありません"//下位図書が存在する可能性
                 cell.detailTextLabel?.text = ""
             }
+            cell.imageView?.image = nil
         }
         // Configure the cell...
         return cell

@@ -44,21 +44,28 @@ class Libdatafetch{
     "maxcnt": "5000",
     "startpos": "1"//ここに先頭に来るNo.の値を入れる。二項目目なら５１、3項目目なら１０１など
     ]
-    static var op_param = {([String:String]) -> String in
+    static var toURLparam = {(paramform:[String:String]) -> String in
         let urlSessionGetClient = URLSessionGetClient()
-        return String(urlSessionGetClient.buildUrl(base: "", namedValues: Libdatafetch.ctlsrhformDB).dropFirst())
+        return String(urlSessionGetClient.buildUrl(base: "", namedValues: paramform).dropFirst())
     }
+    static var detailurl:[String:String] = [
+        "initFlg":"_RESULT_SET_ATY",
+        "stposHol":"1",//開始位置
+        "listcntHol":"10",//取得数
+        "releaseHolFlg":"false",
+        "startpos":"-1",
+        "hitcnt":"1"
+    ]
     static var searchdataDB : [String:String] = [
         "tab_num":"0",
         "action":"v3search_action_main_opac",
         "search_mode":"null",
-        "op_param":op_param(Libdatafetch.ctlsrhformDB),
+        "op_param":toURLparam(Libdatafetch.ctlsrhformDB),
         "block_id":"296",
         "page_id": "15",
         "module_id": "61"
     ]
     static var detaildataDB : [String:String] = [
-        "tab_num":"0",
         "action":"v3search_view_main_catdbl",
         "bibid": "BB02152052",
         "block_id":"296",
@@ -74,7 +81,6 @@ class Libdatafetch{
         "page_id": "15",
         "module_id": "61"
     ]
-    static var asklstDB : [String:String] = ["listpos": "2","sortkey": "lmtdt/ASC"]
     static var yoyakuDB : [String:String] = [
         "bibid": "",
         "cattp": "BB",
@@ -140,8 +146,8 @@ class Libdatafetch{
         
     }
     //ここ利用状況一覧の各項目に適用
-    func fetch_anylist(useURL_do:String,useCSS:String,createList: @escaping ([String],[String]) -> Void,exDelegate: @escaping ([Int]) -> Void = {checkbox_list in print(checkbox_list)}){
-        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/\(useURL_do)",completion: {data in
+    func fetch_anylist(useQuery:[String:String]? = nil,useURL_do:String,useCSS:String,createList: @escaping ([String],[String]) -> Void,exDelegate: @escaping ([Int]) -> Void = {checkbox_list in print(checkbox_list)}){
+        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/\(useURL_do)",queryItems:useQuery,completion: {data in
             var useStateList:[String] = []
             var anyidlist:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
@@ -172,7 +178,7 @@ class Libdatafetch{
     }
     //通常検索
     func fetch_indexofsearch(createList: @escaping ([String],[String],[String],[String]) -> Void){
-        Libdatafetch.searchdataDB["op_param"] = Libdatafetch.op_param(Libdatafetch.ctlsrhformDB)
+        Libdatafetch.searchdataDB["op_param"] = Libdatafetch.toURLparam(Libdatafetch.ctlsrhformDB)
         urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.searchdataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
             var book_title_List:[String] = []
             var book_Auther_List:[String] = []
@@ -220,10 +226,12 @@ class Libdatafetch{
         var opacIcon:String?
     }
     func fetch_main_catdbl(createList: @escaping (Detailstruct) -> Void){
+        Libdatafetch.detaildataDB["url"] = "&" + Libdatafetch.toURLparam(Libdatafetch.detailurl)
         urlSessionGetClient.get(url: "https://libportal.lib.tmu.ac.jp/index.php", queryItems: Libdatafetch.detaildataDB,completion: {data in
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
             createList(self.Detailparser(testscr))
+            print(Libdatafetch.detaildataDB)
         })
     }
     //利用状況から入った場合の詳細画面
