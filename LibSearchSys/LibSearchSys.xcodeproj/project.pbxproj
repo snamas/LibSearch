@@ -24,6 +24,7 @@
 		D14F1AAF220984A900F3C2BA /* testhtm.html in Resources */ = {isa = PBXBuildFile; fileRef = D14F1AAE220984A900F3C2BA /* testhtm.html */; };
 		D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */; };
 		D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1AB22209958F00F3C2BA /* StringExt.swift */; };
+		D15108FC223A1AE80081076B /* BookmarkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D15108FB223A1AE80081076B /* BookmarkTableViewController.swift */; };
 		D151C66822118CE500F4838B /* RefineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D151C66722118CE500F4838B /* RefineViewController.swift */; };
 		D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D173223E220F09F700C4ACE4 /* DetailResultView.swift */; };
 		D1775258221030410005E4BF /* MainLibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1775257221030410005E4BF /* MainLibViewController.swift */; };
@@ -79,6 +80,7 @@
 		D14F1AAE220984A900F3C2BA /* testhtm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = testhtm.html; sourceTree = "<group>"; };
 		D14F1AB022098CE500F3C2BA /* Libdatafetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Libdatafetch.swift; sourceTree = "<group>"; };
 		D14F1AB22209958F00F3C2BA /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
+		D15108FB223A1AE80081076B /* BookmarkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkTableViewController.swift; sourceTree = "<group>"; };
 		D151C66722118CE500F4838B /* RefineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefineViewController.swift; sourceTree = "<group>"; };
 		D173223E220F09F700C4ACE4 /* DetailResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailResultView.swift; sourceTree = "<group>"; };
 		D1775257221030410005E4BF /* MainLibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLibViewController.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */,
 				D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */,
 				D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */,
+				D15108FB223A1AE80081076B /* BookmarkTableViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */,
 				D1B84FD02237E74A0059E8F7 /* ReservationTableViewController.swift in Sources */,
 				D151C66822118CE500F4838B /* RefineViewController.swift in Sources */,
+				D15108FC223A1AE80081076B /* BookmarkTableViewController.swift in Sources */,
 				D14F1AB122098CE500F3C2BA /* Libdatafetch.swift in Sources */,
 				D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */,
 			);

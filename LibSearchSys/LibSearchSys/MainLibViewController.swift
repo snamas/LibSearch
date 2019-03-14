@@ -51,7 +51,7 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let a = searchBar.text{
-            Libdatafetch.ctlsrhformDB["words"] = a
+            Libdatafetch.staticformDB["words"] = a
         }
         LibSearchBar.endEditing(true)
         LibSearchBar.showsCancelButton = false

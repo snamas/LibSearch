@@ -9,7 +9,9 @@ import Foundation
 class Libdatafetch{
     var libserchURL = "https://www.opac.lib.tmu.ac.jp/webopac/"
     let urlSessionGetClient = URLSessionGetClient()
-    static var ctlsrhformDB = [
+    var formkeyno:String?
+    static var staticformDB:[String:String] = ["words": "論文の"]//検索ワード,9784478105344
+    var ctlsrhformDB = [
     "fromDsp": "catsrd",
     "searchDsp": "catsrd",
     "initFlg": "_RESULT_SET_NOTBIB",//_RESULT_SET_NOTBIB　に設定すると2項目目以降も取得できる。
@@ -60,7 +62,14 @@ class Libdatafetch{
         "tab_num":"0",
         "action":"v3search_action_main_opac",
         "search_mode":"null",
-        "op_param":toURLparam(Libdatafetch.ctlsrhformDB),
+        "block_id":"296",
+        "page_id": "15",
+        "module_id": "61"
+    ]
+    static var refinedataDB: [String:String] = [
+        "action":"v3search_action_main_ajax",
+        "target": "opac",
+        "url": "/catfct.do?block_id=_296&tab_num=0",
         "block_id":"296",
         "page_id": "15",
         "module_id": "61"
@@ -178,7 +187,10 @@ class Libdatafetch{
     }
     //通常検索
     func fetch_indexofsearch(createList: @escaping ([String],[String],[String],[String]) -> Void){
-        Libdatafetch.searchdataDB["op_param"] = Libdatafetch.toURLparam(Libdatafetch.ctlsrhformDB)
+        _ = Libdatafetch.staticformDB.map {
+            self.ctlsrhformDB.updateValue($0.value, forKey: $0.key)
+        }
+        Libdatafetch.searchdataDB["op_param"] = Libdatafetch.toURLparam(self.ctlsrhformDB)
         urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.searchdataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
             var book_title_List:[String] = []
             var book_Auther_List:[String] = []
@@ -203,11 +215,56 @@ class Libdatafetch{
                 for link in testscr!.css(".opac_icon_bookind"){
                     Biblio_image_List += [link["src"]?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
                 }
+                self.formkeyno = testscr!.css("[name=formkeyno]").first?["value"]
+                createList(book_title_List,book_Auther_List,BibliographyID_List,Biblio_image_List)
             }
-            createList(book_title_List,book_Auther_List,BibliographyID_List,Biblio_image_List)
         })
     }
-    
+    //検索画面の絞り込み検索
+    func fetch_refineview(createList: @escaping () -> Void = {}){
+        Libdatafetch.refinedataDB["url"] = "/catfct.do?block_id=_296&tab_num=0&formkeyno=\(self.formkeyno ?? "")"
+        urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.refinedataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
+            var RefineList:[[(title:String,urlparam:String,urlvalue:String)]] = []
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            for links in testscr!.css(".opac_block_body_mini"){
+                var refinelistpart:[(title:String,value:String,kind:String,paramkey:String)] = []
+                for link in links.css("[onclick^='opacFctSearch']"){
+                    var useforURL = link["onclick"]?.capture(pattern: "opacFctSearch(.*);return", group: 1)?.dropFirst(2).dropLast(2).components(separatedBy: "\',\'")
+                    if var safetitle = link.text,let safevalue = link.css("label").first?.text,let safekind = useforURL?[2],let safeparam = useforURL?[3],let range = safetitle.range(of: safevalue){
+                        safetitle.removeSubrange(range)
+                        refinelistpart.append((safetitle.trimmingCharacters(in: .whitespacesAndNewlines),safevalue,safekind,safeparam))
+                    }
+                }
+                print(refinelistpart)
+            }
+            createList()
+        })
+    }
+    //ブックマーク検索。通常検索の亜種
+    func fetch_bookmark(createList: @escaping ([String],[String],[String],[String]) -> Void){
+        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/follst.do",completion: {data in
+            var book_title_List:[String] = []
+            var book_Auther_List:[String] = []
+            var BibliographyID_List:[String] = []
+            var opacIcon_List:[String] = []
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            for link in testscr!.css(".opac_book_title"){
+                book_title_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            }
+            for link in testscr!.css(".opac_book_bibliograph"){
+                book_Auther_List += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            }
+            for link in testscr!.css(".opac_list [name='bookmark']"){
+                BibliographyID_List += [link["id"]!.trimmingCharacters(in: .whitespacesAndNewlines)]
+            }
+            for link in testscr!.css(".opac_icon_bookind"){
+                opacIcon_List += [link["src"]?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""]
+            }
+            createList(book_title_List,book_Auther_List,BibliographyID_List,opacIcon_List)
+        })
+    }
     struct Detailstruct {
         var no_List:[String] = []
         var kango_List:[String] = []
@@ -225,6 +282,7 @@ class Libdatafetch{
         var Auther:String?
         var opacIcon:String?
     }
+    //ここ書誌詳細の所蔵場所一覧を全件取得する
     func fetch_main_catdbl(createList: @escaping (Detailstruct) -> Void){
         Libdatafetch.detaildataDB["url"] = "&" + Libdatafetch.toURLparam(Libdatafetch.detailurl)
         urlSessionGetClient.get(url: "https://libportal.lib.tmu.ac.jp/index.php", queryItems: Libdatafetch.detaildataDB,completion: {data in

@@ -36,7 +36,7 @@ class DetailResultView: UITableViewController {
                 self.data = (safe_bibid,safe_icon,safe_title,safe_auther)
             }
             self.page += 10
-            if !detailnum.fulldate_list.isEmpty{
+            if detailnum.fulldate_list.count == 10{
                 self.fetch_catdbl()
             }
             DispatchQueue.main.async {

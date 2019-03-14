@@ -23,8 +23,8 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     var SearchResultList : [(BibliographyID:String,opacIcon:String,book_title:String,Author:String)] = []
     var image_list : [(UIImage)] = []
     func fetch_ctlsrh() -> () {
-        Libdatafetch.ctlsrhformDB["startpos"] = "\(page)"
-        print(Libdatafetch.ctlsrhformDB["words"])
+        LibData.ctlsrhformDB["startpos"] = "\(page)"
+        print(LibData.ctlsrhformDB["words"])
         imagestatus = false
         loadstatus = "Loading"
         LibData.fetch_indexofsearch(createList: {book_title_List,book_Auther_List,BibliographyID_List,opacIcon_List in
@@ -46,7 +46,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
                     }
                 })
             }
-            
+            self.LibData.fetch_refineview()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -63,7 +63,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         tableview.delegate = self
         resultserchbar.delegate = self
         resultserchbar.showsCancelButton = false
-        resultserchbar.text = Libdatafetch.ctlsrhformDB["words"]
+        resultserchbar.text = Libdatafetch.staticformDB["words"]
         refineView = storyboard?.instantiateViewController(withIdentifier: "RefineView") as! RefineViewController
         self.refineView!.postDismissionAction = { self.updateTableView() }
         self.refineView!.getNavigationBar = {
@@ -179,7 +179,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
  
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        Libdatafetch.ctlsrhformDB["words"] = searchBar.text
+        Libdatafetch.staticformDB["words"] = searchBar.text ?? ""
         resultserchbar.endEditing(true)
         resultserchbar.showsCancelButton = false
         self.page = 1
