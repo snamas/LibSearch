@@ -149,106 +149,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TaI-Y7-OKb">
-                                <rect key="frame" x="172" y="41" width="203" height="1134"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TaI-Y7-OKb" customClass="UIScrollView">
+                                <rect key="frame" x="172" y="41" width="200" height="1134"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="top" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="avQ-uG-P5O">
-                                        <rect key="frame" x="31" y="56" width="99" height="270"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iZF-eo-jel">
-                                                <rect key="frame" x="0.0" y="0.0" width="57" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="本館" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="OeA-Bx-xnn"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="deM-1A-JSK">
-                                                <rect key="frame" x="0.0" y="31" width="76" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="日野館" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="t5K-UB-E7N"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7aR-jp-s9x">
-                                                <rect key="frame" x="0.0" y="62" width="76" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="荒川館" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="rMx-vH-gx7"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWd-83-ypu">
-                                                <rect key="frame" x="0.0" y="93" width="94" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="人文社会" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="Zfm-8q-1sa"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0LN-eg-QVE">
-                                                <rect key="frame" x="0.0" y="124" width="57" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="法学" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="qn1-RO-Z7S"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ial-ZY-hzn">
-                                                <rect key="frame" x="0.0" y="155" width="94" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="経済経営" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="suB-cq-5Wr"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fAb-ao-9ev">
-                                                <rect key="frame" x="0.0" y="186" width="94" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="地理環境" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="lch-kd-iE2"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igs-2l-ieZ">
-                                                <rect key="frame" x="0.0" y="217" width="94" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="数理科学" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="O4T-9v-luR"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q9o-NM-kdX">
-                                                <rect key="frame" x="0.0" y="248" width="99" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="丸の内SC" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="U4G-RS-7gM"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNR-Il-iKQ">
                                         <rect key="frame" x="16" y="26" width="160" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -261,62 +165,6 @@
                                             <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="ira-6H-Agt"/>
                                         </connections>
                                     </button>
-                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" alignment="top" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="erQ-jg-RK8">
-                                        <rect key="frame" x="31" y="372" width="149" height="146"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1SB-tT-XDM">
-                                                <rect key="frame" x="0.0" y="0.0" width="57" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="雑誌" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllDocsAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="V6Q-gA-KQb"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Twa-v0-5cu">
-                                                <rect key="frame" x="0.0" y="31" width="76" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="視聴覚" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllDocsAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="yYv-9r-m6G"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bo2-xu-w72">
-                                                <rect key="frame" x="0.0" y="62" width="57" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="図書" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllDocsAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="rZv-cX-XZU"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jLD-6V-2kr">
-                                                <rect key="frame" x="0.0" y="93" width="112" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="電子ブック" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllDocsAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="oP8-ga-cTW"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" tag="15" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTE-WE-457">
-                                                <rect key="frame" x="0.0" y="124" width="149" height="22"/>
-                                                <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" title="電子ジャーナル" image="onswitch">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="AllDocsAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="F34-7i-5uq"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p23-Kz-RXk">
                                         <rect key="frame" x="15" y="342" width="131" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -338,21 +186,7 @@
                     <connections>
                         <outlet property="AllDocs" destination="p23-Kz-RXk" id="UEh-jV-cxw"/>
                         <outlet property="AllPlace" destination="WNR-Il-iKQ" id="d3r-Va-Ywc"/>
-                        <outlet property="Refinetags" destination="TaI-Y7-OKb" id="mFO-tp-BGu"/>
-                        <outletCollection property="EachPlace" destination="igs-2l-ieZ" collectionClass="NSMutableArray" id="Hca-MY-w2n"/>
-                        <outletCollection property="EachPlace" destination="q9o-NM-kdX" collectionClass="NSMutableArray" id="GqN-V2-NSg"/>
-                        <outletCollection property="EachPlace" destination="iZF-eo-jel" collectionClass="NSMutableArray" id="fB1-R9-RCI"/>
-                        <outletCollection property="EachPlace" destination="deM-1A-JSK" collectionClass="NSMutableArray" id="fZU-gi-Upk"/>
-                        <outletCollection property="EachPlace" destination="7aR-jp-s9x" collectionClass="NSMutableArray" id="lTL-V9-pED"/>
-                        <outletCollection property="EachPlace" destination="wWd-83-ypu" collectionClass="NSMutableArray" id="J3O-Ks-74s"/>
-                        <outletCollection property="EachPlace" destination="0LN-eg-QVE" collectionClass="NSMutableArray" id="JZ5-Gd-WPf"/>
-                        <outletCollection property="EachPlace" destination="ial-ZY-hzn" collectionClass="NSMutableArray" id="2sA-T1-yMc"/>
-                        <outletCollection property="EachPlace" destination="fAb-ao-9ev" collectionClass="NSMutableArray" id="LiU-US-ttu"/>
-                        <outletCollection property="EachDocs" destination="1SB-tT-XDM" collectionClass="NSMutableArray" id="onu-wd-yWJ"/>
-                        <outletCollection property="EachDocs" destination="Twa-v0-5cu" collectionClass="NSMutableArray" id="Cvy-cx-3zf"/>
-                        <outletCollection property="EachDocs" destination="bo2-xu-w72" collectionClass="NSMutableArray" id="Xoh-0d-k77"/>
-                        <outletCollection property="EachDocs" destination="jLD-6V-2kr" collectionClass="NSMutableArray" id="qFD-ev-Ddx"/>
-                        <outletCollection property="EachDocs" destination="jTE-WE-457" collectionClass="NSMutableArray" id="Tnb-T8-zix"/>
+                        <outlet property="Refinetags" destination="TaI-Y7-OKb" id="9fO-iG-EYx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3FQ-Y7-3ve" userLabel="First Responder" sceneMemberID="firstResponder"/>

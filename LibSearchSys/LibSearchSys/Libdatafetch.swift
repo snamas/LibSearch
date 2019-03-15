@@ -10,6 +10,8 @@ class Libdatafetch{
     var libserchURL = "https://www.opac.lib.tmu.ac.jp/webopac/"
     let urlSessionGetClient = URLSessionGetClient()
     var formkeyno:String?
+    static var RefineList:[[(title:String,value:String,kind:String,paramkey:String,setTagnum:Int)]] = []
+    static var selectedlist:[Int] = []
     static var staticformDB:[String:String] = ["words": "論文の"]//検索ワード,9784478105344
     var ctlsrhformDB = [
     "fromDsp": "catsrd",
@@ -221,24 +223,27 @@ class Libdatafetch{
         })
     }
     //検索画面の絞り込み検索
-    func fetch_refineview(createList: @escaping () -> Void = {}){
+    func fetch_refineview(){
         Libdatafetch.refinedataDB["url"] = "/catfct.do?block_id=_296&tab_num=0&formkeyno=\(self.formkeyno ?? "")"
         urlSessionGetClient.post(url: "https://libportal.lib.tmu.ac.jp/index.php", parameters: Libdatafetch.refinedataDB,header : ["Referer":"https://libportal.lib.tmu.ac.jp/index.php"],completion: {data in
-            var RefineList:[[(title:String,urlparam:String,urlvalue:String)]] = []
+            var fetchRefineList:[[(title:String,value:String,kind:String,paramkey:String,setTagnum:Int)]] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
+            var tagnum = 0
             for links in testscr!.css(".opac_block_body_mini"){
-                var refinelistpart:[(title:String,value:String,kind:String,paramkey:String)] = []
+                var refinelistpart:[(title:String,value:String,kind:String,paramkey:String,setTagnum:Int)] = []
                 for link in links.css("[onclick^='opacFctSearch']"){
                     var useforURL = link["onclick"]?.capture(pattern: "opacFctSearch(.*);return", group: 1)?.dropFirst(2).dropLast(2).components(separatedBy: "\',\'")
                     if var safetitle = link.text,let safevalue = link.css("label").first?.text,let safekind = useforURL?[2],let safeparam = useforURL?[3],let range = safetitle.range(of: safevalue){
                         safetitle.removeSubrange(range)
-                        refinelistpart.append((safetitle.trimmingCharacters(in: .whitespacesAndNewlines),safevalue,safekind,safeparam))
+                        refinelistpart.append((safetitle.trimmingCharacters(in: .whitespacesAndNewlines),safevalue,safekind,safeparam,tagnum))
+                        tagnum += 1
                     }
                 }
-                print(refinelistpart)
+                fetchRefineList.append(refinelistpart)
             }
-            createList()
+            Libdatafetch.RefineList = fetchRefineList
+            print(Libdatafetch.RefineList)
         })
     }
     //ブックマーク検索。通常検索の亜種

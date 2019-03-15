@@ -22,7 +22,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     var LibData = Libdatafetch()
     var SearchResultList : [(BibliographyID:String,opacIcon:String,book_title:String,Author:String)] = []
     var image_list : [(UIImage)] = []
-    func fetch_ctlsrh() -> () {
+    func fetch_ctlsrh(exclosure:@escaping () -> Void = {}) -> () {
         LibData.ctlsrhformDB["startpos"] = "\(page)"
         print(LibData.ctlsrhformDB["words"])
         imagestatus = false
@@ -46,7 +46,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
                     }
                 })
             }
-            self.LibData.fetch_refineview()
+            exclosure()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -55,6 +55,9 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //ここrefineviewのselectedlistを初期化するための行動
+        self.fetch_ctlsrh(exclosure: {self.LibData.fetch_refineview()
+            Libdatafetch.selectedlist = []})
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -123,6 +126,13 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         self.present(refineView!, animated: false, completion: nil)
     }
     func updateTableView() {
+        _ = Libdatafetch.RefineList.compactMap{
+            $0.forEach{i in
+                if Libdatafetch.selectedlist.contains(i.setTagnum){
+                    print(i)
+                }
+            }
+        }
         print("ter")
     }
     /*
@@ -179,15 +189,18 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
  
     //━━━━━━━[ここから検索画面の実装]━━━━━━━━━━━━━━━━…‥・
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        LibData = Libdatafetch()
         Libdatafetch.staticformDB["words"] = searchBar.text ?? ""
         resultserchbar.endEditing(true)
         resultserchbar.showsCancelButton = false
         self.page = 1
         SearchResultList = []
         self.tableView.reloadData()
-        self.fetch_ctlsrh()
+        self.fetch_ctlsrh(exclosure: {self.LibData.fetch_refineview()
+            //ここで選択した図書、図書館名だけ残す方針で行きたい。
+            Libdatafetch.selectedlist = []
+        })
         self.image_list = []
-        
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         resultserchbar.showsCancelButton = true
