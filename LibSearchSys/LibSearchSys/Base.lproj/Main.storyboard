@@ -86,7 +86,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="ebk-4z-fmH">
+                        <searchBar key="tableHeaderView" contentMode="redraw" text="" id="ebk-4z-fmH">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -193,7 +193,7 @@
             </objects>
             <point key="canvasLocation" x="3205.5999999999999" y="1050.224887556222"/>
         </scene>
-        <!--Detail Result View-->
+        <!--Title-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="DetailResultView" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
@@ -229,6 +229,13 @@
                         </prototypes>
                         <sections/>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="vU6-Ab-7Fn">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="7mz-iP-pV8">
+                            <connections>
+                                <action selector="showActionSheet:" destination="BYZ-38-t0r" id="v0g-cb-Idn"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -488,6 +495,6 @@
         <image name="onswitch" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="O5E-YM-lgH"/>
+        <segue reference="dPq-Dy-qTg"/>
     </inferredMetricsTieBreakers>
 </document>

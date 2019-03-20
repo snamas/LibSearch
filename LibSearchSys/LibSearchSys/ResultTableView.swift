@@ -9,7 +9,8 @@ import UIKit
 import Kanna
 
 class ResultTableView: UITableViewController,UISearchBarDelegate {
-    
+    //これでrefineviewで選択した項目が変化されているか検知する。変化されていたら更新する。
+    var firstSelectedTag:[Int] = []
     
     @IBOutlet weak var resultserchbar: UISearchBar!
     @IBOutlet var tableview: UITableView!
@@ -89,7 +90,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         // #warning Incomplete implementation, return the number of rows
         return SearchResultList.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath)
@@ -98,9 +99,11 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
             let webdata = self.SearchResultList[indexPath.row]
             cell.textLabel?.text = webdata.book_title
             cell.detailTextLabel?.text = "\(webdata.Author)"
-            if !self.image_list.isEmpty && imagestatus{
-                let imagedata = self.image_list[indexPath.row]
+            if let imagedata = self.image_list[safe:indexPath.row]{
                 cell.imageView?.image = imagedata
+            }
+            else{
+                cell.imageView?.image = UIImage(named: "book")
             }
         }
         // Configure the cell...
@@ -124,16 +127,33 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     }
     @IBAction func refineAction(_ sender: Any) {
         self.present(refineView!, animated: false, completion: nil)
+        firstSelectedTag = Libdatafetch.selectedlist
     }
     func updateTableView() {
-        _ = Libdatafetch.RefineList.compactMap{
-            $0.forEach{i in
-                if Libdatafetch.selectedlist.contains(i.setTagnum){
-                    print(i)
-                }
+        //選んだものだけ抽出するよ。[[(資料種１),(資料種２)],[(所蔵館１)],[(著者)],[],[],[]]こんな感じ
+        var a = Libdatafetch.RefineList.compactMap{
+            $0.filter{i in
+                Libdatafetch.selectedlist.contains(i.setTagnum)
             }
         }
-        print("ter")
+        if !a.isEmpty{LibData = Libdatafetch()}
+        //URLのパラメーターに追加。ここ著者や出版社にはあてはまらない。要検討
+        _ = a.map{ refineList in
+            if let paramkey = refineList.first?.kind{
+                var paramvalue:[String] = []
+                for i in refineList{
+                    paramvalue += [i.paramkey]
+                }
+                LibData.ctlsrhformDB.updateValue((paramvalue), forKey: paramkey)
+                print(LibData.ctlsrhformDB)
+            }
+        }
+        if (self.firstSelectedTag != Libdatafetch.selectedlist){
+            self.page = 1
+            SearchResultList = []
+            self.tableView.reloadData()
+            self.fetch_ctlsrh()
+        }
     }
     /*
     // Override to support conditional editing of the table view.
@@ -209,5 +229,11 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         resultserchbar.showsCancelButton = false
         searchBar.text = ""
         resultserchbar.endEditing(true)
+    }
+}
+//https://qiita.com/shtnkgm/items/f02553cb6bb16a59d8fe<-ここ参照,indexoutofrangeを防ぐために使う a[safe: 0]->optional()
+extension Array {
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
     }
 }

@@ -16,9 +16,9 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-    
-    LibSearchBar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
-    LibSearchBar.showsCancelButton = false
+        LibSearchBar.text = ""
+        LibSearchBar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
+        LibSearchBar.showsCancelButton = false
     }
 
     /*
@@ -33,6 +33,7 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         LibData.fetch_comidf()
+        LibSearchBar.text = Libdatafetch.staticformDB["words"]
         //ここresultTableViewに転用(https://qiita.com/takabosoft/items/50683d32e04f7d30a410)
         var urlComponents = URLComponents(string: "http://hoge.jp/test_api")!
         var urls = URLComponents(string: "")!

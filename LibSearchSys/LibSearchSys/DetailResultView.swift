@@ -53,6 +53,43 @@ class DetailResultView: UITableViewController {
             })
     }
     
+    @IBAction func showActionSheet(_ sender: Any) {
+        let detailActionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet
+        )
+        detailActionSheet.addAction(UIAlertAction(title: "ブックマークする", style: .default, handler: {(action) in
+                self.addBookmark()
+            }))
+        detailActionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel, handler: nil
+        ))
+        self.present(detailActionSheet,animated: true,completion:{ print("Do!")})
+    }
+    func addBookmark(){
+        if let safeBibID = data?.BibliographyID{
+            LibData.fetch_bookmark(BibliographyID: safeBibID,tfclosure:{fetchResult in
+                if fetchResult{
+                    let successAlert = UIAlertController(title:nil,message:nil,preferredStyle:.alert)
+                    successAlert.title = "ブックマーク追加成功"
+                    successAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(
+                        successAlert,
+                        animated:true,
+                        completion:{print("success")}
+                    )
+                }
+                else{
+                    self.LibData.fetch_comidf()
+                    let successAlert = UIAlertController(title:nil,message:nil,preferredStyle:.alert)
+                    successAlert.title = "ブックマーク追加失敗"
+                    successAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(
+                        successAlert,
+                        animated:true,
+                        completion:{print("fail")}
+                    )
+                }
+            })
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

@@ -12,21 +12,39 @@ class RefineViewController: UIViewController {
     var getNavigationBar : (() -> CGFloat)?
     let offimage = UIImage(named: "offswitch")
     let onimage = UIImage(named: "onswitch")
-    var selectedTag:[Int] = []
+    var RefineTagtoKind:[Int:String] = [:]//これには10001以降は含まれていない
+    let refineAllDict:[Int:String] = [
+        10001:"gcattp",
+        10002:"holar",
+        10003:"auth",
+        10004:"pub",
+        10005:"range_year",
+        10006:"cls",
+        10007:"sh",
+        10008:"lang"
+    ]
     @IBOutlet weak var Refinetags: UIScrollView!
     @IBOutlet weak var AllPlace: UIButton!
     @IBOutlet weak var AllDocs: UIButton!
     @objc func buttonpressd(_ sender:UIButton){
         sender.isSelected = !sender.isSelected
-        var selectedtmp:[(title:String,value:String,kind:String,paramkey:String,setTagnum:Int)] = []
-        var selectedTagPart:[Int] = []
-        for v in self.Refinetags.subviews {
-            if let v = v as? UIButton,v.isSelected == true{
-                selectedTagPart += [v.tag]
+        //個別のボタンが選択されたとき（日野館、図書etc..）「全ての」をfalseにする
+        if sender.isSelected,let a = RefineTagtoKind[sender.tag],let safeAllTagnum = refineAllDict.filter({ $0.value == a}).first{
+            if let v = self.Refinetags.viewWithTag(safeAllTagnum.key) as? UIButton{
+                v.isSelected = false
             }
         }
-        Libdatafetch.selectedlist = selectedTagPart
-        print(Libdatafetch.selectedlist)
+        //「全ての」のボタンが選択されたとき個別のボタンをfalseにする
+        if sender.isSelected,let safeAllDict = refineAllDict[sender.tag]{
+            for v in self.Refinetags.subviews {
+                // オブジェクトの型がUIButton型で、タグ番号が属性一致のオブジェクトを取得する
+                if let v = v as? UIButton, RefineTagtoKind.filter({ $0.value == safeAllDict}).contains(where: { (key, value) -> Bool in
+                     v.tag == key
+                }){
+                    v.isSelected = false
+                }
+            }
+        }
     }
     /*
     @IBAction func AllPlaceAction(_ sender: Any) {
@@ -104,7 +122,6 @@ class RefineViewController: UIViewController {
             })
         Refinetags.layer.borderColor = UIColor.gray.cgColor
         Refinetags.layer.borderWidth = 1.0
-        
         var buttonheight = 10
         for refinePartList in Libdatafetch.RefineList{
             let refineallButton = UIButton()
@@ -113,6 +130,7 @@ class RefineViewController: UIViewController {
             refineallButton.setImage(offimage, for: .normal)
             refineallButton.setImage(onimage, for: .selected)
             refineallButton.contentHorizontalAlignment = .left
+            refineallButton.isSelected = true
             switch refinePartList[0].kind {
             case "gcattp":
                 refineallButton.tag = 10001
@@ -121,27 +139,32 @@ class RefineViewController: UIViewController {
                 refineallButton.tag = 10002
                 refineallButton.setTitle("全ての所蔵館", for: .normal)
             case "auth":
+                continue
                 refineallButton.tag = 10003
                 refineallButton.setTitle("全ての著者", for: .normal)
             case "pub":
+                continue
                 refineallButton.tag = 10004
                 refineallButton.setTitle("全ての出版社", for: .normal)
             case "range_year":
+                continue
                 refineallButton.tag = 10005
                 refineallButton.setTitle("全ての出版年", for: .normal)
             case "cls":
+                continue
                 refineallButton.tag = 10006
                 refineallButton.setTitle("全ての分類", for: .normal)
             case "sh":
+                continue
                 refineallButton.tag = 10007
                 refineallButton.setTitle("全ての件名", for: .normal)
             case "lang":
+                continue
                 refineallButton.tag = 10008
                 refineallButton.setTitle("全ての言語", for: .normal)
             default:break
             }
             refineallButton.addTarget(self, action: #selector(buttonpressd(_:)), for: UIControl.Event.touchUpInside)
-            Refinetags.addSubview(refineallButton)
             buttonheight += 30
             refinePartList.forEach { (i) in
                 print(i)
@@ -154,16 +177,19 @@ class RefineViewController: UIViewController {
                 refineButton.contentHorizontalAlignment = .left
                 refineButton.tag = i.setTagnum
                 refineButton.addTarget(self, action: #selector(buttonpressd(_:)), for: UIControl.Event.touchUpInside)
-                _ = Libdatafetch.selectedlist.map({if $0 == i.setTagnum{
+                RefineTagtoKind.updateValue(i.kind, forKey: i.setTagnum)
+                if Libdatafetch.selectedlist.contains(i.setTagnum){
                     refineButton.isSelected = true
-                    }
-                })
+                    //ここでselectかけられていたら「全ての」がfalseになるように
+                    refineallButton.isSelected = false
+                }
                 Refinetags.addSubview(refineButton)
                 buttonheight += 30
             }
+            //あえてここに配置
+            Refinetags.addSubview(refineallButton)
             buttonheight += 5
         }
-        print(selectedTag)
         
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -182,13 +208,18 @@ class RefineViewController: UIViewController {
                         self.dismiss(animated: true, completion: {
                             self.postDismissionAction?()
                         })
+                        var selectedTagPart:[Int] = []
                         for v in self.Refinetags.subviews {
+                            if let v = v as? UIButton,v.isSelected == true{
+                                selectedTagPart += [v.tag]
+                            }
                             // オブジェクトの型がUIImageView型で、タグ番号が1〜5番のオブジェクトを取得する
                             if let v = v as? UIButton{
                                 // そのオブジェクトを親のviewから取り除く
                                 v.removeFromSuperview()
                             }
                         }
+                        Libdatafetch.selectedlist = selectedTagPart
                     }
                 )
             }

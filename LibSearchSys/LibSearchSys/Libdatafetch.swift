@@ -12,14 +12,14 @@ class Libdatafetch{
     var formkeyno:String?
     static var RefineList:[[(title:String,value:String,kind:String,paramkey:String,setTagnum:Int)]] = []
     static var selectedlist:[Int] = []
-    static var staticformDB:[String:String] = ["words": "論文の"]//検索ワード,9784478105344
-    var ctlsrhformDB = [
+    static var staticformDB:[String:String] = ["words": ""]//検索ワード,9784478105344
+    var ctlsrhformDB:[String:Any] = [
     "fromDsp": "catsrd",
     "searchDsp": "catsrd",
     "initFlg": "_RESULT_SET_NOTBIB",//_RESULT_SET_NOTBIB　に設定すると2項目目以降も取得できる。
-    "gcattp_flag": "all",//ｂｋ＝図書、ｓｒ＝雑誌、av＝視聴覚、eb＝電子ブック、ej＝電子ジャーナル
-    "holar_flag": "all",//１０＝本館、２０＝日野館、３０＝荒川館、１１＝人文社会、１２＝法学、１３＝経済経営、１４＝地理環境、１５＝数理科学、１６＝丸の内SC、１＝南大沢
-    "words": "論文の",//検索ワード,9784478105344
+    //"gcattp_flag": "",ｂｋ＝図書、ｓｒ＝雑誌、av＝視聴覚、eb＝電子ブック、ej＝電子ジャーナル
+    //"holar_flag": "",１０＝本館、２０＝日野館、３０＝荒川館、１１＝人文社会、１２＝法学、１３＝経済経営、１４＝地理環境、１５＝数理科学、１６＝丸の内SC、１＝南大沢
+    "words": "",//検索ワード,9784478105344
     "title": "",//タイトル
     "auth": "",//著者名
     "pub": "",//出版社
@@ -48,7 +48,7 @@ class Libdatafetch{
     "maxcnt": "5000",
     "startpos": "1"//ここに先頭に来るNo.の値を入れる。二項目目なら５１、3項目目なら１０１など
     ]
-    static var toURLparam = {(paramform:[String:String]) -> String in
+    static var toURLparam = {(paramform:[String:Any]) -> String in
         let urlSessionGetClient = URLSessionGetClient()
         return String(urlSessionGetClient.buildUrl(base: "", namedValues: paramform).dropFirst())
     }
@@ -63,7 +63,6 @@ class Libdatafetch{
     static var searchdataDB : [String:String] = [
         "tab_num":"0",
         "action":"v3search_action_main_opac",
-        "search_mode":"null",
         "block_id":"296",
         "page_id": "15",
         "module_id": "61"
@@ -84,13 +83,10 @@ class Libdatafetch{
         "module_id": "61"
     ]
     static var bookmarkDB : [String:String] = [
-        "target": "opac",
-        "action":"v3search_view_main_popup",
-        "url": "https://tmuopac.lib.tmu.ac.jp/webopac/fbmexe.do?mode=reg&loginType=&locale=ja&bookmark=BB02152052",
-        "block_id":"296",
-        "prefix_id_name": "usepopup",
-        "page_id": "15",
-        "module_id": "61"
+        "mode":"reg",
+        "loginType":"",
+        "locale":"ja",
+        "bookmark":"BB02152052"
     ]
     static var yoyakuDB : [String:String] = [
         "bibid": "",
@@ -270,6 +266,16 @@ class Libdatafetch{
             createList(book_title_List,book_Auther_List,BibliographyID_List,opacIcon_List)
         })
     }
+    //ブックマーク追加
+    func fetch_bookmark(BibliographyID:String,tfclosure:@escaping (Bool) -> ()){
+        Libdatafetch.bookmarkDB["bookmark"] = BibliographyID
+        urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/fbmexe.do", queryItems: Libdatafetch.bookmarkDB,completion: {data in
+            let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
+            tfclosure(testscr?.css(".opac_description_area").first?.text?.contains("ブックマークへ登録しました。") ?? false)
+            
+        })
+    }
     struct Detailstruct {
         var no_List:[String] = []
         var kango_List:[String] = []
@@ -325,7 +331,7 @@ class Libdatafetch{
         var detailnum =  Detailstruct()
         var opac_reserv_list:[Int:Int] = [:]
         var no_num :Int = 0
-        let haichiba_JS = "\n<!--\n.haichiba{\nwidth:200px !important;\n}\n-->"
+        let haichiba_JS = "c"
         let kango_JS = "<!--\n.haichiba{\nwidth:50px !important;\n}\n-->"
         for link in testscr!.css(".no"){
             if !(link.toXML?.contains("/th") ?? false){
@@ -349,6 +355,9 @@ class Libdatafetch{
                 if let range = haichibaStr.range(of: haichiba_JS) {
                     haichibaStr.removeSubrange(range)//ここ正規表現したい
                     detailnum.haichiba_List += [haichibaStr.trimmingCharacters(in: .whitespacesAndNewlines)]
+                }
+                if let a = link.text?.capture(pattern: "<!--.+-->", group: 0){
+                    print(a)
                 }
                 else if haichibaStr.contains("haichiba"){
                     detailnum.haichiba_List += [""]

@@ -8,14 +8,36 @@
 import Foundation
 import Kanna
 class URLSessionGetClient {
-    func buildUrl(base: String, namedValues: [String : String]) -> String {
+    func buildUrl(base: String, namedValues: [String : Any]) -> String {
         guard var urlComponents = URLComponents(string: base) else { return "" }
-        urlComponents.queryItems = namedValues.map { URLQueryItem(name: $0.key, value: $0.value)}
+        var tempvalue:[URLQueryItem] = []
+        namedValues.forEach({namedValues -> Void in
+            if let stringvalue = namedValues.value as? String{
+                tempvalue.append(URLQueryItem(name: namedValues.key, value: stringvalue))
+            }
+                //同名のキーをたくさん持たせるための工夫。
+            else if let listvalue = namedValues.value as? [String]{
+                _ = listvalue.map{
+                    tempvalue.append(URLQueryItem(name: namedValues.key, value: $0))
+                }
+            }
+        })
+        urlComponents.queryItems = tempvalue
         return urlComponents.string ?? ""
     }
-    func get(url urlString: String, queryItems: [String : String]? = nil,completion: @escaping (Data) -> Void) {
+    func buildUrlfromTuple(base: String, namedValues: [(name:String,value:String)]) -> String {
+        guard var urlComponents = URLComponents(string: base) else { return "" }
+        urlComponents.queryItems = namedValues.map { URLQueryItem(name: $0.name, value: $0.value)}
+        return urlComponents.string ?? ""
+    }
+    func get(url urlString: String, queryItems: [String : String]? = nil,header : Dictionary<String,String>? = nil,completion: @escaping (Data) -> Void) {
         let url = URL(string: self.buildUrl(base: urlString, namedValues: queryItems ?? [:]))
-        let request = URLRequest(url: url!)
+        var request = URLRequest(url: url!)
+        if let headerdic = header{
+            for dic in headerdic{
+                request.addValue(dic.value, forHTTPHeaderField: dic.key)
+            }
+        }
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("クライアントエラー: \(error.localizedDescription) \n")
