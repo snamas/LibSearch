@@ -10,6 +10,11 @@ import Kanna
 class DetailResultView: UITableViewController {
     var LibData = Libdatafetch()
     private var mysection = ["","配架場所"]
+    var loginDB = [
+        "userid": "u8144838",
+        "display": "topmnu",
+        "password": "kmnm_1984",
+    ]
     var data:(BibliographyID:String,opacIcon:String,book_title:String,Author:String)?
     var data_from_asklst:(useID:String,Biblioinfo:String,sortkey:String,listpos:String,useURL:String)?
     var BookImage:UIImage?
@@ -77,14 +82,14 @@ class DetailResultView: UITableViewController {
                     )
                 }
                 else{
-                    self.LibData.fetch_comidf()
+                    self.LibData.fetch_comidf(exceptionClosure:{exceptionNum in print(exceptionNum)})
                     let successAlert = UIAlertController(title:nil,message:nil,preferredStyle:.alert)
                     successAlert.title = "ブックマーク追加失敗"
                     successAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(
                         successAlert,
                         animated:true,
-                        completion:{print("fail")}
+                        completion:{print("Fail to Bookmark")}
                     )
                 }
             })

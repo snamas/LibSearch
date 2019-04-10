@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KeychainAccess
 
 class MainLibViewController: UIViewController,UISearchBarDelegate {
     
@@ -19,9 +20,37 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         LibSearchBar.text = ""
         LibSearchBar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
         LibSearchBar.showsCancelButton = false
+        
     }
+    
 
     /*
+     これ適当な文字を打った
+     <div class="opac_block_body_big">
+     <p class="opac_description_area">
+     <strong>OP-0404-E&nbsp;<br><br></strong>
+     Incorrect user ID (registered name) or password.<br>
+     </p>
+     <br><br><hr width="97%"><br>
+     <div align="center">
+     <a href="JavaScript:top.history.back()"><img src="/webopac/image/default/en/btn_dg_login-back_off_100-20.png" class="nolinkline" title="Back" alt="Back"></a></div>
+     </div>
+     <script>
+     
+     これ何も入れなかった時
+     
+     <div class="opac_block_body_big">
+     <p class="opac_description_area">
+     <strong>OP-2010-E&nbsp;<br><br></strong>
+     No user ID (or registered name)<br>
+     </p>
+     <br><br><hr width="97%"><br>
+     <div align="center">
+     <a href="JavaScript:top.history.back()"><img src="/webopac/image/default/en/btn_dg_login-back_off_100-20.png" class="nolinkline" title="Back" alt="Back"></a></div>
+     </div>
+     
+     <script>u81u
+     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -30,9 +59,68 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+    func showAlartAndForum(title:String){
+        let keychain = Keychain()
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+        alert.title = title
+        alert.addTextField(configurationHandler: {(UserID) -> Void in
+            UserID.placeholder = "User ID"
+            UserID.textContentType = .username
+        })
+        alert.addTextField(configurationHandler: {(pass) -> Void in
+            pass.placeholder = "Password"
+            pass.isSecureTextEntry = true
+            pass.textContentType = .password
+        })
+        alert.addAction(
+            UIAlertAction(
+                title:"OK",
+                style: .default,
+                handler: {action -> Void in
+                    if let UserID = alert.textFields?[0],let password = alert.textFields?[1]{
+                        print("Login:\(UserID.text)")
+                        print("Pass:\(password.text)")
+                        do{
+                            try keychain.set(UserID.text ?? "", key: "UserID")
+                            try keychain.set(password.text ?? "", key: "Password")
+                        }
+                        catch let error{
+                            print(error)
+                        }
+                        self.LibData.fetch_comidf(exceptionClosure:{exceptStr in
+                            print(exceptStr)
+                            self.showAlartAndForum(title: exceptStr)
+                        })
+                    }
+                    
+            })
+        )
+        alert.addAction(
+            UIAlertAction(
+                title:"キャンセル",
+                style: .cancel,
+                handler: {action -> Void in
+                    print("Cancel")
+                    
+            })
+        )
+        self.present(
+            alert,
+            animated: true,
+            completion: {
+                print("アラートが実行された")
+                
+        })
+
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        LibData.fetch_comidf()
+        
+        LibData.fetch_comidf(exceptionClosure:{exceptStr in
+            print(exceptStr)
+            self.showAlartAndForum(title: exceptStr)
+        })
+        
         LibSearchBar.text = Libdatafetch.staticformDB["words"]
         //ここresultTableViewに転用(https://qiita.com/takabosoft/items/50683d32e04f7d30a410)
         var urlComponents = URLComponents(string: "http://hoge.jp/test_api")!

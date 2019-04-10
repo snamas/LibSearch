@@ -6,6 +6,7 @@
 //
 import Kanna
 import Foundation
+import KeychainAccess
 class Libdatafetch{
     var libserchURL = "https://www.opac.lib.tmu.ac.jp/webopac/"
     let urlSessionGetClient = URLSessionGetClient()
@@ -119,24 +120,36 @@ class Libdatafetch{
     Biblioinfo <- 本のタイトルと著者名が合わさったやつ
     */
     
-    var loginDB = [
-        "userid": "u8144838",
-        "display": "topmnu",
-        "password": "kmnm_1984",
-    ]
     var header = {
         
     }
     static var lenlstid:String? = nil
     static var myfolderid:String? = nil
     
-    func fetch_comidf(){
-        urlSessionGetClient.post(url: "https://tmuopac.lib.tmu.ac.jp/webopac/comidf.do",parameters: self.loginDB,completion: {data in
+    func fetch_comidf(exceptionClosure:@escaping (String)->Void){
+        let keychain = Keychain()
+        //ログインする時のIDとパスワードをゲットする。
+        var loginDB:[String:String] = [
+            "userid": {let UserID = try? keychain.get("UserID")
+                return (UserID ?? "") ?? ""
+            }(),
+            "display": "topmnu",
+            "password": {let password = try? keychain.get("Password")
+                return (password ?? "") ?? ""
+            }(),
+        ]
+        print(loginDB)
+        urlSessionGetClient.post(url: "https://tmuopac.lib.tmu.ac.jp/webopac/comidf.do",parameters: loginDB,completion: {data in
             var useStateList:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
-            print(testfi)
+            let testscr = try? HTML(html: testfi, encoding: .utf8)
             //self.fetch_asklst()
-            
+            if let errortext = testscr?.css(".opac_description_area").first?.text{
+                DispatchQueue.main.sync {
+                    exceptionClosure(errortext.trimmingCharacters(in: .whitespacesAndNewlines))
+                }
+            }
+
         })
         
     }
