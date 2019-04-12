@@ -129,7 +129,7 @@ class Libdatafetch{
     func fetch_comidf(exceptionClosure:@escaping (String)->Void){
         let keychain = Keychain()
         //ログインする時のIDとパスワードをゲットする。
-        var loginDB:[String:String] = [
+        let  loginDB:[String:String] = [
             "userid": {let UserID = try? keychain.get("UserID")
                 return (UserID ?? "") ?? ""
             }(),
@@ -140,7 +140,6 @@ class Libdatafetch{
         ]
         print(loginDB)
         urlSessionGetClient.post(url: "https://tmuopac.lib.tmu.ac.jp/webopac/comidf.do",parameters: loginDB,completion: {data in
-            var useStateList:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
             let testscr = try? HTML(html: testfi, encoding: .utf8)
             //self.fetch_asklst()

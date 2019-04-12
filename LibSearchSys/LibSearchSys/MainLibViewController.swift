@@ -13,6 +13,7 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
     
     @IBOutlet weak var LibSearchBar: UISearchBar!
     var LibData = Libdatafetch()
+    let savedData = UserDefaults.standard
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,7 +21,7 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         LibSearchBar.text = ""
         LibSearchBar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
         LibSearchBar.showsCancelButton = false
-        
+        showAlartAndForum()
     }
     
 
@@ -59,16 +60,16 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         // Pass the selected object to the new view controller.
     }
     */
-    func showAlartAndForum(title:String){
+    func showAlartAndForum(title:String = "首都大学東京図書館の利用者IDを入力してください。"){
         let keychain = Keychain()
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
         alert.title = title
         alert.addTextField(configurationHandler: {(UserID) -> Void in
-            UserID.placeholder = "User ID"
+            UserID.placeholder = "利用者ID (u914.........)"
             UserID.textContentType = .username
         })
         alert.addTextField(configurationHandler: {(pass) -> Void in
-            pass.placeholder = "Password"
+            pass.placeholder = "パスワード"
             pass.isSecureTextEntry = true
             pass.textContentType = .password
         })
@@ -78,8 +79,8 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
                 style: .default,
                 handler: {action -> Void in
                     if let UserID = alert.textFields?[0],let password = alert.textFields?[1]{
-                        print("Login:\(UserID.text)")
-                        print("Pass:\(password.text)")
+                        print("Login:\(UserID.text ?? "null")")
+                        print("Pass:\(password.text ?? "null")")
                         do{
                             try keychain.set(UserID.text ?? "", key: "UserID")
                             try keychain.set(password.text ?? "", key: "Password")
@@ -92,7 +93,8 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
                             self.showAlartAndForum(title: exceptStr)
                         })
                     }
-                    
+                    self.savedData.set(true, forKey: "isUseUserId")
+                    self.savedData.synchronize()
             })
         )
         alert.addAction(
@@ -101,7 +103,8 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
                 style: .cancel,
                 handler: {action -> Void in
                     print("Cancel")
-                    
+                    self.savedData.set(false, forKey: "isUseUserId")
+                    self.savedData.synchronize()
             })
         )
         self.present(
@@ -115,12 +118,15 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        LibData.fetch_comidf(exceptionClosure:{exceptStr in
-            print(exceptStr)
-            self.showAlartAndForum(title: exceptStr)
-        })
-        
+        if savedData.bool(forKey: "isUseUserId"){
+            LibData.fetch_comidf(exceptionClosure:{exceptStr in
+                print(exceptStr)
+                self.showAlartAndForum(title: exceptStr)
+            })
+        }
+        else{
+            print("アラートは出現せず(isUseUserIdはfalse)")
+        }
         LibSearchBar.text = Libdatafetch.staticformDB["words"]
         //ここresultTableViewに転用(https://qiita.com/takabosoft/items/50683d32e04f7d30a410)
         var urlComponents = URLComponents(string: "http://hoge.jp/test_api")!
