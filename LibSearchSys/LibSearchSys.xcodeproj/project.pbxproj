@@ -10,6 +10,7 @@
 		7C10B8867A773ABED4EC4DE4 /* Pods_LibSearchSys.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA1EE266281C6B324E00BB5C /* Pods_LibSearchSys.framework */; };
 		909029738B04E89F41A4CEFE /* Pods_LibSearchSysUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE5F6957C9A78799C2B59FBE /* Pods_LibSearchSysUITests.framework */; };
 		B83425C3340C8CCF954BAE6B /* Pods_LibSearchSysTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ACB8EF64F9A25020AF0B3EE /* Pods_LibSearchSysTests.framework */; };
+		D1041704226354DC00B80EF0 /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1041703226354DC00B80EF0 /* SettingTableViewController.swift */; };
 		D13D7F53220E872C00E841F6 /* ResultTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13D7F52220E872C00E841F6 /* ResultTableView.swift */; };
 		D14238672238BD5C0023180F /* BorrowinghistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */; };
 		D14F1A7A22096D5200F3C2BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14F1A7922096D5200F3C2BA /* AppDelegate.swift */; };
@@ -60,6 +61,7 @@
 		B3E7F8CC812496E8F82C0CA8 /* Pods-LibSearchSys.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LibSearchSys.release.xcconfig"; path = "Pods/Target Support Files/Pods-LibSearchSys/Pods-LibSearchSys.release.xcconfig"; sourceTree = "<group>"; };
 		BE5F6957C9A78799C2B59FBE /* Pods_LibSearchSysUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibSearchSysUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA1EE266281C6B324E00BB5C /* Pods_LibSearchSys.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LibSearchSys.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1041703226354DC00B80EF0 /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		D13D7F52220E872C00E841F6 /* ResultTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTableView.swift; sourceTree = "<group>"; };
 		D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowinghistoryTableViewController.swift; sourceTree = "<group>"; };
 		D14F1A7622096D5200F3C2BA /* LibSearchSys.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibSearchSys.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +187,7 @@
 				D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */,
 				D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */,
 				D15108FB223A1AE80081076B /* BookmarkTableViewController.swift */,
+				D1041703226354DC00B80EF0 /* SettingTableViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1041704226354DC00B80EF0 /* SettingTableViewController.swift in Sources */,
 				D14238672238BD5C0023180F /* BorrowinghistoryTableViewController.swift in Sources */,
 				D1775258221030410005E4BF /* MainLibViewController.swift in Sources */,
 				D13D7F53220E872C00E841F6 /* ResultTableView.swift in Sources */,

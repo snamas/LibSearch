@@ -10,11 +10,6 @@ import Kanna
 class DetailResultView: UITableViewController {
     var LibData = Libdatafetch()
     private var mysection = ["","配架場所"]
-    var loginDB = [
-        "userid": "u8144838",
-        "display": "topmnu",
-        "password": "kmnm_1984",
-    ]
     var data:(BibliographyID:String,opacIcon:String,book_title:String,Author:String)?
     var data_from_asklst:(useID:String,Biblioinfo:String,sortkey:String,listpos:String,useURL:String)?
     var BookImage:UIImage?
