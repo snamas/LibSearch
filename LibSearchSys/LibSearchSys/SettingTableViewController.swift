@@ -10,7 +10,7 @@ import UIKit
 class SettingTableViewController: UITableViewController {
     private var mysection = ["利用者アカウント",""]
     private var accountName = ""
-    var accountView : AccountTableViewController? = nil
+    var accountView : AccountViewController? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -19,7 +19,7 @@ class SettingTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        accountView = storyboard?.instantiateViewController(withIdentifier: "AccountView") as? AccountTableViewController
+        accountView = storyboard?.instantiateViewController(withIdentifier: "AccountView") as? AccountViewController
     }
 
     // MARK: - Table view data source
