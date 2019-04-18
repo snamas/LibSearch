@@ -68,7 +68,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
         resultserchbar.delegate = self
         resultserchbar.showsCancelButton = false
         resultserchbar.text = Libdatafetch.staticformDB["words"]
-        refineView = storyboard?.instantiateViewController(withIdentifier: "RefineView") as! RefineViewController
+        refineView = storyboard?.instantiateViewController(withIdentifier: "RefineView") as? RefineViewController
         self.refineView!.postDismissionAction = { self.updateTableView() }
         self.refineView!.getNavigationBar = {
             let navigationBarHeight = self.navigationController?.navigationBar.frame.size.height ?? 0
@@ -127,6 +127,7 @@ class ResultTableView: UITableViewController,UISearchBarDelegate {
     }
     @IBAction func refineAction(_ sender: Any) {
         self.present(refineView!, animated: false, completion: nil)
+        //そのとき選んでいた絞り込み要素を覚えさせておく。（変化した場合にのみ再検索しリロード）
         firstSelectedTag = Libdatafetch.selectedlist
     }
     func updateTableView() {

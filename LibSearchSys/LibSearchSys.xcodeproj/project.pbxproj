@@ -30,6 +30,7 @@
 		D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D173223E220F09F700C4ACE4 /* DetailResultView.swift */; };
 		D1775258221030410005E4BF /* MainLibViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1775257221030410005E4BF /* MainLibViewController.swift */; };
 		D18355B7220BDBD300B52966 /* LendTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18355B6220BDBD300B52966 /* LendTableViewController.swift */; };
+		D190E33E2265FB1D0076E8A2 /* AccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D190E33D2265FB1D0076E8A2 /* AccountTableViewController.swift */; };
 		D1B84FD02237E74A0059E8F7 /* ReservationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */; };
 		D1ED57012236232400FBBA3C /* PurchaseRequestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */; };
 /* End PBXBuildFile section */
@@ -87,6 +88,7 @@
 		D173223E220F09F700C4ACE4 /* DetailResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailResultView.swift; sourceTree = "<group>"; };
 		D1775257221030410005E4BF /* MainLibViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLibViewController.swift; sourceTree = "<group>"; };
 		D18355B6220BDBD300B52966 /* LendTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LendTableViewController.swift; sourceTree = "<group>"; };
+		D190E33D2265FB1D0076E8A2 /* AccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTableViewController.swift; sourceTree = "<group>"; };
 		D1B84FCF2237E74A0059E8F7 /* ReservationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationTableViewController.swift; sourceTree = "<group>"; };
 		D1ED57002236232400FBBA3C /* PurchaseRequestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseRequestTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,6 +190,7 @@
 				D14238662238BD5C0023180F /* BorrowinghistoryTableViewController.swift */,
 				D15108FB223A1AE80081076B /* BookmarkTableViewController.swift */,
 				D1041703226354DC00B80EF0 /* SettingTableViewController.swift */,
+				D190E33D2265FB1D0076E8A2 /* AccountTableViewController.swift */,
 			);
 			path = LibSearchSys;
 			sourceTree = "<group>";
@@ -447,6 +450,7 @@
 				D14F1AAB2209701D00F3C2BA /* FetchfromURL.swift in Sources */,
 				D14F1A8222096D5200F3C2BA /* LibSearchSys.xcdatamodeld in Sources */,
 				D1ED57012236232400FBBA3C /* PurchaseRequestTableViewController.swift in Sources */,
+				D190E33E2265FB1D0076E8A2 /* AccountTableViewController.swift in Sources */,
 				D173223F220F09F700C4ACE4 /* DetailResultView.swift in Sources */,
 				D14F1AB32209958F00F3C2BA /* StringExt.swift in Sources */,
 				D1B84FD02237E74A0059E8F7 /* ReservationTableViewController.swift in Sources */,

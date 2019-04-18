@@ -1,25 +1,39 @@
 //
-//  SettingTableViewController.swift
+//  AccountTableViewController.swift
 //  LibSearchSys
 //
-//  Created by yuto on 2019/04/14.
+//  Created by yuto on 2019/04/16.
 //
 
 import UIKit
+import KeychainAccess
 
-class SettingTableViewController: UITableViewController {
-    private var mysection = ["利用者アカウント",""]
-    private var accountName = ""
-    var accountView : AccountTableViewController? = nil
+class AccountTableViewController: UITableViewController {
+    var UserIdText:String?
+    var userIdTextField = UITextField()
+    var passwordTextFiled = UITextField()
+    @IBAction func loginAct(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+    }
+    @IBAction func cancelAct(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        userIdTextField.placeholder = "`riyousha"
+        userIdTextField.textContentType = .username
+        passwordTextFiled.placeholder = "Password"
+        passwordTextFiled.textContentType = .password
+        passwordTextFiled.isSecureTextEntry = true
+        
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        accountView = storyboard?.instantiateViewController(withIdentifier: "AccountView") as? AccountTableViewController
     }
 
     // MARK: - Table view data source
@@ -31,19 +45,24 @@ class SettingTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        return 2
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath)
-        cell.textLabel?.text = accountName
-        
-        // Configure the cell...
-
-        return cell
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "UserIdcell", for: indexPath)
+            return cell
+        }else if indexPath.row == 1{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PasswordCell", for: indexPath)
+            return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PasswordCell", for: indexPath)
+            return cell
+        }
     }
- 
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -52,9 +71,7 @@ class SettingTableViewController: UITableViewController {
         return true
     }
     */
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return mysection[section]
-    }
+
     /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -66,12 +83,7 @@ class SettingTableViewController: UITableViewController {
         }    
     }
     */
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            accountView?.modalTransitionStyle = .coverVertical
-            self.present(accountView!, animated: true, completion: nil)
-        }
-    }
+
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
@@ -84,6 +96,16 @@ class SettingTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
+    }
+    */
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
     }
     */
 
