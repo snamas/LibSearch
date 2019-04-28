@@ -21,7 +21,6 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         LibSearchBar.text = ""
         LibSearchBar.delegate = self//(https://daisa-n.com/blog/uisearchbar-search-sample/)ここ参照
         LibSearchBar.showsCancelButton = false
-        showAlartAndForum()
     }
     
 
@@ -60,6 +59,8 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+    //以下のコードはアラートを出すために必要だった。
+    /*
     func showAlartAndForum(title:String = "首都大学東京図書館の利用者IDを入力してください。"){
         let keychain = Keychain()
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
@@ -116,12 +117,15 @@ class MainLibViewController: UIViewController,UISearchBarDelegate {
         })
 
     }
+ */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if savedData.bool(forKey: "isUseUserId"){
             LibData.fetch_comidf(exceptionClosure:{exceptStr in
                 print(exceptStr)
-                self.showAlartAndForum(title: exceptStr)
+                let accountView = self.storyboard?.instantiateViewController(withIdentifier: "AccountView") as? AccountViewController
+                accountView?.modalTransitionStyle = .coverVertical
+                self.present(accountView!, animated: true, completion: nil)
             })
         }
         else{

@@ -126,7 +126,7 @@ class Libdatafetch{
     static var lenlstid:String? = nil
     static var myfolderid:String? = nil
     
-    func fetch_comidf(exceptionClosure:@escaping (String)->Void){
+    func fetch_comidf(exceptionClosure:@escaping (String)->Void,successClosure:@escaping () -> Void = {print("none")}){
         let keychain = Keychain()
         //ログインする時のIDとパスワードをゲットする。
         let  loginDB:[String:String] = [
@@ -146,6 +146,11 @@ class Libdatafetch{
             if let errortext = testscr?.css(".opac_description_area").first?.text{
                 DispatchQueue.main.sync {
                     exceptionClosure(errortext.trimmingCharacters(in: .whitespacesAndNewlines))
+                }
+            }
+            else{
+                DispatchQueue.main.sync {
+                    successClosure()
                 }
             }
 
