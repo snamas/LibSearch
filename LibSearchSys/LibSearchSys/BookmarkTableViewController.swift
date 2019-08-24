@@ -16,7 +16,7 @@ class BookmarkTableViewController: UITableViewController {
     func fetch_bookmarklst(){
         imagestatus = false
         LibData.fetch_bookmark(createList:{book_title_List,book_Auther_List,BibliographyID_List,opacIcon_List in
-            if book_title_List.count != 0 && book_Auther_List.count != 0 && BibliographyID_List.count != 0 && opacIcon_List.count != 0{
+            if !book_title_List.isEmpty && !book_Auther_List.isEmpty && !BibliographyID_List.isEmpty && !opacIcon_List.isEmpty{
                 for i in 0..<book_title_List.count {
                     self.SearchResultList.append((BibliographyID_List[i],opacIcon_List[i],book_title_List[i],book_Auther_List[i]))
                 }

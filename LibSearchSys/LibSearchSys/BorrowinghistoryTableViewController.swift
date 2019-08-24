@@ -16,7 +16,7 @@ class BorrowinghistoryTableViewController: UITableViewController {
         loadstatus = "Loading"
         LibData.fetch_anylist(useQuery:
             ["startpos": String(page),"sortkey": "crtdt/DESC","listcnt": "20"],useURL_do:"hislst.do",useCSS: "sjridlist",createList:{useStateList,sjridlist in
-            if useStateList.count != 0 && sjridlist.count != 0 && useStateList.count % 5 == 0 && useStateList.count/5 == sjridlist.count{
+            if !useStateList.isEmpty && !sjridlist.isEmpty && useStateList.count.isMultiple(of: 5) && useStateList.count/5 == sjridlist.count{
                 for i in stride(from:0,to:useStateList.count,by:5){
                     self.borhistorylist.append((useStateList[0+i],useStateList[1+i],useStateList[2+i],useStateList[3+i],useStateList[4+i],sjridlist[i/5]))
                 }

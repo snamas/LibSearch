@@ -130,11 +130,11 @@ class Libdatafetch{
         let keychain = Keychain()
         //ログインする時のIDとパスワードをゲットする。
         let  loginDB:[String:String] = [
-            "userid": {let UserID = try? keychain.get("UserID")
+            "userid": {let UserID = ((try? keychain.get("UserID")) as String??)
                 return (UserID ?? "") ?? ""
             }(),
             "display": "topmnu",
-            "password": {let password = try? keychain.get("Password")
+            "password": {let password = ((try? keychain.get("Password")) as String??)
                 return (password ?? "") ?? ""
             }(),
         ]

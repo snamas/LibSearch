@@ -119,7 +119,8 @@ class RefineViewController: UIViewController {
                 self.Refinetags.frame.origin.x = menuPos
             },
             completion: { bool in
-            })
+            }
+        )
         Refinetags.layer.borderColor = UIColor.gray.cgColor
         Refinetags.layer.borderWidth = 1.0
         var buttonheight = 10
@@ -213,7 +214,7 @@ class RefineViewController: UIViewController {
                             if let v = v as? UIButton,v.isSelected == true{
                                 selectedTagPart += [v.tag]
                             }
-                            // オブジェクトの型がUIImageView型で、タグ番号が1〜5番のオブジェクトを取得する
+                            // オブジェクトの型がUIImageView型で、UIButtonのオブジェクトを取得する
                             if let v = v as? UIButton{
                                 // そのオブジェクトを親のviewから取り除く
                                 v.removeFromSuperview()
