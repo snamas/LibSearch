@@ -320,7 +320,15 @@ class Libdatafetch{
             print(Libdatafetch.detaildataDB)
         })
     }
-    //利用状況から入った場合の詳細画面
+    
+    /// 利用状況一覧から入った場合の詳細画面
+    ///これはマイライブラリからでは適切にし書誌の学情IDが入手できないために起こる
+    ///
+    /// - Parameters:
+    ///   - listpos:貸出一覧とかからみて上から何冊目か
+    ///   - sortkey: lmtdt/ASCとか
+    ///   - useURL: 貸出詳細などのurlが入る
+    ///   - createList: パースしたBibliographyIDとテキストをどうするか
     func fetch_usestate_detail(listpos:String? = nil,sortkey:String? = nil,useURL:String? = nil,createList: @escaping (String?,String?) -> Void){
         if let safe_listpos = listpos,let safe_sortkey = sortkey,let safe_URL = useURL{
             urlSessionGetClient.post(url: safe_URL, parameters:[

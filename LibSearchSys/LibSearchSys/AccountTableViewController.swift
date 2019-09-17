@@ -58,11 +58,11 @@ class AccountViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        userIdTextField.placeholder = "`riyousha"
+        userIdTextField.placeholder = "利用者ID"
         userIdTextField.textContentType = .username
         userIdTextField.borderStyle = .bezel
         userIdTextField.frame = CGRect(x: 10, y: 100, width: 300, height: 30)
-        passwordTextFiled.placeholder = "Password"
+        passwordTextFiled.placeholder = "パスワード"
         passwordTextFiled.textContentType = .password
         passwordTextFiled.isSecureTextEntry = true
         passwordTextFiled.frame = CGRect(x: 10, y: 150, width: 300, height: 30)

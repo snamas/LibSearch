@@ -8,7 +8,24 @@
 import UIKit
 import KeychainAccess
 
-class MainLibViewController: UIViewController,UISearchBarDelegate {
+class MainLibViewController: UIViewController,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        // セルに表示する値を設定する
+        cell.textLabel!.text = "貸出中"
+        let viewWidth = self.view.frame.width
+        let rect = CGRect(x:viewWidth-171.0,y:0,width:171,height:80)
+        let imageView = UIImageView(frame: rect)
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "貸出中")
+        cell.contentView.addSubview(imageView)
+        return cell
+    }
+    
     
     
     @IBOutlet weak var LibSearchBar: UISearchBar!
