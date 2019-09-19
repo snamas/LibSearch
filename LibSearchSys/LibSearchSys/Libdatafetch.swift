@@ -157,7 +157,7 @@ class Libdatafetch{
         })
         
     }
-    func fetch_asklst(){
+    func fetch_asklst(complete:@escaping ([String]) -> Void){
         urlSessionGetClient.get(url: "https://tmuopac.lib.tmu.ac.jp/webopac/asklst.do",completion: {data in
             var useStateList:[String] = []
             let testfi = String(data: data, encoding: String.Encoding.utf8) ?? ""
@@ -166,6 +166,7 @@ class Libdatafetch{
                 useStateList += [link.text!.trimmingCharacters(in: .whitespacesAndNewlines)]
              }
              print(useStateList)
+            complete(useStateList)
         })
         
     }

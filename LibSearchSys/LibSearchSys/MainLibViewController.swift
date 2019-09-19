@@ -8,20 +8,37 @@
 import UIKit
 import KeychainAccess
 
+
 class MainLibViewController: UIViewController,UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource {
+    
+    
+    let libfunction:[(text:String,bookCount:Int)] = [
+        ("貸出中",0),
+        ("貸出履歴",0),
+        ("予約",0),
+        ("購入履歴",0),
+        ("ブックマーク",0),
+        ("設定",0)
+    ]
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return libfunction.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         // セルに表示する値を設定する
-        cell.textLabel!.text = "貸出中"
+        cell.textLabel!.text = libfunction[indexPath.row].text
+        cell.textLabel!.font = UIFont.systemFont(ofSize: 25.0)
         let viewWidth = self.view.frame.width
-        let rect = CGRect(x:viewWidth-171.0,y:0,width:171,height:80)
-        let imageView = UIImageView(frame: rect)
+        let detailtextLabel = UILabel(frame: CGRect(x: viewWidth-150,y: 60,width: 44,height: 14.5))
+        detailtextLabel.text = "tes"
+        detailtextLabel.font = UIFont.systemFont(ofSize: 15)
+        cell.addSubview(detailtextLabel)
+        let imagerect = CGRect(x:viewWidth-171.0,y:0,width:171,height:80)
+        let imageView = UIImageView(frame: imagerect)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "貸出中")
+        imageView.image = UIImage(named: libfunction[indexPath.row].text)
         cell.contentView.addSubview(imageView)
         return cell
     }
@@ -44,10 +61,18 @@ class MainLibViewController: UIViewController,UISearchBarDelegate,UITableViewDel
         super.viewWillAppear(animated)
         if savedData.bool(forKey: "isUseUserId"){
             LibData.fetch_comidf(exceptionClosure:{exceptStr in
-                print(exceptStr)
+                print("exceptStr:\(exceptStr)")
                 let accountView = self.storyboard?.instantiateViewController(withIdentifier: "AccountView") as? AccountViewController
                 accountView?.modalTransitionStyle = .coverVertical
                 self.present(accountView!, animated: true, completion: nil)
+            },successClosure: {
+                //何件予約件数などがあるかを取得し、反映させる。
+                self.LibData.fetch_asklst(complete: {dataarr in
+                    let intarr = dataarr.map{
+                        ($0.components(separatedBy: NSCharacterSet.decimalDigits.inverted)).joined()
+                    }
+                    print(intarr)
+                    })
             })
         }
         else{
