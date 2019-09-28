@@ -52,7 +52,7 @@ class LendTableViewController: UITableViewController {
         if !self.lendlist.isEmpty{
             let webdata = self.lendlist[indexPath.row]
             cell.textLabel?.text = webdata.Biblioinfo
-            cell.detailTextLabel?.text = "\(webdata.Lendingdate)->\(webdata.LendDD)"
+            cell.detailTextLabel?.text = "貸出日:\(webdata.Lendingdate) -> 返却期限日:\(webdata.LendDD)"
         }
         // Configure the cell...
 

@@ -62,7 +62,7 @@ class ReservationTableViewController: UITableViewController {
         if !self.svclist.isEmpty{
             let webdata = self.svclist[indexPath.row]
             cell.textLabel?.text = webdata.Biblioinfo
-            cell.detailTextLabel?.text = "\(webdata.Status)->\(webdata.AppliedLib)"
+            cell.detailTextLabel?.text = "状態:\(webdata.Status) 申込館:\(webdata.AppliedLib)"
         }
         
         // Configure the cell...rvcCell

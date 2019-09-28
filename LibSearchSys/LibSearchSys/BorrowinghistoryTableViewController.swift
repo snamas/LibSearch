@@ -57,7 +57,7 @@ class BorrowinghistoryTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BorhisCell", for: indexPath)
         let webdata = self.borhistorylist[indexPath.row]
         cell.textLabel?.text = webdata.Biblioinfo
-        cell.detailTextLabel?.text = "\(webdata.kango)->\(webdata.Lendingdate)"
+        cell.detailTextLabel?.text = "貸出日:\(webdata.Lendingdate) \(webdata.kango) "
         
         // Configure the cell...
 

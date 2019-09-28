@@ -34,9 +34,10 @@ class AccountViewController: UIViewController {
             print(error)
         }
         self.LibData.fetch_comidf(exceptionClosure:{exceptStr in
-            print(exceptStr)
+            let culledStr = exceptStr.replacingOccurrences(of: "\t", with: "")
+            print(culledStr)
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
-            alert.title = exceptStr
+            alert.title = culledStr
             alert.addAction(
                 UIAlertAction(
                     title:"OK",
@@ -58,15 +59,26 @@ class AccountViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        var mainTextLabel = UITextView()
+        mainTextLabel.text = "利用者ID(教育研究用情報システムと同じID)とパスワードを入力してください。この情報は端末内部にのみ保存されます。"
+        mainTextLabel.frame = CGRect(x: 10, y: 80, width: 400, height: 60)
+        self.view.addSubview(mainTextLabel)
+        var userTextLabel = UILabel()
+        userTextLabel.text = "利用者ID:"
+        userTextLabel.frame = CGRect(x: 10, y: 130, width: 300, height: 30)
+        self.view.addSubview(userTextLabel)
         userIdTextField.placeholder = "利用者ID"
         userIdTextField.textContentType = .username
-        userIdTextField.borderStyle = .bezel
-        userIdTextField.frame = CGRect(x: 10, y: 100, width: 300, height: 30)
+        userIdTextField.frame = CGRect(x: 20, y: 150, width: 300, height: 30)
+        
+        var passTextLabel = UILabel()
+        passTextLabel.text = "利用者ID:"
+        passTextLabel.frame = CGRect(x: 10, y: 190, width: 300, height: 30)
+        self.view.addSubview(passTextLabel)
         passwordTextFiled.placeholder = "パスワード"
         passwordTextFiled.textContentType = .password
         passwordTextFiled.isSecureTextEntry = true
-        passwordTextFiled.frame = CGRect(x: 10, y: 150, width: 300, height: 30)
-        var buttonheight = 10
+        passwordTextFiled.frame = CGRect(x: 20, y: 210, width: 300, height: 30)
         self.view.addSubview(userIdTextField)
         self.view.addSubview(passwordTextFiled)
     }

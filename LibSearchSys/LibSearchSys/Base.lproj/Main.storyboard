@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main-->
+        <!--ホーム-->
         <scene sceneID="fD0-1r-6zy">
             <objects>
                 <viewController id="nZg-eE-pW0" customClass="MainLibViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
@@ -96,7 +96,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jDG-eY-m8g"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Main" id="KgQ-xu-02w"/>
+                    <navigationItem key="navigationItem" title="ホーム" id="KgQ-xu-02w"/>
                     <connections>
                         <outlet property="LibSearchBar" destination="JKH-og-nXZ" id="sWq-Rl-iJ2"/>
                         <segue destination="gE8-ws-arH" kind="show" identifier="searchView" customClass="searchbarSegue" customModule="LibSearchSys" customModuleProvider="target" id="Lgw-rr-Iuz"/>
@@ -109,7 +109,7 @@
         <!--Setting Table View Controller-->
         <scene sceneID="w28-d6-0B7">
             <objects>
-                <tableViewController id="cEH-hq-TWI" customClass="SettingTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="settingView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cEH-hq-TWI" customClass="SettingTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="8b1-Se-wW1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -143,7 +143,7 @@
             </objects>
             <point key="canvasLocation" x="1218" y="770"/>
         </scene>
-        <!--result-->
+        <!--検索結果-->
         <scene sceneID="vk8-4s-ace">
             <objects>
                 <tableViewController id="gE8-ws-arH" customClass="ResultTableView" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
@@ -191,7 +191,7 @@
                             <outlet property="delegate" destination="gE8-ws-arH" id="Pal-v7-Q2c"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="result" id="DjL-1t-5MD">
+                    <navigationItem key="navigationItem" title="検索結果" id="DjL-1t-5MD">
                         <barButtonItem key="rightBarButtonItem" title="絞り込む" id="Xms-2G-RhQ">
                             <connections>
                                 <action selector="refineAction:" destination="gE8-ws-arH" id="r5i-An-oAe"/>
@@ -218,31 +218,6 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TaI-Y7-OKb" customClass="UIScrollView">
                                 <rect key="frame" x="172" y="41" width="200" height="1134"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNR-Il-iKQ">
-                                        <rect key="frame" x="16" y="26" width="160" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="29" maxY="0.0"/>
-                                        <inset key="imageEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="全ての所蔵館" image="onswitch">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="AllPlaceAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="ira-6H-Agt"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p23-Kz-RXk">
-                                        <rect key="frame" x="15" y="342" width="131" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <inset key="imageEdgeInsets" minX="-18" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="全ての資料種" image="onswitch">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="AllDocsAction:" destination="IT0-ia-rJA" eventType="touchUpInside" id="3Zs-KC-Fwh"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" red="0.92881719559585496" green="0.92881719559585496" blue="0.92881719559585496" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
@@ -250,8 +225,6 @@
                         <viewLayoutGuide key="safeArea" id="pvi-3b-hsI"/>
                     </view>
                     <connections>
-                        <outlet property="AllDocs" destination="p23-Kz-RXk" id="UEh-jV-cxw"/>
-                        <outlet property="AllPlace" destination="WNR-Il-iKQ" id="d3r-Va-Ywc"/>
                         <outlet property="Refinetags" destination="TaI-Y7-OKb" id="9fO-iG-EYx"/>
                     </connections>
                 </viewController>
@@ -310,7 +283,7 @@
         <!--Account View Controller-->
         <scene sceneID="pdv-i3-LDk">
             <objects>
-                <viewController storyboardIdentifier="AccountView" id="AsH-gc-Zvt" customClass="AccountViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AccountView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AsH-gc-Zvt" customClass="AccountViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JIA-eu-aCe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -349,7 +322,7 @@
         <!--Bookmark Table View Controller-->
         <scene sceneID="Sa5-17-aSp">
             <objects>
-                <tableViewController id="SEr-ql-4Qa" customClass="BookmarkTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="BookmarkView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SEr-ql-4Qa" customClass="BookmarkTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="VkB-Z2-r3i">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -396,7 +369,7 @@
         <!--Reservation Table View Controller-->
         <scene sceneID="1pr-t4-sVV">
             <objects>
-                <tableViewController id="oii-OU-7LV" customClass="ReservationTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ReservationView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oii-OU-7LV" customClass="ReservationTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="7If-KR-Cas">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -443,7 +416,7 @@
         <!--Purchase Request Table View Controller-->
         <scene sceneID="A5y-FU-heV">
             <objects>
-                <tableViewController id="afN-9M-WlT" customClass="PurchaseRequestTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PurchaseView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="afN-9M-WlT" customClass="PurchaseRequestTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Qgh-wM-mJZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -490,7 +463,7 @@
         <!--Borrowinghistory Table View Controller-->
         <scene sceneID="DDn-3N-EHd">
             <objects>
-                <tableViewController id="RmE-nb-QsZ" customClass="BorrowinghistoryTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="borrowView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="RmE-nb-QsZ" customClass="BorrowinghistoryTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ikz-Q8-aKX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -537,7 +510,7 @@
         <!--Lend Table View Controller-->
         <scene sceneID="vJG-kh-7P3">
             <objects>
-                <viewController id="NpC-gu-3L1" customClass="LendTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LenlistView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NpC-gu-3L1" customClass="LendTableViewController" customModule="LibSearchSys" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="68j-1t-rL7">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -596,10 +569,7 @@
             <point key="canvasLocation" x="360.80000000000001" y="26.53673163418291"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="onswitch" width="20" height="20"/>
-    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="dPq-Dy-qTg"/>
+        <segue reference="O5E-YM-lgH"/>
     </inferredMetricsTieBreakers>
 </document>

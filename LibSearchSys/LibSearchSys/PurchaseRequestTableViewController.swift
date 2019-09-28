@@ -56,7 +56,7 @@ class PurchaseRequestTableViewController: UITableViewController {
         if !self.odrlist.isEmpty{
             let webdata = self.odrlist[indexPath.row]
             cell.textLabel?.text = webdata.Biblioinfo
-            cell.detailTextLabel?.text = "\(webdata.Status)->\(webdata.Requestdate)"
+            cell.detailTextLabel?.text = "状態:\(webdata.Status) 依頼日:\(webdata.Requestdate)"
         }
         
         return cell

@@ -90,7 +90,7 @@ class DetailResultView: UITableViewController {
             LibData.fetch_bookmark(BibliographyID: safeBibID,tfclosure:{fetchResult in
                 if fetchResult{
                     let successAlert = UIAlertController(title:nil,message:nil,preferredStyle:.alert)
-                    successAlert.title = "ブックマーク追加成功"
+                    successAlert.title = "ブックマークへの追加に成功しました。"
                     successAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(
                         successAlert,
@@ -101,7 +101,7 @@ class DetailResultView: UITableViewController {
                 else{
                     self.LibData.fetch_comidf(exceptionClosure:{exceptionNum in print(exceptionNum)})
                     let successAlert = UIAlertController(title:nil,message:nil,preferredStyle:.alert)
-                    successAlert.title = "ブックマーク追加失敗"
+                    successAlert.title = "ブックマークへの追加に失敗しました"
                     successAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(
                         successAlert,

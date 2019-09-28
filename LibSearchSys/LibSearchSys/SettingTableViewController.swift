@@ -8,7 +8,7 @@
 import UIKit
 
 class SettingTableViewController: UITableViewController {
-    private var mysection = ["利用者アカウント",""]
+    private var mysection:[(name:String,sub:String)] = [(name:"利用者アカウント",sub:"")]
     private var accountName = ""
     var accountView : AccountViewController? = nil
     override func viewDidLoad() {
@@ -31,13 +31,13 @@ class SettingTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
+        return mysection.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingCell", for: indexPath)
-        cell.textLabel?.text = accountName
+        cell.textLabel?.text = mysection[indexPath.row].name
         
         // Configure the cell...
 
@@ -53,7 +53,7 @@ class SettingTableViewController: UITableViewController {
     }
     */
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return mysection[section]
+        return "設定"
     }
     /*
     // Override to support editing the table view.
