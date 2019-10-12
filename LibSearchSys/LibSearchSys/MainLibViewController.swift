@@ -41,7 +41,7 @@ class MainLibViewController: UIViewController,UISearchBarDelegate,UITableViewDel
         cell.textLabel!.font = UIFont.systemFont(ofSize: 25.0)
         let viewWidth = self.view.frame.width
         let detailtextLabel = UILabel(frame: CGRect(x: viewWidth-150,y: 60,width: 44,height: 14.5))
-        detailtextLabel.text = "tes"
+        detailtextLabel.text = ""//ここ何件か入れる予定
         detailtextLabel.font = UIFont.systemFont(ofSize: 15)
         cell.addSubview(detailtextLabel)
         let imagerect = CGRect(x:viewWidth-171.0,y:0,width:171,height:80)

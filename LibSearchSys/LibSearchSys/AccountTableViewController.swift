@@ -60,8 +60,9 @@ class AccountViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         var mainTextLabel = UITextView()
-        mainTextLabel.text = "利用者ID(教育研究用情報システムと同じID)とパスワードを入力してください。この情報は端末内部にのみ保存されます。"
-        mainTextLabel.frame = CGRect(x: 10, y: 80, width: 400, height: 60)
+        mainTextLabel.text = "利用者ID(教育研究用情報システムと共通のID)とパスワードを入力してください。この情報は端末内部にのみ保存されます。"
+        let viewWidth = self.view.frame.width
+        mainTextLabel.frame = CGRect(x: 10, y: 80, width: viewWidth-10, height: 60)
         self.view.addSubview(mainTextLabel)
         var userTextLabel = UILabel()
         userTextLabel.text = "利用者ID:"
